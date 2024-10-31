@@ -26,7 +26,7 @@ To check for Laravel:
 laravel
 ```
 
-As for __XAMPP__, check your applications if you have XAMPP installed.
+As for XAMPP, check your applications if you have XAMPP installed.
 
 ## Setting up the Cloned Laravel Repo
 - __4th__, go now to the cloned repository and do the following commands below.
