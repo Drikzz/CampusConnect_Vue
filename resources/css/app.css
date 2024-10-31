@@ -74,8 +74,15 @@
         }
     
         .primary-btn {
-            @apply flex w-1/6 justify-center rounded-md bg-white px-2 py-3 text-sm font-semibold leading-6 text-red-900 shadow-sm hover:bg-neutral-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-slate-400 disabled:cursor-wait;
+            @apply flex w-1/4 justify-center rounded-md bg-white px-2 py-3 text-sm font-semibold leading-6 text-red-900 shadow-sm hover:bg-neutral-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-slate-400 disabled:cursor-wait;
         }
      
+        .star1{
+            transform: translateY(120px);
+            width: 80px;  
+            height: auto;
+        }
+
+        
     }    
 }
