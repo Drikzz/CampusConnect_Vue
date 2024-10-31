@@ -16,11 +16,10 @@
             
             {{-- logo button --}}
             <a href="#" class="flex flex-col items-center">
-                    <div class="w-fit text-white font-Header">Campus</div>
-                    <div class="w-fit text-white font-Header">Connect</div>
+                    <img src="{{ asset('imgs/campusconnect_btn.png') }}" alt="logo" class="w-[150px] h-auto">
             </a>
 
-            <div class="flex justify-center items-center gap-4">
+            <div class="flex justify-center items-center gap-12">
                 
                 {{-- shop now button --}}
                 <a href="#" class="font-Satoshi text-base text-white w-auto">
