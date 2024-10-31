@@ -18,4 +18,64 @@
         font-family: 'FontSpring-demi';
         src: url(/public/assets/fonts/fontspring/Fontspring-DEMO-integralcf-demibold.otf);
     }
+
+    @font-face {
+        font-family: 'FontSpring-bold';
+        src: url(/public/fonts/fontspring/Fontspring-DEMO-integralcf-bold.otf);
+    }
+
+    @layer components {
+        input[type="email"],
+        input[type="password"],
+        input[type="search"],
+        input[type="tel"],
+        input[type="url"], textarea {
+            @apply block  border-0 px-2 py-1.5 text-red-950 shadow-sm  bg-white;
+        }
+        label {
+            @apply block text-sm font-medium leading-6 text-red-950 first-letter:capitalize;
+        }
+        header {
+            @apply bg-red-950 shadow-md;
+        }
+        nav {
+            @apply p-5 max-w-full mx-auto flex items-center ;
+        }
+        main {
+            @apply max-w-full mx-auto;
+            font-family: "Satoshi", sans-serif;
+            font-weight: 800;
+            background-color: rgb(141 10 10);
+            color:white;
+        }
+
+        input::placeholder {
+            position: relative;
+            left: 20px; /* Adjusts the placeholder position to the right */
+            color: #888;
+        }
+    
+        .splashtext{
+            font-family: 'FontSpring-bold', sans-serif;
+            font-size:48px;
+    
+        }
+        
+        .smalltext{
+            font-family: "Satoshi", sans-serif;
+            font-size:16px;
+            font-weight: 400;
+        }
+    
+        .splash{
+            text-align: left;
+            margin-left: 250px;
+            padding: 4rem;
+        }
+    
+        .primary-btn {
+            @apply flex w-1/6 justify-center rounded-md bg-white px-2 py-3 text-sm font-semibold leading-6 text-red-900 shadow-sm hover:bg-neutral-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-slate-400 disabled:cursor-wait;
+        }
+     
+    }    
 }
