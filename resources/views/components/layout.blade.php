@@ -38,7 +38,7 @@
                 @csrf
 
                 <div class="relative flex items-center fill-slate-500 focus-within:fill-black transition-colors">
-                    <svg class="w-5 h-5 absolute ml-3 " xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="512" height="512">
+                    <svg class="w-5 h-5 absolute ml-3" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="512" height="512">
                         <path d="M23.707,22.293l-5.969-5.969a10.016,10.016,0,1,0-1.414,1.414l5.969,5.969a1,1,0,0,0,1.414-1.414ZM10,18a8,8,0,1,1,8-8A8.009,8.009,0,0,1,10,18Z"/>
                     </svg>
                     
@@ -64,17 +64,34 @@
         </nav>
     </header>
 
-    <main class="m-[20rem]">
+    <main class="m-10">
         {{ $slot }}
     </main>
 
     {{-- finish footer tomorrow --}}
-    <footer class="w-full h-5 bg-slate-600">
-        <div>
-            
-        </div>
-        <div>
+    <footer class="w-full bg-slate-600 flex flex-col items-center justify-center">
+        <div class="flex justify-center items-center max-w-screen-lg py-6 px-8 bg-black rounded-xl">
+            <div>
+                <p class="font-Footer italic text-2xl text-white w-[26rem] ">STAY UP TO DATE ABOUT OUR LATEST OFFERS</p>
+            </div>
 
+            {{-- input email --}}
+            <form action="">
+                @csrf
+
+                <div class="relative flex items-center fill-slate-500 focus-within:fill-black transition-colors mb-2"> 
+                    <svg class="w-5 h-5 absolute ml-3" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="512" height="512">
+                        <path d="M19,1H5A5.006,5.006,0,0,0,0,6V18a5.006,5.006,0,0,0,5,5H19a5.006,5.006,0,0,0,5-5V6A5.006,5.006,0,0,0,19,1ZM5,3H19a3,3,0,0,1,2.78,1.887l-7.658,7.659a3.007,3.007,0,0,1-4.244,0L2.22,4.887A3,3,0,0,1,5,3ZM19,21H5a3,3,0,0,1-3-3V7.5L8.464,13.96a5.007,5.007,0,0,0,7.072,0L22,7.5V18A3,3,0,0,1,19,21Z"/>
+                    </svg>
+
+                    <input type="text" name="email-input" id="email-input" autocomplete="off" placeholder="Enter your Email Address" class="pl-12 pr-3 px-3 py-2 w-[16rem] rounded-full text-black border-none outline-none font-Satoshi text-base">
+                </div>
+
+                <input type="submit" name="email-send" id="email-send" value="Subscribe to Newsletter" class="px-3 py-2 w-[16rem] bg-white rounded-full text-black border-none outline-none font-Satoshi text-base">
+            </form>
+        </div>
+        <div class="w-full h-auto bg-slate-500">
+            {{-- continue tomorrow --}}
         </div>
     </footer>
 </body>
