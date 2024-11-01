@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ env('APP_NAME') }}</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/landing.css'])
 </head>
 <body>
     
@@ -22,12 +22,12 @@
             <div class="flex justify-center items-center gap-12">
                 
                 {{-- shop now button --}}
-                <a href="#" class="font-Satoshi text-base text-white w-auto">
+                <a href="#" class="font-Satoshi text-base text-white w-auto hover:bg-red-950 p-2 rounded-lg">
                     Shop Now
                 </a>
 
                 {{-- trade now button --}}
-                <a href="#" class="font-Satoshi text-base text-white w-auto">
+                <a href="#" class="font-Satoshi text-base text-white w-auto hover:bg-red-950 p-2 rounded-lg">
                     Trade Now
                 </a>
             </div>
@@ -42,7 +42,7 @@
                         <path d="M23.707,22.293l-5.969-5.969a10.016,10.016,0,1,0-1.414,1.414l5.969,5.969a1,1,0,0,0,1.414-1.414ZM10,18a8,8,0,1,1,8-8A8.009,8.009,0,0,1,10,18Z"/>
                     </svg>
                     
-                    <input type="text" name="search-text" id="search-text" autocomplete="off" placeholder="Search for products.." class="pl-4 pr-3 px-3 py-2 w-[20rem] rounded-full text-black text-left border-none focus:ring-2 focus:ring-black focus:outline-none font-Satoshi ">
+                    <input type="text" name="search-text" id="search-text" autocomplete="off" placeholder="Search for products.." class="pl-4 pr-3 px-3 py-2 w-[20rem] rounded-full text-black text-left border-none focus:ring-2 focus:ring-black focus:outline-none font-Satoshi block border-0  shadow-sm bg-white placeholder-custom">
                     
                 </div>
 
