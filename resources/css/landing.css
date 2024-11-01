@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    label {
+        @apply block text-sm font-medium leading-6 text-red-950 first-letter:capitalize;
+    }
+    header {
+        @apply bg-red-950 shadow-md;
+    }
+    nav {
+        @apply p-5 max-w-full mx-auto flex items-center ;
+    }
+
+    input::placeholder {
+        position: relative;
+        left: 20px; /* Adjusts the placeholder position to the right */
+        color: #888;
+    }
+    
+     .primary-btn {
+        @apply flex w-1/4 justify-center rounded-md bg-white px-2 py-3 text-sm font-semibold leading-6 text-red-900 shadow-sm hover:bg-neutral-100;
+    }
+
+    
+}    
