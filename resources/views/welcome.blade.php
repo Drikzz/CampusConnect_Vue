@@ -39,7 +39,7 @@
     </div>
  </div>
 </div>
-   <section class="m-10">
+   <section class="m-10 pb-5">
     <div class="font-EXbold text-4xl text-center p-10">Recently Uploaded</div>
 
     <div class="flex flex-wrap justify-center gap-10 font-Satoshi"> <!-- Increased gap -->
@@ -73,16 +73,47 @@
             <h2 class="text-lg font-bold mt-1">CCS Uniform Male</h2>
             <p class="text-gray-700 mt-2 font-bold">P500</p>
             <button class="mt-4 bg-black text-white py-2 px-4 rounded hover:bg-neutral-800">Buy Now!</button>
-
-            
         </div>
     </div>
 
-    <hr class="pb-5">
+</section>
+         <hr class="border-1 border-gray-300 m-2">   
+<section class="pb-10">
+    <div class="font-EXbold text-4xl text-center p-10">Deals</div>
+    <div class="flex flex-wrap justify-center gap-10 font-Satoshi"> <!-- Increased gap -->
+        <!-- Card 1 -->
+        <div class="bg-white rounded-lg shadow-lg p-4 w-56 h-[350px]">
+            <img src="{{ asset('imgs/placeholder_img/200.png') }}" alt="Image 1" class="rounded-t-lg">
+            <h2 class="text-lg font-bold mt-1">CCS Uniform Male</h2>
+            <p class="text-gray-700 mt-2 font-bold">P500</p>
+            <button class="mt-4 bg-black text-white py-2 px-4 rounded hover:bg-neutral-800">Buy Now!</button>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="bg-white rounded-lg shadow-lg p-4 w-56 h-[350px]">
+            <img src="{{ asset('imgs/placeholder_img/200.png') }}" alt="Image 1" class="rounded-t-lg">
+            <h2 class="text-lg font-bold mt-1">CCS Uniform Male</h2>
+            <p class="text-gray-700 mt-2 font-bold">P500</p>
+            <button class="mt-4 bg-black text-white py-2 px-4 rounded hover:bg-neutral-800">Buy Now!</button>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="bg-white rounded-lg shadow-lg p-4 w-56 h-[350px]">
+            <img src="{{ asset('imgs/placeholder_img/200.png') }}" alt="Image 1" class="rounded-t-lg">
+            <h2 class="text-lg font-bold mt-1">CCS Uniform Male</h2>
+            <p class="text-gray-700 mt-2 font-bold">P500</p>
+            <button class="mt-4 bg-black text-white py-2 px-4 rounded hover:bg-neutral-800">Buy Now!</button>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="bg-white rounded-lg shadow-lg p-4 w-56 h-[350px]">
+            <img src="{{ asset('imgs/placeholder_img/200.png') }}" alt="Image 1" class="rounded-t-lg">
+            <h2 class="text-lg font-bold mt-1">CCS Uniform Male</h2>
+            <p class="text-gray-700 mt-2 font-bold">P500</p>
+            <button class="mt-4 bg-black text-white py-2 px-4 rounded hover:bg-neutral-800">Buy Now!</button>
+        </div>
+    </div>
 
 </section>
-            
-
-                
    
 </x-layout>
