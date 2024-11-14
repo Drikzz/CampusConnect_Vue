@@ -10,7 +10,6 @@
 <body>
     
     <header class="header-container">
-        
 
         {{-- nav container --}}
         <nav class="flex justify-between items-center w-auto h-auto bg-primary-color px-16 py-4 sticky">
@@ -64,8 +63,10 @@
             </div>
         </nav>
 
+        <div class="background">
+
             {{-- LAYAM's PART --}}
-         {{-- <div class="register">
+         <div class="register">
 
             <img src="{{ asset('imgs/CampusConnect.png') }}" alt="" srcset="">
             
@@ -150,7 +151,7 @@
         </div>
         
     </form> 
- </div>  --}}
+ </div> 
 
             {{-- Layam's Part(2) --}}
     {{-- <div class="register2">
@@ -197,7 +198,7 @@
         </form>
 
     </div> --}}
-
+</div>
     </header>
 
     <main class="">
