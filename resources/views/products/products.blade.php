@@ -24,21 +24,24 @@
         <div class="grid grid-cols-4 place-items-center">
             <div class="w-60 h-[30rem] p-4 flex flex-col justify-between items-start gap-4 hover:shadow-lg rounded">
                 <div class="relative">
-                    <img src=" {{ asset('imgs/img1.jpg') }}" alt="" class="w-52 h-64 object-cover">
+                    <a href="{{ route('prod_details') }}">
+                        <img src="{{ asset('imgs/img1.jpg') }}" alt="" class="w-52 h-64 object-cover">
+                    </a>
                     <div class="absolute bottom-2 right-2 rounded-2xl bg-white px-3 py-1">
                         <p class="font-Satoshi-bold text-sm text-black">
                             -20%
                         </p>
                     </div>
 
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer bookmarked" xmlns="http://www.w3.org/2000/svg" id="Filled" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="M2.849,23.55a2.954,2.954,0,0,0,3.266-.644L12,17.053l5.885,5.853a2.956,2.956,0,0,0,2.1.881,3.05,3.05,0,0,0,1.17-.237A2.953,2.953,0,0,0,23,20.779V5a5.006,5.006,0,0,0-5-5H6A5.006,5.006,0,0,0,1,5V20.779A2.953,2.953,0,0,0,2.849,23.55Z"/>
-                    </svg>
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer hidden unbookmark" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="m21,19.586V3c0-1.654-1.346-3-3-3H6.559c-1.393,0-2.566.954-2.903,2.242L1.457.043.043,1.457l22.5,22.5,1.414-1.414-2.957-2.957Zm-10.083-3.661l-7.917,8.075v-15.991l7.917,7.916Z"/>
-                    </svg>
-
+                    <div class="absolute top-3 right-3 bg-white p-2 rounded-full hover:shadow-md hover:ring-2 hover:ring-black hover:transition-all">
+                        <svg class="w-5 h-5 fill-black cursor-pointer bookmarked" xmlns="http://www.w3.org/2000/svg" id="Filled" viewBox="0 0 24 24" width="512" height="512">
+                            <path d="M2.849,23.55a2.954,2.954,0,0,0,3.266-.644L12,17.053l5.885,5.853a2.956,2.956,0,0,0,2.1.881,3.05,3.05,0,0,0,1.17-.237A2.953,2.953,0,0,0,23,20.779V5a5.006,5.006,0,0,0-5-5H6A5.006,5.006,0,0,0,1,5V20.779A2.953,2.953,0,0,0,2.849,23.55Z"/>
+                        </svg>
+        
+                        <svg class="w-5 h-5 fill-black cursor-pointer hidden unbookmark" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="512" height="512">
+                            <path d="m21,19.586V3c0-1.654-1.346-3-3-3H6.559c-1.393,0-2.566.954-2.903,2.242L1.457.043.043,1.457l22.5,22.5,1.414-1.414-2.957-2.957Zm-10.083-3.661l-7.917,8.075v-15.991l7.917,7.916Z"/>
+                        </svg>
+                    </div>
                 </div>
 
                 <div>
@@ -70,201 +73,24 @@
             
             <div class="w-60 h-[30rem] p-4 flex flex-col justify-between items-start gap-4 hover:shadow-lg rounded">
                 <div class="relative">
-                    <img src=" {{ asset('imgs/img2.jpg') }}" alt="" class="w-52 h-64 object-cover">
+                    <a href="#">
+                        <img src=" {{ asset('imgs/img2.jpg') }}" alt="" class="w-52 h-64 object-cover">
+                    </a>
                     {{-- <div class="absolute bottom-2 right-2 rounded-2xl bg-white px-3 py-1">
                         <p class="font-Satoshi-bold text-sm text-black">
                             -20%
                         </p>
                     </div>   --}}
 
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer bookmarked" xmlns="http://www.w3.org/2000/svg" id="Filled" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="M2.849,23.55a2.954,2.954,0,0,0,3.266-.644L12,17.053l5.885,5.853a2.956,2.956,0,0,0,2.1.881,3.05,3.05,0,0,0,1.17-.237A2.953,2.953,0,0,0,23,20.779V5a5.006,5.006,0,0,0-5-5H6A5.006,5.006,0,0,0,1,5V20.779A2.953,2.953,0,0,0,2.849,23.55Z"/>
-                    </svg>
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer hidden unbookmark" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="m21,19.586V3c0-1.654-1.346-3-3-3H6.559c-1.393,0-2.566.954-2.903,2.242L1.457.043.043,1.457l22.5,22.5,1.414-1.414-2.957-2.957Zm-10.083-3.661l-7.917,8.075v-15.991l7.917,7.916Z"/>
-                    </svg>
-                </div>
-
-                <div>
-                    <p class="font-Satoshi-bold text-xl">
-                        TANK TOP DOUBLE LINING
-                    </p>
-                </div>
-
-                <div class="flex justify-center items-center w-fit gap-2">
-                    <p class="font-Satoshi-bold text-2xl">
-                        &#8369;100
-                    </p>
-
-                    <p class="font-Satoshi-bold line-through text-2xl text-gray-400">
-                        &#8369;110
-                    </p>
-                </div>
-
-                <div class="flex justify-between items-center w-full">
-                    <a href="#" class="py-2 px-3 bg-black rounded-lg hover:opacity-80 hover:transition-all focus:opacity-60 focus:transition-all">
-                        <button class="font-Satoshi text-white">Buy Now!</button>
-                    </a>
-
-                    {{-- <a href="#" class="py-2 px-3 bg-black rounded-lg hover:opacity-80 hover:transition-all focus:opacity-60 focus:transition-all">
-                        <button class="font-Satoshi text-white">Trade Now!</button>
-                    </a> --}}
-                </div>
-            </div>
-
-            <div class="w-60 h-[30rem] p-4 flex flex-col justify-between items-start gap-4 hover:shadow-lg rounded">
-                <div class="relative">
-                    <img src=" {{ asset('imgs/img3.jpg') }}" alt="" class="w-52 h-64 object-cover">
-                    <div class="absolute bottom-2 right-2 rounded-2xl bg-white px-3 py-1">
-                        <p class="font-Satoshi-bold text-sm text-black">
-                            -9%
-                        </p>
-                    </div>  
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer bookmarked" xmlns="http://www.w3.org/2000/svg" id="Filled" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="M2.849,23.55a2.954,2.954,0,0,0,3.266-.644L12,17.053l5.885,5.853a2.956,2.956,0,0,0,2.1.881,3.05,3.05,0,0,0,1.17-.237A2.953,2.953,0,0,0,23,20.779V5a5.006,5.006,0,0,0-5-5H6A5.006,5.006,0,0,0,1,5V20.779A2.953,2.953,0,0,0,2.849,23.55Z"/>
-                    </svg>
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer hidden unbookmark" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="m21,19.586V3c0-1.654-1.346-3-3-3H6.559c-1.393,0-2.566.954-2.903,2.242L1.457.043.043,1.457l22.5,22.5,1.414-1.414-2.957-2.957Zm-10.083-3.661l-7.917,8.075v-15.991l7.917,7.916Z"/>
-                    </svg>
-                </div>
-
-                <div>
-                    <p class="font-Satoshi-bold text-xl">
-                        Men's Sando
-                    </p>
-                </div>
-
-                <div class="flex justify-center items-center w-fit gap-2">
-                    <p class="font-Satoshi-bold text-2xl">
-                        &#8369;130
-                    </p>
-
-                    {{-- <p class="font-Satoshi-bold line-through text-2xl text-gray-400">
-                        &#8369;70
-                    </p> --}}
-                </div>
-
-                <div class="flex justify-between items-center w-full">
-                    <a href="#" class="py-2 px-3 bg-black rounded-lg hover:opacity-80 hover:transition-all focus:opacity-60 focus:transition-all">
-                        <button class="font-Satoshi text-white">Buy Now!</button>
-                    </a>
-
-                    {{-- <a href="#" class="py-2 px-3 bg-black rounded-lg hover:opacity-80 hover:transition-all focus:opacity-60 focus:transition-all">
-                        <button class="font-Satoshi text-white">Trade Now!</button>
-                    </a> --}}
-                </div>
-            </div>
-
-            <div class="w-60 h-[30rem] p-4 flex flex-col justify-between items-start gap-4 hover:shadow-lg rounded">
-                <div class="relative">
-                    <img src=" {{ asset('imgs/img4.jpg') }}" alt="" class="w-52 h-64 object-cover">
-                    <div class="absolute bottom-2 right-2 rounded-2xl bg-white px-3 py-1">
-                        <p class="font-Satoshi-bold text-sm text-black">
-                            -23%
-                        </p>
-                    </div>  
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer bookmarked" xmlns="http://www.w3.org/2000/svg" id="Filled" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="M2.849,23.55a2.954,2.954,0,0,0,3.266-.644L12,17.053l5.885,5.853a2.956,2.956,0,0,0,2.1.881,3.05,3.05,0,0,0,1.17-.237A2.953,2.953,0,0,0,23,20.779V5a5.006,5.006,0,0,0-5-5H6A5.006,5.006,0,0,0,1,5V20.779A2.953,2.953,0,0,0,2.849,23.55Z"/>
-                    </svg>
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer hidden unbookmark" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="m21,19.586V3c0-1.654-1.346-3-3-3H6.559c-1.393,0-2.566.954-2.903,2.242L1.457.043.043,1.457l22.5,22.5,1.414-1.414-2.957-2.957Zm-10.083-3.661l-7.917,8.075v-15.991l7.917,7.916Z"/>
-                    </svg>
-                </div>
-
-                <div>
-                    <p class="font-Satoshi-bold text-xl">
-                        Nat Geo Short
-                    </p>
-                </div>
-
-                <div class="flex justify-center items-center w-fit gap-2">
-                    <p class="font-Satoshi-bold text-2xl">
-                        &#8369;500
-                    </p>
-
-                    <p class="font-Satoshi-bold line-through text-2xl text-gray-400">
-                        &#8369;650
-                    </p>
-                </div>
-
-                <div class="flex justify-between items-center w-full">
-                    <a href="#" class="py-2 px-3 bg-black rounded-lg hover:opacity-80 hover:transition-all focus:opacity-60 focus:transition-all">
-                        <button class="font-Satoshi text-white">Buy Now!</button>
-                    </a>
-
-                    <a href="#" class="py-2 px-3 bg-black rounded-lg hover:opacity-80 hover:transition-all focus:opacity-60 focus:transition-all">
-                        <button class="font-Satoshi text-white">Trade Now!</button>
-                    </a>
-                </div>
-            </div>
-
-            <div class="w-60 h-[30rem] p-4 flex flex-col justify-between items-start gap-4 hover:shadow-lg rounded">
-                <div class="relative">
-                    <img src=" {{ asset('imgs/img1.jpg') }}" alt="" class="w-52 h-64 object-cover">
-                    <div class="absolute bottom-2 right-2 rounded-2xl bg-white px-3 py-1">
-                        <p class="font-Satoshi-bold text-sm text-black">
-                            -20%
-                        </p>
+                    <div class="absolute top-3 right-3 bg-white p-2 rounded-full hover:shadow-md hover:ring-2 hover:ring-black hover:transition-all">
+                        <svg class="w-5 h-5 fill-black cursor-pointer bookmarked" xmlns="http://www.w3.org/2000/svg" id="Filled" viewBox="0 0 24 24" width="512" height="512">
+                            <path d="M2.849,23.55a2.954,2.954,0,0,0,3.266-.644L12,17.053l5.885,5.853a2.956,2.956,0,0,0,2.1.881,3.05,3.05,0,0,0,1.17-.237A2.953,2.953,0,0,0,23,20.779V5a5.006,5.006,0,0,0-5-5H6A5.006,5.006,0,0,0,1,5V20.779A2.953,2.953,0,0,0,2.849,23.55Z"/>
+                        </svg>
+        
+                        <svg class="w-5 h-5 fill-black cursor-pointer hidden unbookmark" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="512" height="512">
+                            <path d="m21,19.586V3c0-1.654-1.346-3-3-3H6.559c-1.393,0-2.566.954-2.903,2.242L1.457.043.043,1.457l22.5,22.5,1.414-1.414-2.957-2.957Zm-10.083-3.661l-7.917,8.075v-15.991l7.917,7.916Z"/>
+                        </svg>
                     </div>
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer bookmarked" xmlns="http://www.w3.org/2000/svg" id="Filled" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="M2.849,23.55a2.954,2.954,0,0,0,3.266-.644L12,17.053l5.885,5.853a2.956,2.956,0,0,0,2.1.881,3.05,3.05,0,0,0,1.17-.237A2.953,2.953,0,0,0,23,20.779V5a5.006,5.006,0,0,0-5-5H6A5.006,5.006,0,0,0,1,5V20.779A2.953,2.953,0,0,0,2.849,23.55Z"/>
-                    </svg>
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer hidden unbookmark" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="m21,19.586V3c0-1.654-1.346-3-3-3H6.559c-1.393,0-2.566.954-2.903,2.242L1.457.043.043,1.457l22.5,22.5,1.414-1.414-2.957-2.957Zm-10.083-3.661l-7.917,8.075v-15.991l7.917,7.916Z"/>
-                    </svg>
-
-                </div>
-
-                <div>
-                    <p class="font-Satoshi-bold text-xl">
-                        UNIQLO Skinny Ezy Jeans Khaki
-                    </p>
-                </div>
-
-                <div class="flex justify-center items-center w-fit gap-2">
-                    <p class="font-Satoshi-bold text-2xl">
-                        &#8369;62
-                    </p>
-
-                    <p class="font-Satoshi-bold line-through text-2xl text-gray-400">
-                        &#8369;70
-                    </p>
-                </div>
-
-                <div class="flex justify-between items-center w-full">
-                    <a href="#" class="py-2 px-3 bg-black rounded-lg hover:opacity-80 hover:transition-all focus:opacity-60 focus:transition-all">
-                        <button class="font-Satoshi text-white">Buy Now!</button>
-                    </a>
-
-                    <a href="#" class="py-2 px-3 bg-black rounded-lg hover:opacity-80 hover:transition-all focus:opacity-60 focus:transition-all">
-                        <button class="font-Satoshi text-white">Trade Now!</button>
-                    </a>
-                </div>
-            </div>
-            
-            <div class="w-60 h-[30rem] p-4 flex flex-col justify-between items-start gap-4 hover:shadow-lg rounded">
-                <div class="relative">
-                    <img src=" {{ asset('imgs/img2.jpg') }}" alt="" class="w-52 h-64 object-cover">
-                    {{-- <div class="absolute bottom-2 right-2 rounded-2xl bg-white px-3 py-1">
-                        <p class="font-Satoshi-bold text-sm text-black">
-                            -20%
-                        </p>
-                    </div>   --}}
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer bookmarked" xmlns="http://www.w3.org/2000/svg" id="Filled" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="M2.849,23.55a2.954,2.954,0,0,0,3.266-.644L12,17.053l5.885,5.853a2.956,2.956,0,0,0,2.1.881,3.05,3.05,0,0,0,1.17-.237A2.953,2.953,0,0,0,23,20.779V5a5.006,5.006,0,0,0-5-5H6A5.006,5.006,0,0,0,1,5V20.779A2.953,2.953,0,0,0,2.849,23.55Z"/>
-                    </svg>
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer hidden unbookmark" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="m21,19.586V3c0-1.654-1.346-3-3-3H6.559c-1.393,0-2.566.954-2.903,2.242L1.457.043.043,1.457l22.5,22.5,1.414-1.414-2.957-2.957Zm-10.083-3.661l-7.917,8.075v-15.991l7.917,7.916Z"/>
-                    </svg>
                 </div>
 
                 <div>
@@ -296,201 +122,24 @@
 
             <div class="w-60 h-[30rem] p-4 flex flex-col justify-between items-start gap-4 hover:shadow-lg rounded">
                 <div class="relative">
-                    <img src=" {{ asset('imgs/img3.jpg') }}" alt="" class="w-52 h-64 object-cover">
+                    <a href="#">
+                        <img src=" {{ asset('imgs/img3.jpg') }}" alt="" class="w-52 h-64 object-cover">
+                    </a>
                     <div class="absolute bottom-2 right-2 rounded-2xl bg-white px-3 py-1">
                         <p class="font-Satoshi-bold text-sm text-black">
                             -9%
                         </p>
                     </div>  
 
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer bookmarked" xmlns="http://www.w3.org/2000/svg" id="Filled" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="M2.849,23.55a2.954,2.954,0,0,0,3.266-.644L12,17.053l5.885,5.853a2.956,2.956,0,0,0,2.1.881,3.05,3.05,0,0,0,1.17-.237A2.953,2.953,0,0,0,23,20.779V5a5.006,5.006,0,0,0-5-5H6A5.006,5.006,0,0,0,1,5V20.779A2.953,2.953,0,0,0,2.849,23.55Z"/>
-                    </svg>
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer hidden unbookmark" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="m21,19.586V3c0-1.654-1.346-3-3-3H6.559c-1.393,0-2.566.954-2.903,2.242L1.457.043.043,1.457l22.5,22.5,1.414-1.414-2.957-2.957Zm-10.083-3.661l-7.917,8.075v-15.991l7.917,7.916Z"/>
-                    </svg>
-                </div>
-
-                <div>
-                    <p class="font-Satoshi-bold text-xl">
-                        Men's Sando
-                    </p>
-                </div>
-
-                <div class="flex justify-center items-center w-fit gap-2">
-                    <p class="font-Satoshi-bold text-2xl">
-                        &#8369;130
-                    </p>
-
-                    {{-- <p class="font-Satoshi-bold line-through text-2xl text-gray-400">
-                        &#8369;70
-                    </p> --}}
-                </div>
-
-                <div class="flex justify-between items-center w-full">
-                    <a href="#" class="py-2 px-3 bg-black rounded-lg hover:opacity-80 hover:transition-all focus:opacity-60 focus:transition-all">
-                        <button class="font-Satoshi text-white">Buy Now!</button>
-                    </a>
-
-                    {{-- <a href="#" class="py-2 px-3 bg-black rounded-lg hover:opacity-80 hover:transition-all focus:opacity-60 focus:transition-all">
-                        <button class="font-Satoshi text-white">Trade Now!</button>
-                    </a> --}}
-                </div>
-            </div>
-
-            <div class="w-60 h-[30rem] p-4 flex flex-col justify-between items-start gap-4 hover:shadow-lg rounded">
-                <div class="relative">
-                    <img src=" {{ asset('imgs/img4.jpg') }}" alt="" class="w-52 h-64 object-cover">
-                    <div class="absolute bottom-2 right-2 rounded-2xl bg-white px-3 py-1">
-                        <p class="font-Satoshi-bold text-sm text-black">
-                            -23%
-                        </p>
-                    </div>  
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer bookmarked" xmlns="http://www.w3.org/2000/svg" id="Filled" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="M2.849,23.55a2.954,2.954,0,0,0,3.266-.644L12,17.053l5.885,5.853a2.956,2.956,0,0,0,2.1.881,3.05,3.05,0,0,0,1.17-.237A2.953,2.953,0,0,0,23,20.779V5a5.006,5.006,0,0,0-5-5H6A5.006,5.006,0,0,0,1,5V20.779A2.953,2.953,0,0,0,2.849,23.55Z"/>
-                    </svg>
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer hidden unbookmark" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="m21,19.586V3c0-1.654-1.346-3-3-3H6.559c-1.393,0-2.566.954-2.903,2.242L1.457.043.043,1.457l22.5,22.5,1.414-1.414-2.957-2.957Zm-10.083-3.661l-7.917,8.075v-15.991l7.917,7.916Z"/>
-                    </svg>
-                </div>
-
-                <div>
-                    <p class="font-Satoshi-bold text-xl">
-                        Nat Geo Short
-                    </p>
-                </div>
-
-                <div class="flex justify-center items-center w-fit gap-2">
-                    <p class="font-Satoshi-bold text-2xl">
-                        &#8369;500
-                    </p>
-
-                    <p class="font-Satoshi-bold line-through text-2xl text-gray-400">
-                        &#8369;650
-                    </p>
-                </div>
-
-                <div class="flex justify-between items-center w-full">
-                    <a href="#" class="py-2 px-3 bg-black rounded-lg hover:opacity-80 hover:transition-all focus:opacity-60 focus:transition-all">
-                        <button class="font-Satoshi text-white">Buy Now!</button>
-                    </a>
-
-                    <a href="#" class="py-2 px-3 bg-black rounded-lg hover:opacity-80 hover:transition-all focus:opacity-60 focus:transition-all">
-                        <button class="font-Satoshi text-white">Trade Now!</button>
-                    </a>
-                </div>
-            </div>
-
-            <div class="w-60 h-[30rem] p-4 flex flex-col justify-between items-start gap-4 hover:shadow-lg rounded">
-                <div class="relative">
-                    <img src=" {{ asset('imgs/img1.jpg') }}" alt="" class="w-52 h-64 object-cover">
-                    <div class="absolute bottom-2 right-2 rounded-2xl bg-white px-3 py-1">
-                        <p class="font-Satoshi-bold text-sm text-black">
-                            -20%
-                        </p>
+                    <div class="absolute top-3 right-3 bg-white p-2 rounded-full hover:shadow-md hover:ring-2 hover:ring-black hover:transition-all">
+                        <svg class="w-5 h-5 fill-black cursor-pointer bookmarked" xmlns="http://www.w3.org/2000/svg" id="Filled" viewBox="0 0 24 24" width="512" height="512">
+                            <path d="M2.849,23.55a2.954,2.954,0,0,0,3.266-.644L12,17.053l5.885,5.853a2.956,2.956,0,0,0,2.1.881,3.05,3.05,0,0,0,1.17-.237A2.953,2.953,0,0,0,23,20.779V5a5.006,5.006,0,0,0-5-5H6A5.006,5.006,0,0,0,1,5V20.779A2.953,2.953,0,0,0,2.849,23.55Z"/>
+                        </svg>
+        
+                        <svg class="w-5 h-5 fill-black cursor-pointer hidden unbookmark" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="512" height="512">
+                            <path d="m21,19.586V3c0-1.654-1.346-3-3-3H6.559c-1.393,0-2.566.954-2.903,2.242L1.457.043.043,1.457l22.5,22.5,1.414-1.414-2.957-2.957Zm-10.083-3.661l-7.917,8.075v-15.991l7.917,7.916Z"/>
+                        </svg>
                     </div>
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer bookmarked" xmlns="http://www.w3.org/2000/svg" id="Filled" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="M2.849,23.55a2.954,2.954,0,0,0,3.266-.644L12,17.053l5.885,5.853a2.956,2.956,0,0,0,2.1.881,3.05,3.05,0,0,0,1.17-.237A2.953,2.953,0,0,0,23,20.779V5a5.006,5.006,0,0,0-5-5H6A5.006,5.006,0,0,0,1,5V20.779A2.953,2.953,0,0,0,2.849,23.55Z"/>
-                    </svg>
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer hidden unbookmark" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="m21,19.586V3c0-1.654-1.346-3-3-3H6.559c-1.393,0-2.566.954-2.903,2.242L1.457.043.043,1.457l22.5,22.5,1.414-1.414-2.957-2.957Zm-10.083-3.661l-7.917,8.075v-15.991l7.917,7.916Z"/>
-                    </svg>
-
-                </div>
-
-                <div>
-                    <p class="font-Satoshi-bold text-xl">
-                        UNIQLO Skinny Ezy Jeans Khaki
-                    </p>
-                </div>
-
-                <div class="flex justify-center items-center w-fit gap-2">
-                    <p class="font-Satoshi-bold text-2xl">
-                        &#8369;62
-                    </p>
-
-                    <p class="font-Satoshi-bold line-through text-2xl text-gray-400">
-                        &#8369;70
-                    </p>
-                </div>
-
-                <div class="flex justify-between items-center w-full">
-                    <a href="#" class="py-2 px-3 bg-black rounded-lg hover:opacity-80 hover:transition-all focus:opacity-60 focus:transition-all">
-                        <button class="font-Satoshi text-white">Buy Now!</button>
-                    </a>
-
-                    <a href="#" class="py-2 px-3 bg-black rounded-lg hover:opacity-80 hover:transition-all focus:opacity-60 focus:transition-all">
-                        <button class="font-Satoshi text-white">Trade Now!</button>
-                    </a>
-                </div>
-            </div>
-            
-            <div class="w-60 h-[30rem] p-4 flex flex-col justify-between items-start gap-4 hover:shadow-lg rounded">
-                <div class="relative">
-                    <img src=" {{ asset('imgs/img2.jpg') }}" alt="" class="w-52 h-64 object-cover">
-                    {{-- <div class="absolute bottom-2 right-2 rounded-2xl bg-white px-3 py-1">
-                        <p class="font-Satoshi-bold text-sm text-black">
-                            -20%
-                        </p>
-                    </div>   --}}
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer bookmarked" xmlns="http://www.w3.org/2000/svg" id="Filled" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="M2.849,23.55a2.954,2.954,0,0,0,3.266-.644L12,17.053l5.885,5.853a2.956,2.956,0,0,0,2.1.881,3.05,3.05,0,0,0,1.17-.237A2.953,2.953,0,0,0,23,20.779V5a5.006,5.006,0,0,0-5-5H6A5.006,5.006,0,0,0,1,5V20.779A2.953,2.953,0,0,0,2.849,23.55Z"/>
-                    </svg>
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer hidden unbookmark" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="m21,19.586V3c0-1.654-1.346-3-3-3H6.559c-1.393,0-2.566.954-2.903,2.242L1.457.043.043,1.457l22.5,22.5,1.414-1.414-2.957-2.957Zm-10.083-3.661l-7.917,8.075v-15.991l7.917,7.916Z"/>
-                    </svg>
-                </div>
-
-                <div>
-                    <p class="font-Satoshi-bold text-xl">
-                        TANK TOP DOUBLE LINING
-                    </p>
-                </div>
-
-                <div class="flex justify-center items-center w-fit gap-2">
-                    <p class="font-Satoshi-bold text-2xl">
-                        &#8369;100
-                    </p>
-
-                    <p class="font-Satoshi-bold line-through text-2xl text-gray-400">
-                        &#8369;110
-                    </p>
-                </div>
-
-                <div class="flex justify-between items-center w-full">
-                    <a href="#" class="py-2 px-3 bg-black rounded-lg hover:opacity-80 hover:transition-all focus:opacity-60 focus:transition-all">
-                        <button class="font-Satoshi text-white">Buy Now!</button>
-                    </a>
-
-                    {{-- <a href="#" class="py-2 px-3 bg-black rounded-lg hover:opacity-80 hover:transition-all focus:opacity-60 focus:transition-all">
-                        <button class="font-Satoshi text-white">Trade Now!</button>
-                    </a> --}}
-                </div>
-            </div>
-
-            <div class="w-60 h-[30rem] p-4 flex flex-col justify-between items-start gap-4 hover:shadow-lg rounded">
-                <div class="relative">
-                    <img src=" {{ asset('imgs/img3.jpg') }}" alt="" class="w-52 h-64 object-cover">
-                    <div class="absolute bottom-2 right-2 rounded-2xl bg-white px-3 py-1">
-                        <p class="font-Satoshi-bold text-sm text-black">
-                            -9%
-                        </p>
-                    </div>  
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer bookmarked" xmlns="http://www.w3.org/2000/svg" id="Filled" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="M2.849,23.55a2.954,2.954,0,0,0,3.266-.644L12,17.053l5.885,5.853a2.956,2.956,0,0,0,2.1.881,3.05,3.05,0,0,0,1.17-.237A2.953,2.953,0,0,0,23,20.779V5a5.006,5.006,0,0,0-5-5H6A5.006,5.006,0,0,0,1,5V20.779A2.953,2.953,0,0,0,2.849,23.55Z"/>
-                    </svg>
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer hidden unbookmark" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="m21,19.586V3c0-1.654-1.346-3-3-3H6.559c-1.393,0-2.566.954-2.903,2.242L1.457.043.043,1.457l22.5,22.5,1.414-1.414-2.957-2.957Zm-10.083-3.661l-7.917,8.075v-15.991l7.917,7.916Z"/>
-                    </svg>
                 </div>
 
                 <div>
@@ -522,201 +171,24 @@
 
             <div class="w-60 h-[30rem] p-4 flex flex-col justify-between items-start gap-4 hover:shadow-lg rounded">
                 <div class="relative">
-                    <img src=" {{ asset('imgs/img4.jpg') }}" alt="" class="w-52 h-64 object-cover">
+                    <a href="#">
+                        <img src=" {{ asset('imgs/img4.jpg') }}" alt="" class="w-52 h-64 object-cover">
+                    </a>
                     <div class="absolute bottom-2 right-2 rounded-2xl bg-white px-3 py-1">
                         <p class="font-Satoshi-bold text-sm text-black">
                             -23%
                         </p>
                     </div>  
 
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer bookmarked" xmlns="http://www.w3.org/2000/svg" id="Filled" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="M2.849,23.55a2.954,2.954,0,0,0,3.266-.644L12,17.053l5.885,5.853a2.956,2.956,0,0,0,2.1.881,3.05,3.05,0,0,0,1.17-.237A2.953,2.953,0,0,0,23,20.779V5a5.006,5.006,0,0,0-5-5H6A5.006,5.006,0,0,0,1,5V20.779A2.953,2.953,0,0,0,2.849,23.55Z"/>
-                    </svg>
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer hidden unbookmark" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="m21,19.586V3c0-1.654-1.346-3-3-3H6.559c-1.393,0-2.566.954-2.903,2.242L1.457.043.043,1.457l22.5,22.5,1.414-1.414-2.957-2.957Zm-10.083-3.661l-7.917,8.075v-15.991l7.917,7.916Z"/>
-                    </svg>
-                </div>
-
-                <div>
-                    <p class="font-Satoshi-bold text-xl">
-                        Nat Geo Short
-                    </p>
-                </div>
-
-                <div class="flex justify-center items-center w-fit gap-2">
-                    <p class="font-Satoshi-bold text-2xl">
-                        &#8369;500
-                    </p>
-
-                    <p class="font-Satoshi-bold line-through text-2xl text-gray-400">
-                        &#8369;650
-                    </p>
-                </div>
-
-                <div class="flex justify-between items-center w-full">
-                    <a href="#" class="py-2 px-3 bg-black rounded-lg hover:opacity-80 hover:transition-all focus:opacity-60 focus:transition-all">
-                        <button class="font-Satoshi text-white">Buy Now!</button>
-                    </a>
-
-                    <a href="#" class="py-2 px-3 bg-black rounded-lg hover:opacity-80 hover:transition-all focus:opacity-60 focus:transition-all">
-                        <button class="font-Satoshi text-white">Trade Now!</button>
-                    </a>
-                </div>
-            </div>
-
-            <div class="w-60 h-[30rem] p-4 flex flex-col justify-between items-start gap-4 hover:shadow-lg rounded">
-                <div class="relative">
-                    <img src=" {{ asset('imgs/img1.jpg') }}" alt="" class="w-52 h-64 object-cover">
-                    <div class="absolute bottom-2 right-2 rounded-2xl bg-white px-3 py-1">
-                        <p class="font-Satoshi-bold text-sm text-black">
-                            -20%
-                        </p>
+                    <div class="absolute top-3 right-3 bg-white p-2 rounded-full hover:shadow-md hover:ring-2 hover:ring-black hover:transition-all">
+                        <svg class="w-5 h-5 fill-black cursor-pointer bookmarked" xmlns="http://www.w3.org/2000/svg" id="Filled" viewBox="0 0 24 24" width="512" height="512">
+                            <path d="M2.849,23.55a2.954,2.954,0,0,0,3.266-.644L12,17.053l5.885,5.853a2.956,2.956,0,0,0,2.1.881,3.05,3.05,0,0,0,1.17-.237A2.953,2.953,0,0,0,23,20.779V5a5.006,5.006,0,0,0-5-5H6A5.006,5.006,0,0,0,1,5V20.779A2.953,2.953,0,0,0,2.849,23.55Z"/>
+                        </svg>
+        
+                        <svg class="w-5 h-5 fill-black cursor-pointer hidden unbookmark" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="512" height="512">
+                            <path d="m21,19.586V3c0-1.654-1.346-3-3-3H6.559c-1.393,0-2.566.954-2.903,2.242L1.457.043.043,1.457l22.5,22.5,1.414-1.414-2.957-2.957Zm-10.083-3.661l-7.917,8.075v-15.991l7.917,7.916Z"/>
+                        </svg>
                     </div>
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer bookmarked" xmlns="http://www.w3.org/2000/svg" id="Filled" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="M2.849,23.55a2.954,2.954,0,0,0,3.266-.644L12,17.053l5.885,5.853a2.956,2.956,0,0,0,2.1.881,3.05,3.05,0,0,0,1.17-.237A2.953,2.953,0,0,0,23,20.779V5a5.006,5.006,0,0,0-5-5H6A5.006,5.006,0,0,0,1,5V20.779A2.953,2.953,0,0,0,2.849,23.55Z"/>
-                    </svg>
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer hidden unbookmark" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="m21,19.586V3c0-1.654-1.346-3-3-3H6.559c-1.393,0-2.566.954-2.903,2.242L1.457.043.043,1.457l22.5,22.5,1.414-1.414-2.957-2.957Zm-10.083-3.661l-7.917,8.075v-15.991l7.917,7.916Z"/>
-                    </svg>
-
-                </div>
-
-                <div>
-                    <p class="font-Satoshi-bold text-xl">
-                        UNIQLO Skinny Ezy Jeans Khaki
-                    </p>
-                </div>
-
-                <div class="flex justify-center items-center w-fit gap-2">
-                    <p class="font-Satoshi-bold text-2xl">
-                        &#8369;62
-                    </p>
-
-                    <p class="font-Satoshi-bold line-through text-2xl text-gray-400">
-                        &#8369;70
-                    </p>
-                </div>
-
-                <div class="flex justify-between items-center w-full">
-                    <a href="#" class="py-2 px-3 bg-black rounded-lg hover:opacity-80 hover:transition-all focus:opacity-60 focus:transition-all">
-                        <button class="font-Satoshi text-white">Buy Now!</button>
-                    </a>
-
-                    <a href="#" class="py-2 px-3 bg-black rounded-lg hover:opacity-80 hover:transition-all focus:opacity-60 focus:transition-all">
-                        <button class="font-Satoshi text-white">Trade Now!</button>
-                    </a>
-                </div>
-            </div>
-            
-            <div class="w-60 h-[30rem] p-4 flex flex-col justify-between items-start gap-4 hover:shadow-lg rounded">
-                <div class="relative">
-                    <img src=" {{ asset('imgs/img2.jpg') }}" alt="" class="w-52 h-64 object-cover">
-                    {{-- <div class="absolute bottom-2 right-2 rounded-2xl bg-white px-3 py-1">
-                        <p class="font-Satoshi-bold text-sm text-black">
-                            -20%
-                        </p>
-                    </div>   --}}
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer bookmarked" xmlns="http://www.w3.org/2000/svg" id="Filled" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="M2.849,23.55a2.954,2.954,0,0,0,3.266-.644L12,17.053l5.885,5.853a2.956,2.956,0,0,0,2.1.881,3.05,3.05,0,0,0,1.17-.237A2.953,2.953,0,0,0,23,20.779V5a5.006,5.006,0,0,0-5-5H6A5.006,5.006,0,0,0,1,5V20.779A2.953,2.953,0,0,0,2.849,23.55Z"/>
-                    </svg>
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer hidden unbookmark" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="m21,19.586V3c0-1.654-1.346-3-3-3H6.559c-1.393,0-2.566.954-2.903,2.242L1.457.043.043,1.457l22.5,22.5,1.414-1.414-2.957-2.957Zm-10.083-3.661l-7.917,8.075v-15.991l7.917,7.916Z"/>
-                    </svg>
-                </div>
-
-                <div>
-                    <p class="font-Satoshi-bold text-xl">
-                        TANK TOP DOUBLE LINING
-                    </p>
-                </div>
-
-                <div class="flex justify-center items-center w-fit gap-2">
-                    <p class="font-Satoshi-bold text-2xl">
-                        &#8369;100
-                    </p>
-
-                    <p class="font-Satoshi-bold line-through text-2xl text-gray-400">
-                        &#8369;110
-                    </p>
-                </div>
-
-                <div class="flex justify-between items-center w-full">
-                    <a href="#" class="py-2 px-3 bg-black rounded-lg hover:opacity-80 hover:transition-all focus:opacity-60 focus:transition-all">
-                        <button class="font-Satoshi text-white">Buy Now!</button>
-                    </a>
-
-                    {{-- <a href="#" class="py-2 px-3 bg-black rounded-lg hover:opacity-80 hover:transition-all focus:opacity-60 focus:transition-all">
-                        <button class="font-Satoshi text-white">Trade Now!</button>
-                    </a> --}}
-                </div>
-            </div>
-
-            <div class="w-60 h-[30rem] p-4 flex flex-col justify-between items-start gap-4 hover:shadow-lg rounded">
-                <div class="relative">
-                    <img src=" {{ asset('imgs/img3.jpg') }}" alt="" class="w-52 h-64 object-cover">
-                    <div class="absolute bottom-2 right-2 rounded-2xl bg-white px-3 py-1">
-                        <p class="font-Satoshi-bold text-sm text-black">
-                            -9%
-                        </p>
-                    </div>  
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer bookmarked" xmlns="http://www.w3.org/2000/svg" id="Filled" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="M2.849,23.55a2.954,2.954,0,0,0,3.266-.644L12,17.053l5.885,5.853a2.956,2.956,0,0,0,2.1.881,3.05,3.05,0,0,0,1.17-.237A2.953,2.953,0,0,0,23,20.779V5a5.006,5.006,0,0,0-5-5H6A5.006,5.006,0,0,0,1,5V20.779A2.953,2.953,0,0,0,2.849,23.55Z"/>
-                    </svg>
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer hidden unbookmark" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="m21,19.586V3c0-1.654-1.346-3-3-3H6.559c-1.393,0-2.566.954-2.903,2.242L1.457.043.043,1.457l22.5,22.5,1.414-1.414-2.957-2.957Zm-10.083-3.661l-7.917,8.075v-15.991l7.917,7.916Z"/>
-                    </svg>
-                </div>
-
-                <div>
-                    <p class="font-Satoshi-bold text-xl">
-                        Men's Sando
-                    </p>
-                </div>
-
-                <div class="flex justify-center items-center w-fit gap-2">
-                    <p class="font-Satoshi-bold text-2xl">
-                        &#8369;130
-                    </p>
-
-                    {{-- <p class="font-Satoshi-bold line-through text-2xl text-gray-400">
-                        &#8369;70
-                    </p> --}}
-                </div>
-
-                <div class="flex justify-between items-center w-full">
-                    <a href="#" class="py-2 px-3 bg-black rounded-lg hover:opacity-80 hover:transition-all focus:opacity-60 focus:transition-all">
-                        <button class="font-Satoshi text-white">Buy Now!</button>
-                    </a>
-
-                    {{-- <a href="#" class="py-2 px-3 bg-black rounded-lg hover:opacity-80 hover:transition-all focus:opacity-60 focus:transition-all">
-                        <button class="font-Satoshi text-white">Trade Now!</button>
-                    </a> --}}
-                </div>
-            </div>
-
-            <div class="w-60 h-[30rem] p-4 flex flex-col justify-between items-start gap-4 hover:shadow-lg rounded">
-                <div class="relative">
-                    <img src=" {{ asset('imgs/img4.jpg') }}" alt="" class="w-52 h-64 object-cover">
-                    <div class="absolute bottom-2 right-2 rounded-2xl bg-white px-3 py-1">
-                        <p class="font-Satoshi-bold text-sm text-black">
-                            -23%
-                        </p>
-                    </div>  
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer bookmarked" xmlns="http://www.w3.org/2000/svg" id="Filled" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="M2.849,23.55a2.954,2.954,0,0,0,3.266-.644L12,17.053l5.885,5.853a2.956,2.956,0,0,0,2.1.881,3.05,3.05,0,0,0,1.17-.237A2.953,2.953,0,0,0,23,20.779V5a5.006,5.006,0,0,0-5-5H6A5.006,5.006,0,0,0,1,5V20.779A2.953,2.953,0,0,0,2.849,23.55Z"/>
-                    </svg>
-
-                    <svg class="w-5 h-5 fill-black absolute top-3 right-3 cursor-pointer hidden unbookmark" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="512" height="512">
-                        <path d="m21,19.586V3c0-1.654-1.346-3-3-3H6.559c-1.393,0-2.566.954-2.903,2.242L1.457.043.043,1.457l22.5,22.5,1.414-1.414-2.957-2.957Zm-10.083-3.661l-7.917,8.075v-15.991l7.917,7.916Z"/>
-                    </svg>
                 </div>
 
                 <div>

@@ -22,6 +22,7 @@ export default {
             colors: {
                 'primary-color': '#8D0A0A',
                 'footer': '#F0F0F0',
+                'red': '#FF0000',
             }
         },
     },

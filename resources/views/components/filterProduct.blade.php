@@ -6,17 +6,19 @@
                 Matching Type:
             </p>
 
-            <div class="flex justify-center items-center gap-2 focus-within:text-black">
-                <button class="w-5 h-5 ring-1 ring-gray-400 rounded-md focus:ring-2 focus:ring-primary-color focus:bg-primary-color "></button>
+            <div class="flex justify-center items-center gap-2">
+                <input type="radio" name="option" id="anyRadio" class="hidden">
+                <label for="anyRadio" class="w-5 h-5 ring-1 ring-gray-400 rounded-md cursor-pointer"></label>
                 
-                <p class="font-Satoshi-bold text-base text-gray-400"> 
+                <p id="anyText" class="font-Satoshi-bold text-base text-gray-400"> 
                     Any
                 </p>
             </div>
             <div class="flex justify-center items-center gap-2">
-                <button class="w-5 h-5 ring-1 ring-gray-400 rounded-md focus:ring-2 focus:ring-primary-color focus:bg-primary-color "></button>
+                <input type="radio" name="option" id="allRadio" class="hidden">
+                <label for="allRadio" class="w-5 h-5 ring-1 ring-gray-400 rounded-md cursor-pointer"></label>
                 
-                <p class="font-Satoshi-bold text-base text-gray-400"> 
+                <p id="allText" class="font-Satoshi-bold text-base text-gray-400"> 
                     All
                 </p>
             </div>
