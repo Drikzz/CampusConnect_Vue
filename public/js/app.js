@@ -67,13 +67,26 @@ $(document).ready(function () {
     
     // Selecting the tab in the prod_details
     // Set initial state for the first tab
+    
+    // Hide all tab contents initially
+    $('.tabcontent').hide();
+    
+    // Show the first tab content
     $('.tab').first().removeClass('border-transparent').addClass('border-black');
+    $('.tabcontent').first().show();
 
     // Selecting the tab in the prod_details
     $('.tab').on('click', function () {
+        // Hide all tab contents
+        $('.tabcontent').hide();
+        
         // Remove the border from all tabs
         $('.tab').removeClass('border-primary-color').addClass('border-transparent');
         
+        // Show the current tab content of the clicked tab
+        var tabName = $(this).attr('data-tab');
+        $('#' + tabName).show();
+
         // Add the border to the selected tab
         $(this).removeClass('border-transparent').addClass('border-black');
     });

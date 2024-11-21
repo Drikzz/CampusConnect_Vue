@@ -250,7 +250,17 @@
 
     <div class="w-full h-auto mt-8 flex justify-start items-center">
 
-        <div class="tab w-64 h-auto px-8 py-2 flex justify-center items-center border-b-4 border-transparent cursor-pointer">
+        <button class="tab w-64 h-auto px-8 py-2 flex justify-center items-center border-b-4 border-transparent cursor-pointer font-Satoshi text-base"
+                data-tab="ProductDetails">
+            Product Details
+        </button>
+
+        <button class="tab w-64 h-auto px-8 py-2 flex justify-center items-center border-b-4 border-transparent cursor-pointer font-Satoshi text-base"
+                data-tab="AnotherTab">
+            Another Tab
+        </button>
+
+        {{-- <div class="tab w-64 h-auto px-8 py-2 flex justify-center items-center border-b-4 border-transparent cursor-pointer">
             <p class="font-Satoshi text-base">
                 Product Details
             </p>
@@ -260,7 +270,49 @@
             <p class="font-Satoshi text-base">
                 Another Tab
             </p>
+        </div> --}}
+
+    </div>
+
+    {{-- for product details --}}
+    <div id="ProductDetails" class="tabcontent w-full py-8 flex flex-col justify-center items-start gap-6 product-description">
+        <p class="font-Satoshi-bold text-xl">
+            Product Description
+        </p>
+
+        <p>
+            Pre-loved CCS Male Uniform. Reason for sale: Graduated na po.
+        </p>
+    </div>
+
+    {{-- for another tab --}}
+    <div id="AnotherTab" class="tabcontent w-full py-8 flex flex-col justify-center items-start gap-6 product-description">
+        <p class="font-Satoshi-bold text-xl">
+            Another Sample Tab title
+        </p>
+
+        <p>
+            Another Sample tab description
+        </p>
+    </div>
+
+    {{-- separator --}}
+    <div class="w-full h-1 bg-black">
+
+    </div>
+    <div class="w-full mt-14">
+        <div class="flex justify-center items-center mb-4">
+            <p class="font-Footer italic text-4xl">
+                YOU MIGHT ALSO LIKE
+            </p>
         </div>
 
+        {{-- static products --}}
+        <div class="flex justify-center items-center">
+            <x-productCard/>
+            <x-productCard/>
+            <x-productCard/>
+            <x-productCard/>
+        </div>
     </div>
 </x-layout>
