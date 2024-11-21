@@ -10,13 +10,18 @@
     }
 
     @font-face {
+        font-family: 'FontSpring-demi';
+        src: url(/public/assets/fonts/fontspring/Fontspring-DEMO-integralcf-demibold.otf);
+    }
+
+    @font-face {
         font-family: 'Satoshi';
         src: url(/public/assets/fonts/satoshi/Satoshi-Regular.otf);
     }
-    
+
     @font-face {
-        font-family: 'FontSpring-demi';
-        src: url(/public/assets/fonts/fontspring/Fontspring-DEMO-integralcf-demibold.otf);
+        font-family: 'Satoshi-bold';
+        src: url(/public/assets/fonts/satoshi/Satoshi-Bold.otf);
     }
 
     @font-face {
@@ -29,5 +34,9 @@
         src:url(../../public/assets/fonts/fontspring/Fontspring-DEMO-integralcf-demiboldoblique.otf);
     }
 
+    select {
+        -moz-appearance: none;
+        -webkit-appearance: none;
+    }
 
 }

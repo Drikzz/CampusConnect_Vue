@@ -14,14 +14,15 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
                 'Header': ['FontSpring-hvy', 'sans-serif'],
-                'Satoshi': ['Satoshi', 'sans-serif'],
                 'Footer': ['FontSpring-demi', 'sans-serif'],
-                'Welcome-Font': ['FontSpring-bold', 'sans-serif'],
-                'EXbold': ['FontSpring-extra-bold', 'sans-serif'],
+                'Satoshi': ['Satoshi', 'sans-serif'],
+                'Satoshi-bold': ['Satoshi-bold', 'sans-serif'],
             },
 
             colors: {
                 'primary-color': '#8D0A0A',
+                'footer': '#F0F0F0',
+                'red': '#FF0000',
             }
         },
     },
