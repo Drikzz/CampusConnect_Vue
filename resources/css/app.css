@@ -28,4 +28,16 @@
         -moz-appearance: none;
         -webkit-appearance: none;
     }
+
+    @font-face {
+        font-family: 'FontSpring-bold';
+        src: url(/public/assets/fonts/fontspring/Fontspring-DEMO-integralcf-bold.otf);
+    }
+
+    @font-face {
+        font-family: 'FontSpring-extra-bold';
+        src:url(../../public/assets/fonts/fontspring/Fontspring-DEMO-integralcf-demiboldoblique.otf);
+    }
+
+
 }
