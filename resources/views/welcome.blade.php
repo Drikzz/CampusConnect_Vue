@@ -1,6 +1,6 @@
 <x-layout>
 
- <div class="max-w-full mx-auto font-Satoshi font-extrabold bg-primary-color text-white">
+ <div class="max-w-full mx-auto font-FontSpring-bold font-extrabold bg-primary-color text-white">
     <div class="flex flex-col justify-between w-full h-[40vh]">
     <div class="flex items-center justify-between w-full flex-grow">
         <div class="text-left ml-[250px] p-16"> <!-- This is the div where the content will be displayed -->
@@ -8,7 +8,9 @@
             <h2 class="font-Welcome-Font text-6xl">BROWSE CAMPUS<br>CONNECT NOW.</h2>
             <h3 class="font-Satoshi text-base font-normal">Browse through our diverse range of affordable student items here!</h3>
             <br>
-            <button class="primary-btn"><a href="#">SHOP NOW</a></button>
+            <button class="flex w-1/4 justify-center rounded-md bg-white px-4 py-3 font-semibold leading-6 shadow-sm hover:bg-neutral-100">
+                <a href="#" class="text-red font-Satoshi">SHOP NOW</a>
+            </button>
         </div>
     
         <div class="wmsulogo flex justify-end mr-[250px]">
@@ -40,7 +42,7 @@
  </div>
 </div>
    <section class="m-10 pb-5">
-    <div class="font-EXbold text-4xl text-center p-10">Recently Uploaded</div>
+    <div class="font-FontSpring-bold-oblique text-4xl text-center p-10">Recently Uploaded</div>
 
     <div class="flex flex-wrap justify-center gap-10 font-Satoshi"> <!-- Increased gap -->
         <!-- Card 1 -->
@@ -79,7 +81,7 @@
 </section>
          <hr class="border-1 border-gray-300 m-2">   
 <section class="pb-10">
-    <div class="font-EXbold text-4xl text-center p-10">Deals</div>
+    <div class="font-FontSpring-bold-oblique text-4xl text-center p-10">Deals</div>
     <div class="flex flex-wrap justify-center gap-10 font-Satoshi"> <!-- Increased gap -->
         <!-- Card 1 -->
         <div class="bg-white rounded-lg shadow-lg p-4 w-56 h-[350px]">

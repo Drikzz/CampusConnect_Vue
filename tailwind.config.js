@@ -17,6 +17,8 @@ export default {
                 'Footer': ['FontSpring-demi', 'sans-serif'],
                 'Satoshi': ['Satoshi', 'sans-serif'],
                 'Satoshi-bold': ['Satoshi-bold', 'sans-serif'],
+                'FontSpring-bold': ['FontSpring-bold', 'sans-serif'],
+                'FontSpring-bold-oblique': ['FontSpring-bold-oblique', 'sans-serif'],
             },
 
             colors: {
