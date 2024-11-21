@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ env('APP_NAME') }}</title>
-
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/jquery-3.7.1.min.js', 'public/js/app.js'])
 </head>
 <body>
     
@@ -15,14 +15,14 @@
         <nav class="flex justify-between items-center w-auto h-auto bg-primary-color px-16 py-4 sticky">
             
             {{-- logo button --}}
-            <a href="#" class="flex flex-col items-center">
+            <a href="{{ route('index') }}" class="flex flex-col items-center">
                     <img src="{{ asset('imgs/campusconnect_btn.png') }}" alt="logo" class="w-[150px] h-auto">
             </a>
 
             <div class="flex justify-center items-center gap-12">
                 
                 {{-- shop now button --}}
-
+                <a href="{{ route('products') }}" class="font-Satoshi text-base text-white w-auto">
                     Shop Now
                 </a>
 
@@ -38,7 +38,7 @@
                 @csrf
 
                 <div class="relative flex items-center fill-slate-500 focus-within:fill-black transition-colors">
-
+                    <svg class="w-5 h-5 absolute ml-3 pointer-events-none" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="512" height="512">
                         <path d="M23.707,22.293l-5.969-5.969a10.016,10.016,0,1,0-1.414,1.414l5.969,5.969a1,1,0,0,0,1.414-1.414ZM10,18a8,8,0,1,1,8-8A8.009,8.009,0,0,1,10,18Z"/>
                     </svg>
                     
@@ -70,7 +70,7 @@
         </nav>
     </header>
 
-
+    <main class="mt-10 mb-28 w-full px-16">
         {{ $slot }}
     </main>
 
