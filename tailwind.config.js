@@ -16,7 +16,7 @@ export default {
                 'Header': ['FontSpring-hvy', 'sans-serif'],
                 'Footer': ['FontSpring-demi', 'sans-serif'],
                 'Satoshi': ['Satoshi', 'sans-serif'],
-
+                'Satoshi-bold': ['Satoshi-bold', 'sans-serif'],
             },
 
             colors: {
