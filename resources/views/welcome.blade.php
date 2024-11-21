@@ -4,7 +4,7 @@
     <div class="flex flex-col justify-between w-full h-[40vh]">
     <div class="flex items-center justify-between w-full flex-grow">
         <div class="text-left ml-[250px] p-16"> <!-- This is the div where the content will be displayed -->
-            <h1>WELCOME TO CAMPUS CONNECT!</h1>
+            <h1>WELCOME TO CAMPUS CONNECT</h1>
             <h2 class="font-Welcome-Font text-6xl">BROWSE CAMPUS<br>CONNECT NOW.</h2>
             <h3 class="font-Satoshi text-base font-normal">Browse through our diverse range of affordable student items here!</h3>
             <br>
