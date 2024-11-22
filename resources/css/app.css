@@ -15,16 +15,6 @@
     }
 
     @font-face {
-        font-family: 'Satoshi';
-        src: url(/public/assets/fonts/satoshi/Satoshi-Regular.otf);
-    }
-
-    @font-face {
-        font-family: 'Satoshi-bold';
-        src: url(/public/assets/fonts/satoshi/Satoshi-Bold.otf);
-    }
-
-    @font-face {
         font-family: 'FontSpring-bold';
         src: url(/public/assets/fonts/fontspring/Fontspring-DEMO-integralcf-bold.otf);
     }
@@ -32,6 +22,16 @@
     @font-face {
         font-family: 'FontSpring-extra-bold';
         src:url(../../public/assets/fonts/fontspring/Fontspring-DEMO-integralcf-demiboldoblique.otf);
+    }
+
+    @font-face {
+        font-family: 'Satoshi';
+        src: url(/public/assets/fonts/satoshi/Satoshi-Regular.otf);
+    }
+
+    @font-face {
+        font-family: 'Satoshi-bold';
+        src: url(/public/assets/fonts/satoshi/Satoshi-Bold.otf);
     }
 
     select {

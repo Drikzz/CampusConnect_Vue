@@ -15,6 +15,8 @@ export default {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
                 'Header': ['FontSpring-hvy', 'sans-serif'],
                 'Footer': ['FontSpring-demi', 'sans-serif'],
+                'FontSpring-bold' : ['FontSpring-bold', 'sans-serif'],
+                'FontSpring-extra-bold' : ['FontSpring-extra-bold', 'sans-serif'],
                 'Satoshi': ['Satoshi', 'sans-serif'],
                 'Satoshi-bold': ['Satoshi-bold', 'sans-serif'],
             },
