@@ -65,7 +65,8 @@
         </nav>
 
             {{-- Layam's Part(2) --}}
-    {{-- <div class="register2">
+            
+    <div class="register2">
 
         <img src="{{ asset('imgs/CampusConnect.png') }}" alt="" srcset="">
             
@@ -108,13 +109,13 @@
             <button class="btn relative bg-red-900 pl-16 pr-16 px-1 py-1 bottom-72 left-96 ml-28 text-xl font-bold text-white rounded-2xl hover:bg-red-400 ">Register</button>
         </form>
 
-    </div> --}}
+    </div>
 
     </header>
 
-    <main class="">
+    {{-- <main class="">
         {{ $slot }}
-    </main>
+    </main> --}}
 
     {{-- finish footer tomorrow --}}
     <footer class="w-full h-5 bg-slate-600">

@@ -152,6 +152,7 @@
         
     </form> 
  </div> 
+ </div>
 
             {{-- Layam's Part(2) --}}
     {{-- <div class="register2">

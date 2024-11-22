@@ -66,7 +66,7 @@
 
         {{-- KIANN LLOYD LAYAM'S PART --}}
        
-       {{--  <div class="register">
+        <div class="register">
 
             <img src="{{ asset('imgs/CampusConnect.png') }}" alt="" srcset="">
             
@@ -151,13 +151,13 @@
         </div>
         
     </form> 
- </div> --}}
+ </div>
 
     </header>
 
-    <main class="">
+    {{-- <main class="">
         {{ $slot }}
-    </main>
+    </main> --}}
 
     {{-- finish footer tomorrow --}}
     <footer class="w-full h-5 bg-slate-600">
