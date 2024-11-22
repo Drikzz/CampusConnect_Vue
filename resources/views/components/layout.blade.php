@@ -208,7 +208,7 @@
 </div>
     </header>
 
-
+    <main class="mt-10 mb-28 w-full px-16">
         {{ $slot }}
     </main>
 
