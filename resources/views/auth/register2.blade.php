@@ -64,94 +64,52 @@
             </div>
         </nav>
 
-        {{-- KIANN LLOYD LAYAM'S PART --}}
-       
-        <div class="register">
-
-            <img src="{{ asset('imgs/CampusConnect.png') }}" alt="" srcset="">
+            {{-- Layam's Part(2) --}}
             
-            <h1 class="welcome text-slate-950 text-5xl">Welcome New User!</h1>
+    <div class="register2">
+
+        <img src="{{ asset('imgs/CampusConnect.png') }}" alt="" srcset="">
             
-        <form action="" method="" class="reg-form flex-col bg-slate-50">
-        @csrf
+        <h1 class="welcome text-slate-950 text-5xl">Welcome New User!</h1>
 
-        <div class="mb-4">
-            <label for="username">Username:</label>
-            <input type="text" name="username" value="{{ old('username') }}" class="input @error('username') ring-red-500 @enderror">
 
-            @error('username')
-                    <p class="error">{{ $message }}</p>
-                @enderror
-        </div>
-        
-    
-        <div class="mb-4">
-            <label for="password">Password:</label>
-            <input type="password" name="password" value="{{ old('password') }}" class="input @error('password') ring-red-500 @enderror">
+        <form action="" method="" class="reg-form2 flex-col bg-slate-50">
 
-            @error('password')
-                    <p class="error">{{ $message }}</p>
-                @enderror
-        </div>
-
-       
-        <div class="mb-4">
-            <label for="firstname">First Name:</label>
-            <input type="text" name="firstname" value="{{ old('firstname') }}" class="input @error('firstname') ring-red-500 @enderror">
-
-            @error('firstname')
-                    <p class="error">{{ $message }}</p>
-                @enderror
-        </div>
-
-     
-        <div class="mb-4">
-            <label for="lastname">Last Name:</label>
-            <input type="text" name="lastname" value="{{ old('lastname') }}" class="input @error('lastname') ring-red-500 @enderror">
-
-            @error('lastname')
-                    <p class="error">{{ $message }}</p>
-                @enderror
-        </div>
-
-     
-        <div class="mb-4">
-            <label for="email">WMSU Email:</label>
-            <input type="text" name="email" value="{{ old('email') }}" class="input @error('email') ring-red-500 @enderror">
-
-            @error('email')
-                    <p class="error">{{ $message }}</p>
-                @enderror
-        </div>
-
-        
-        
-        
-        <div class="pic-section items-center flex-col relative bottom-52">
-
-            <label for="dropzone-file" class="flex relative flex-col items-center justify-center w-48 h-48 left-80 ml-10 bottom-44 border-2 border-gray-300 border-dashed rounded-full cursor-pointer bg-gray-50 hover:bg-gray-100">
+            <label for="id-front" class="flex relative flex-row items-center justify-center w-80 h-80 border-2 border-gray-300 border-dashed rounded-full cursor-pointer bg-gray-50 hover:bg-gray-100">
                 <div class="flex flex-col items-center justify-center pt-5 pb-6">
                     <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
                     </svg>
-                    <p class="mb-2 text-sm text-gray-500 dark:text-gray-400 text-center"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG, JPEG</p>
+                    <p class="mb-2 text-sm text-gray-500 dark:text-gray-400 text-center mt-3"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                    <p class="text-sm font-bold text-gray-500 dark:text-slate-900 mt-5">Your Front ID</p>
                 </div>
-                <input id="dropzone-file" type="file" value="{{ old('dropzone-file') }}" class="hidden @error('dropzone-file') ring-red-500 @enderror" />
+                <input id="id-front" type="file" value="{{ old('id-front') }}" class="hidden @error('id-front') ring-red-500 @enderror" />
 
-                @error('dropzone-file')
+                @error('id-front')
                     <p class="error">{{ $message }}</p>
                 @enderror
             </label>
-    
 
-            <span class="relative font-bold left-96 ml-3 bottom-40">Upload Picture</span>
-            
-            <button class="btn relative bg-red-900 pl-16 pr-16 px-1 py-1 text-xl font-bold text-white rounded-2xl hover:bg-red-400 left-60 bottom-10 mt-1">Next</button>
-        </div>
-        
-    </form> 
- </div>
+            <label for="id-back" class="flex relative flex-row items-center justify-center w-80 h-80 left-96 bottom-80 mt-1 border-2 border-gray-300 border-dashed rounded-full cursor-pointer bg-gray-50 hover:bg-gray-100">
+                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                    </svg>
+                    <p class="mb-2 text-sm text-gray-500 dark:text-gray-400 text-center mt-3"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                    <p class="text-sm font-bold text-gray-500 dark:text-slate-900 mt-5">Your Back ID with validation sticker</p>
+                </div>
+                <input id="id-front" type="file" value="{{ old('id-back') }}" class="hidden @error('id-back') ring-red-500 @enderror" />
+
+                @error('id-back')
+                    <p class="error">{{ $message }}</p>
+                @enderror
+            </label>
+
+
+            <button class="btn relative bg-red-900 pl-16 pr-16 px-1 py-1 bottom-72 left-96 ml-28 text-xl font-bold text-white rounded-2xl hover:bg-red-400 ">Register</button>
+        </form>
+
+    </div>
 
     </header>
 
