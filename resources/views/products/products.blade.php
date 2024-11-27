@@ -24,7 +24,7 @@
         <div class="grid grid-cols-4 place-items-center">
             <div class="w-60 h-[30rem] p-4 flex flex-col justify-between items-start gap-4 hover:shadow-lg rounded">
                 <div class="relative">
-                    <a href="{{ route('prod_details') }}">
+                    <a href="{{ route('prod.details') }}">
                         <img src="{{ asset('imgs/img1.jpg') }}" alt="" class="w-52 h-64 object-cover">
                     </a>
                     <div class="absolute bottom-2 right-2 rounded-2xl bg-white px-3 py-1">
