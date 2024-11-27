@@ -1,3 +1,4 @@
+import 'flowbite';
 $(document).ready(function () {
     
     // Select all elements with the class 'bookmarked' or 'unbookmark'
@@ -90,7 +91,6 @@ $(document).ready(function () {
         // Add the border to the selected tab
         $(this).removeClass('border-transparent').addClass('border-black');
     });
-
 
     // TRIGGERS
     // Trigger change event on page load to set initial state

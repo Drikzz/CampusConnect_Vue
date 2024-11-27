@@ -20,12 +20,16 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'username',
-        'password',
         'first_name',
         'last_name',
+        'user_type_id',
         'wmsu_email',
-        'id-front',
-        'id-back'
+        'wmsu_dept_id',
+        'grade_level_id',
+        'password',
+        'profile_picture',
+        'wmsu_id_front',
+        'wmsu_id_back',
     ];
 
     /**
@@ -55,4 +59,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(Product::class);
     }
+
+    public function userType() :HasMany
+    {
+        return $this->hasMany(UserType::class);
+    }
+
+    public function department() :HasMany
+    {
+        return $this->hasMany(Department::class);
+    }
+
+    public function gradeLevel() :HasMany
+    {
+        return $this->hasMany(GradeLevel::class);
+    } 
 }
