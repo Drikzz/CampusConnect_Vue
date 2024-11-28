@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::view('/', 'welcome')->name('index');
+Route::view('/adminlogin', 'admin.adminlogin')->name('adminlogin');
 
 // products statics
 Route::view('/products', 'products.products')->name('products');
