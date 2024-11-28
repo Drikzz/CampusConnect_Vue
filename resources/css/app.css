@@ -35,6 +35,12 @@
         src: url(/public/assets/fonts/satoshi/Satoshi-Bold.otf);
     }
 
+    @font-face {
+        font-family: 'FontSpring-bold-oblique';
+        src:url(../../public/assets/fonts/fontspring/Fontspring-DEMO-integralcf-boldoblique.otf);
+    }
+
+
     select {
         -moz-appearance: none;
         -webkit-appearance: none;
