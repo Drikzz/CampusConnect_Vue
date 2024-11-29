@@ -1,11 +1,13 @@
 <x-layout>
 
+
 <div class="max-w-full bg-primary-color px-16 py-20 flex justify-evenly items-center">
     <div class="w-[60%]] flex flex-col justify-center items-start">
         <div>
             <p class="font-Satoshi-bold text-lg text-white">
                 WELCOME TO CAMPUS CONNECT!
             </p>
+
         </div>
         
         <div class="mt-4 mb-8 w-[30rem]">
@@ -60,6 +62,8 @@
             Recently Uploaded
         </p>
     </div>
+
+
 
     <div class="flex flex-wrap justify-center gap-10 font-Satoshi mt-16"> <!-- Increased gap -->
         <!-- Card 1 -->
@@ -266,6 +270,7 @@
     </div>
 
 </section>
+
 
 <section class="px-16 mt-16 mb-28">
     <div class="text-center p-10">
