@@ -1,4 +1,5 @@
 import 'flowbite';
+
 $(document).ready(function () {
     
     // Select all elements with the class 'bookmarked' or 'unbookmark'
@@ -91,6 +92,82 @@ $(document).ready(function () {
         // Add the border to the selected tab
         $(this).removeClass('border-transparent').addClass('border-black');
     });
+
+    //modal for the user type
+    $('#continueBtn').on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const selectedType = $('input[name="userType"]:checked').val();
+        if (!selectedType) {
+            alert('Please select a user type');
+            return;
+        }
+
+        window.location.href = $('#userTypeForm').data(`route-${selectedType}`);
+    });
+
+    // picture upload in registration
+    // Image upload preview functionality
+    function setupImagePreview(inputId, previewId, uploadContainerId, previewContainerId, changePhotoBtnId) {
+        const $input = $(`#${inputId}`);
+        const $preview = $(`#${previewId}`);
+        const $uploadContainer = $(`#${uploadContainerId}`);
+        const $previewContainer = $(`#${previewContainerId}`);
+        const $changePhotoBtn = $(`#${changePhotoBtnId}`);
+
+        // Set initial states for profile
+        $previewContainer.addClass('hidden').removeClass('flex');
+        $changePhotoBtn.addClass('hidden').removeClass('flex');
+
+        // Handle file selection
+        $input.on('change', function(e) {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    $preview.attr('src', e.target.result);
+                    $uploadContainer.addClass('hidden');
+                    $previewContainer.removeClass('hidden').addClass('flex');
+                    $changePhotoBtn.removeClass('hidden').addClass('flex');
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Handle change photo button
+        $changePhotoBtn.on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $input.click();
+        });
+    }
+
+    // Initialize preview for each image upload
+    setupImagePreview(
+        'profile_picture', 
+        'preview',
+        'uploadContainer', 
+        'previewContainer',
+        'changePhotoBtn'
+    );
+
+    setupImagePreview(
+        'wmsu_id_front',
+        'previewFront',
+        'uploadContainerFront',
+        'previewContainerFront', 
+        'changePhotoBtnFront'
+    );
+
+    setupImagePreview(
+        'wmsu_id_back',
+        'previewBack', 
+        'uploadContainerBack',
+        'previewContainerBack',
+        'changePhotoBtnBack'
+    );
+
 
     // TRIGGERS
     // Trigger change event on page load to set initial state

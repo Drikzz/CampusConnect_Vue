@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -18,9 +19,17 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
+        'username',
+        'first_name',
+        'last_name',
+        'user_type_id',
+        'wmsu_email',
+        'wmsu_dept_id',
+        'grade_level_id',
         'password',
+        'profile_picture',
+        'wmsu_id_front',
+        'wmsu_id_back',
     ];
 
     /**
@@ -45,4 +54,24 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function products() :HasMany
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    public function userType() :HasMany
+    {
+        return $this->hasMany(UserType::class);
+    }
+
+    public function department() :HasMany
+    {
+        return $this->hasMany(Department::class);
+    }
+
+    public function gradeLevel() :HasMany
+    {
+        return $this->hasMany(GradeLevel::class);
+    } 
 }
