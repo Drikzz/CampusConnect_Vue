@@ -1,3 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+
+    @font-face {
+        font-family: 'FontSpring-hvy';
+        src: url(/public/assets/fonts/fontspring/Fontspring-DEMO-integralcf-heavy.otf);
+    }
+
+    @font-face {
+        font-family: 'Satoshi';
+        src: url(/public/assets/fonts/satoshi/Satoshi-Regular.otf);
+    }
+    
+    @font-face {
+        font-family: 'FontSpring-demi';
+        src: url(/public/assets/fonts/fontspring/Fontspring-DEMO-integralcf-demibold.otf);
+    }
+}
+
+
+
+
+
+
+
+
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap');
 
 * {
@@ -466,10 +495,11 @@ body {
 	grid-gap: 12px;
 	padding-left: 6px;
 }
+/* order img */
 #content main .table-data .order table td img {
-	width: 36px;
+	width: 36	px;
 	height: 36px;
-	border-radius: 50%;
+	border-radius: 10%;
 	object-fit: cover;
 }
 #content main .table-data .order table tbody tr:hover {
@@ -521,6 +551,10 @@ body {
 }
 #content main .table-data .todo .todo-list li:last-child {
 	margin-bottom: 0;
+}
+
+#product-img{
+	border-radius: 15px;
 }
 /* MAIN */
 /* CONTENT */
