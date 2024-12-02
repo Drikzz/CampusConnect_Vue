@@ -44,7 +44,7 @@ class SellerController extends Controller
             'price' => $validated['price'],
             'quantity' => $validated['quantity'],
             'images' => json_encode($imagePaths),
-            'seller_id' => auth()->id()
+            'user_id' => auth()->id()  // Changed from seller_id to user_id
         ]);
 
         return redirect()->route('seller.products.add')
