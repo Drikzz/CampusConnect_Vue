@@ -30,6 +30,7 @@ class User extends Authenticatable
         'profile_picture',
         'wmsu_id_front',
         'wmsu_id_back',
+        'is_seller',
     ];
 
     /**
@@ -55,23 +56,23 @@ class User extends Authenticatable
         ];
     }
 
-    public function products() :HasMany
+    public function products(): HasMany
     {
         return $this->hasMany(Product::class);
     }
 
-    public function userType() :HasMany
+    public function userType(): HasMany
     {
         return $this->hasMany(UserType::class);
     }
 
-    public function department() :HasMany
+    public function department(): HasMany
     {
         return $this->hasMany(Department::class);
     }
 
-    public function gradeLevel() :HasMany
+    public function gradeLevel(): HasMany
     {
         return $this->hasMany(GradeLevel::class);
-    } 
+    }
 }

@@ -21,6 +21,12 @@ class ProductController extends Controller
         // return response()->json($products);
     }
 
+    public function welcome()
+    {
+        $products = Product::latest()->get();
+        return view('welcome', ['products' => $products]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -96,7 +102,7 @@ class ProductController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(Product $product)
-    {   
+    {
         // find the product using the id
         $product = Product::findOrFail($id);
 
