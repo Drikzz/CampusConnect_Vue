@@ -158,12 +158,14 @@
                 </div> --}}
 
                 {{-- Favorites --}}
-                {{-- <div id="favorites" class="tab-content hidden">
-                    <x-myFavorites :favorites="$favorites" />
-                </div> --}}
+                <div id="favorites" class="tab-content hidden">
+                    <x-myFavorites />
+                </div>
 
                 {{-- sell on campus connect --}}
-                <x-sell id="favorites" class="tab-content hidden"></x-sell>
+                <div id="sell" class="tab-content hidden">
+                    <x-sell />
+                </div>
             </div>
         </div>
     </div>

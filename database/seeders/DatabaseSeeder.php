@@ -22,6 +22,6 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         // Create products for the test user
-        Product::factory(10)->create();
+        Product::factory(8)->create();
     }
 }

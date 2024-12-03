@@ -20,53 +20,66 @@
 
         {{-- Orders List --}}
         <div class="space-y-4">
-            {{-- Sample Order Card --}}
-            <div class="border rounded-lg p-4 hover:shadow-md transition-shadow">
-                <div class="flex items-center justify-between mb-4">
-                    <div>
-                        <p class="text-sm text-gray-500">Order #123456</p>
-                        <p class="text-sm text-gray-500">Placed on March 15, 2024</p>
+            @forelse (auth()->user()->orders as $order)
+                <div class="border rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <p class="text-sm text-gray-500">Order #{{ $order->id }}</p>
+                            <p class="text-sm text-gray-500">Placed on {{ $order->created_at->format('F d, Y') }}</p>
+                        </div>
+                        <span
+                            class="px-3 py-1 rounded-full text-xs font-medium 
+                            @if ($order->status === 'pending') bg-yellow-100 text-yellow-800
+                            @elseif($order->status === 'completed') bg-green-100 text-green-800
+                            @else bg-gray-100 text-gray-800 @endif">
+                            {{ ucfirst($order->status) }}
+                        </span>
                     </div>
-                    <span class="px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                        Pending
-                    </span>
-                </div>
 
-                <div class="flex items-center space-x-4">
-                    <img src="path_to_product_image" alt="Product" class="w-20 h-20 object-cover rounded-md">
-                    <div class="flex-1">
-                        <h4 class="text-lg font-medium">Product Name</h4>
-                        <p class="text-sm text-gray-600">Quantity: 1</p>
-                        <p class="text-lg font-semibold text-primary-color">₱299.00</p>
-                    </div>
-                    <div class="flex flex-col space-y-2">
+                    @foreach ($order->items as $item)
+                        <div class="flex items-center space-x-4 mb-4">
+                            <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}"
+                                class="w-20 h-20 object-cover rounded-md">
+                            <div class="flex-1">
+                                <h4 class="text-lg font-medium">{{ $item->product->name }}</h4>
+                                <p class="text-sm text-gray-600">Quantity: {{ $item->quantity }}</p>
+                                <p class="text-lg font-semibold text-primary-color">
+                                    ₱{{ number_format($item->price, 2) }}</p>
+                            </div>
+                        </div>
+                    @endforeach
+
+                    <div class="flex justify-end space-x-2 border-t pt-4">
                         <button
                             class="px-4 py-2 bg-primary-color text-white rounded-lg hover:bg-primary-color/90 text-sm">
                             View Details
                         </button>
-                        <button
-                            class="px-4 py-2 border border-primary-color text-primary-color rounded-lg hover:bg-primary-color/10 text-sm">
-                            Cancel Order
-                        </button>
+                        @if ($order->status === 'pending')
+                            <button
+                                class="px-4 py-2 border border-primary-color text-primary-color rounded-lg hover:bg-primary-color/10 text-sm">
+                                Cancel Order
+                            </button>
+                        @endif
                     </div>
                 </div>
-            </div>
-
-            {{-- Empty State --}}
-            <div class="text-center py-12">
-                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                </svg>
-                <h3 class="mt-2 text-sm font-medium text-gray-900">No orders</h3>
-                <p class="mt-1 text-sm text-gray-500">You haven't placed any orders yet.</p>
-                <div class="mt-6">
-                    <a href="{{ route('products') }}"
-                        class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-color hover:bg-primary-color/90">
-                        Start Shopping
-                    </a>
+            @empty
+                {{-- Empty State --}}
+                <div class="text-center py-12">
+                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                    <h3 class="mt-2 text-sm font-medium text-gray-900">No orders</h3>
+                    <p class="mt-1 text-sm text-gray-500">You haven't placed any orders yet.</p>
+                    <div class="mt-6">
+                        <a href="{{ route('products') }}"
+                            class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-color hover:bg-primary-color/90">
+                            Start Shopping
+                        </a>
+                    </div>
                 </div>
-            </div>
+            @endforelse
         </div>
     </div>
 </div>

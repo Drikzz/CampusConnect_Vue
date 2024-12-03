@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('discounted_price')->nullable();
             $table->string('image')->nullable();
             $table->integer('stock');
+            $table->integer('quantity')->default(0);
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
 
             $table->boolean('is_buyable')->default(false);

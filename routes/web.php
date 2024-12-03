@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -10,16 +11,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [ProductController::class, 'welcome'])->name('index');
 
 // products statics
-Route::view('/products', 'products.products')->name('products');
-Route::view('/products/prod', 'products.prod_details')->name('prod.details');
+Route::get('/products', [ProductController::class, 'index'])->name('products');
+Route::get('/products/prod/{id}', [ProductController::class, 'product_details'])->name('prod.details');
 
 Route::middleware('auth')->group(function () {
     // Route::view('/dashboard', 'dashboard')->name('dashboard');
     // UNCOMMENT IF THOSE LINKS ARE PRESENT //
     // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-    Route::view('/checkout', 'products.checkout')->name('checkout');
 
     // Route::get('/profile', [DashboardController::class, 'profile'])->name('dashboard');
     // Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
@@ -38,6 +37,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard/sell/terms', [DashboardController::class, 'terms'])->name('dashboard.terms');
     Route::post('/dashboard/sell/terms', [UserController::class, 'is_verified']);
+
+    //checkout routes
+    Route::get('/products/prod/{id}/summary', [CheckoutController::class, 'summary'])->name('summary');
+    Route::post('/checkout/process', [CheckoutController::class, 'checkout'])->name('checkout.process');
 });
 
 Route::middleware('guest')->group(function () {

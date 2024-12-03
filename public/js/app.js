@@ -267,6 +267,58 @@ $(document).ready(function () {
         $('#current-wmsu-id-back').removeClass('hidden'); // Show current picture
     });
 
+    //checkout page
+    const $quantity = $('#quantity');
+    const $subtotal = $('#subtotal');
+    const $originalPrice = $('#original-price');
+    const $discountAmount = $('#discount-amount');
+    const $total = $('#total');
+    
+    // Get prices from data attributes
+    const originalPrice = parseFloat($quantity.data('original-price'));
+    const discountedPrice = parseFloat($quantity.data('discounted-price'));
+    const maxStock = parseInt($quantity.data('max-stock'));
+
+    function updatePrices() {
+        const quantity = parseInt($quantity.val());
+        
+        // Calculate new values
+        const subtotal = quantity * discountedPrice;
+        const originalTotal = quantity * originalPrice;
+        const discountAmount = originalTotal - subtotal;
+        
+        // Update all price displays
+        $subtotal.text(formatPrice(subtotal));
+        $originalPrice.text(formatPrice(originalTotal));
+        $discountAmount.text('-' + formatPrice(discountAmount));
+        $total.text(formatPrice(subtotal));
+    }
+
+    function formatPrice(amount) {
+        return '₱' + amount.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+
+    // Handle increment button click
+    $(document).on('click', '#increment-button', function() {
+        const currentValue = parseInt($quantity.val());
+        if (currentValue < maxStock) {
+            $quantity.val(currentValue + 1);
+            updatePrices();
+        }
+    });
+
+    // Handle decrement button click
+    $(document).on('click', '#decrement-button', function() {
+        const currentValue = parseInt($quantity.val());
+        if (currentValue > 1) {
+            $quantity.val(currentValue - 1);
+            updatePrices();
+        }
+    });
+
     // TRIGGERS
     // Trigger change event on page load to set initial state
     $('input[type="radio"][name="option"]:checked').trigger('change');

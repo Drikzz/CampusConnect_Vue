@@ -16,6 +16,7 @@ class Product extends Model
         'discount',
         'discounted_price',
         'stock',
+        'quantity',
         'image',
         'user_id',
         'is_buyable',
@@ -25,5 +26,10 @@ class Product extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
     }
 }

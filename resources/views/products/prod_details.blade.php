@@ -10,25 +10,25 @@
                     <div class="w-28 h-28">
                         <img id="img1"
                             class="w-full h-full aspect-square object-cover hover:outline hover:outline-black"
-                            src="{{ asset('imgs/img1.jpg') }}" alt="">
+                            src="{{ $product->image }}" alt="">
                     </div>
 
                     <div class="w-28 h-28">
                         <img id="img2"
                             class="w-full h-full aspect-square object-cover hover:outline hover:outline-black"
-                            src="{{ asset('imgs/img2.jpg') }}" alt="">
+                            src="{{ $product->image }}" alt="">
                     </div>
 
                     <div class="w-28 h-28">
                         <img id="img3"
                             class="w-full h-full aspect-square object-cover hover:outline hover:outline-black"
-                            src="{{ asset('imgs/img3.jpg') }}" alt="">
+                            src="{{ $product->image }}" alt="">
                     </div>
                 </div>
 
                 <div class="h-full w-[80%] bg-black relative">
-                    <img id="mainImage" class="object-cover aspect-square w-full h-full"
-                        src="{{ asset('imgs/img1.jpg') }}" alt="">
+                    <img id="mainImage" class="object-cover aspect-square w-full h-full" src="{{ $product->image }}"
+                        alt="">
                     <button id="prevButton"
                         class="absolute left-3 top-1/2 transform -translate-y-1/2 bg-white p-4 rounded-full flex justify-center items-center">
                         <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"
@@ -146,36 +146,36 @@
                 {{-- product title --}}
                 <div class="mt-4">
                     <p class="font-Satoshi-bold text-2xl">
-                        CCS Uniform Male
+                        {{ $product->name }}
                     </p>
                 </div>
 
                 {{-- product price, sale, stock --}}
                 <div class="flex justify-start items-center gap-4 mt-4">
                     <p class="font-Satoshi-bold text-2xl">
-                        &#8369;400
+                        &#8369;{{ $product->discounted_price }}
                     </p>
 
                     <p class="font-Satoshi-bold text-2xl line-through text-gray-400">
-                        &#8369;400
+                        &#8369;{{ $product->price }}
                     </p>
 
                     <p class="font-Satoshi-bold text-2xl text-red">
-                        -20%
+                        -{{ $product->discount }}%
                     </p>
 
                     <p class="font-Satoshi text-xl">
-                        In stock: <span> 1 </span> pc
+                        In stock: <span> {{ $product->stock }} </span> pc
                     </p>
                 </div>
 
                 {{-- product owner info --}}
                 <div class="flex justify-start items-center gap-4 mt-4">
-                    <img class="w-10 h-10 rounded-full" src="{{ asset('imgs/download - Copy.jpg') }}"
-                        alt="user's profile photo">
+                    <img class="w-10 h-10 rounded-full"
+                        src="{{ Storage::url('/' . $product->user->profile_picture) }}" alt="user's profile photo">
 
                     <p class="font-Satoshi-bold text-base">
-                        Ken Lloyd
+                        {{ $product->user->username }}
                     </p>
 
                     <div class="flex justify-center items-center gap-1">
@@ -285,15 +285,29 @@
                 </div>
 
                 <div class="flex justify-evenly items-center mt-4 w-full">
-                    <a href="#"
-                        class="font-Satoshi-bold text-base bg-black text-white px-20 py-4 rounded-full hover:bg-gray-800 hover:transition-all">
-                        Buy Now
-                    </a>
+                    @if ($product->is_buyable == 1 && $product->is_tradable == 1)
+                        <a href="{{ route('summary', $product->id) }}" id="buyNowButton"
+                            class="font-Satoshi-bold text-base bg-black text-white px-20 py-4 rounded-full hover:bg-gray-800 hover:transition-all">
+                            Buy Now
+                        </a>
 
-                    <a href="#"
-                        class="font-Satoshi-bold text-base bg-black text-white px-20 py-4 rounded-full hover:bg-gray-800 hover:transition-all">
-                        Trade Now
-                    </a>
+                        <a href="#" id="tradeNowButton"
+                            class="font-Satoshi-bold text-base bg-black text-white px-20 py-4 rounded-full hover:bg-gray-800 hover:transition-all">
+                            Trade Now
+                        </a>
+                    @elseif ($product->is_buyable == 1 && $product->is_tradable == 0)
+                        <a href="{{ route('summary', $product->id) }}" id="buyNowButton"
+                            class="font-Satoshi-bold text-base bg-black text-white px-20 py-4 rounded-full hover:bg-gray-800 hover:transition-all">
+                            Buy Now
+                        </a>
+                    @elseif ($product->is_buyable == 0 && $product->is_tradable == 1)
+                        <a href="#" id="tradeNowButton"
+                            class="font-Satoshi-bold text-base bg-black text-white px-20 py-4 rounded-full hover:bg-gray-800 hover:transition-all">
+                            Trade Now
+                        </a>
+                    @else
+                        <p class="font-Satoshi text-gray-500">Not available for purchase or trade</p>
+                    @endif
                 </div>
 
             </div>
@@ -324,7 +338,7 @@
             </p>
 
             <p>
-                Pre-loved CCS Male Uniform. Reason for sale: Graduated na po.
+                {{ $product->description }}
             </p>
         </div>
 
@@ -353,10 +367,9 @@
 
             {{-- static products --}}
             <div class="flex justify-center items-center">
-                <x-productCard />
-                <x-productCard />
-                <x-productCard />
-                <x-productCard />
+                @foreach ($randomProducts as $randomProduct)
+                    <x-productcard :product="$randomProduct" />
+                @endforeach
             </div>
         </div>
     </div>
