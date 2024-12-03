@@ -6,9 +6,13 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SellerController;
+
 
 
 Route::get('/', [ProductController::class, 'welcome'])->name('index');
+
+Route::view('/adminlogin', 'admin.adminlogin')->name('adminlogin');
 
 // products statics
 Route::get('/products', [ProductController::class, 'index'])->name('products');
@@ -41,6 +45,10 @@ Route::middleware('auth')->group(function () {
     //checkout routes
     Route::get('/products/prod/{id}/summary', [CheckoutController::class, 'summary'])->name('summary');
     Route::post('/checkout/process', [CheckoutController::class, 'checkout'])->name('checkout.process');
+
+    Route::get('/seller/products/add', [SellerController::class, 'addproduct'])->name('seller.addproduct');
+    Route::post('/seller/products', [SellerController::class, 'store'])->name('seller.products.store');
+
 });
 
 Route::middleware('guest')->group(function () {
@@ -50,7 +58,7 @@ Route::middleware('guest')->group(function () {
     // Route::post('/register/elementary', [AuthController::class, 'elementary']);
 
     Route::get('/register/highschool', [AuthController::class, 'register_form_highschool'])->name('register_form_highschool');
-    Route::post('/register/highshool', [AuthController::class, 'registerHSStudent'])->name('registerHSStudent');
+    Route::post('/register/highschool', [AuthController::class, 'registerHSStudent'])->name('registerHSStudent');
 
     Route::get('/register/college', [AuthController::class, 'register_form_college'])->name('register_form_college');
     Route::post('/register/college', [AuthController::class, 'registerCollegeStudent'])->name('registerCollegeStudent');
@@ -73,4 +81,6 @@ Route::middleware('guest')->group(function () {
     // IF LOGOUT LINK IS PRESENT, UNCOMMENT THIS ROUTE //
     Route::view('/login', 'auth.login')->name('login');
     Route::post('/login', [AuthController::class, 'login']);
+
 });
+

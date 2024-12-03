@@ -2,6 +2,7 @@
 
     <div class="max-w-full bg-primary-color px-16 py-20 flex justify-evenly items-center">
         <div class="w-[60%]] flex flex-col justify-center items-start">
+        
             <div>
                 <p class="font-Satoshi-bold text-lg text-white">
                     WELCOME TO CAMPUS CONNECT!
@@ -57,7 +58,6 @@
             </div>
         </div>
     </div>
-
 
     <section class="px-16 mt-16">
         <div class="text-center">
