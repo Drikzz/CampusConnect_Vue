@@ -2,13 +2,18 @@
 
 namespace Database\Factories;
 
+use App\Models\Product;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Product>
  */
 class ProductFactory extends Factory
 {
+    protected $model = Product::class;
+
     /**
      * Define the model's default state.
      *
@@ -16,8 +21,29 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
+        static $imageIndex = 1;
+
+        $price = $this->faker->numberBetween(100, 10000); // Price in cents
+        $discount = $this->faker->numberBetween(0, 100); // Discount percentage
+
+        // Calculate discounted price
+        $discountedPrice = $price - ($price * ($discount / 100));
+
+        // Generate the full URL for the image
+        $imagePath = 'imgs/img' . $imageIndex++ . '.jpg';
+        $imageUrl = asset($imagePath);
+
         return [
-            //
+            'name' => $this->faker->word(),
+            'description' => $this->faker->paragraph(),
+            'price' => $price,
+            'discount' => $discount,
+            'discounted_price' => $discountedPrice,
+            'image' => $imageUrl,
+            'stock' => $this->faker->numberBetween(1, 100),
+            'user_id' => 1,
+            'is_buyable' => $this->faker->numberBetween(0, 1),
+            'is_tradable' => $this->faker->numberBetween(0, 1),
         ];
     }
 }

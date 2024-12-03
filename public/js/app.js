@@ -168,6 +168,156 @@ $(document).ready(function () {
         'changePhotoBtnBack'
     );
 
+    // dashboard buyer 
+    $('[data-collapse-toggle]').on('click', function() {
+        const target = $('#' + $(this).attr('aria-controls'));
+        target.toggleClass('hidden');
+    });
+    
+    $('.load-content').on('click', function(e) {
+        e.preventDefault();
+        const target = $(this).data('target');
+        $('.tab-content').addClass('hidden'); // Hide all tab contents
+        $('#' + target).removeClass('hidden'); // Show the selected tab content
+    });
+    
+    // Trigger the profile tab by default
+    // $('a[data-target="profile"]').trigger('click');
+
+    // Trigger the profile tab by default if the URL contains '/dashboard/profile'
+    if (window.location.pathname.includes('/dashboard/profile')) {
+        $('a[data-target="profile"]').trigger('click');
+    } else if (window.location.pathname.includes('/dashboard/orders')) {
+        $('a[data-target="pending"]').trigger('click');
+    }
+    
+    //dashboard picture upload
+    $('#file-input').on('change', function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#preview-img').attr('src', e.target.result); // Set the preview image source
+                $('#current-picture').addClass('hidden'); // Hide current picture
+                $('#preview-picture').removeClass('hidden'); // Show preview
+            };
+
+            reader.readAsDataURL(file); // Convert file to DataURL
+        }
+
+        // Reset the file input's value so the user can reselect the same file if needed
+        $(this).val('');
+    });
+
+    // Reset button to cancel the upload and revert back to current image
+    $('#reset-upload').on('click', function () {
+        $('#preview-picture').addClass('hidden'); // Hide preview
+        $('#current-picture').removeClass('hidden'); // Show current picture
+    });
+
+    // profileCard wmsu front and back
+    // WMSU ID Front upload
+    $('#wmsu_id_front_input').on('change', function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#wmsu_id_front_preview_img').attr('src', e.target.result); // Set the preview image source
+                $('#current-wmsu-id-front').addClass('hidden'); // Hide current picture
+                $('#preview-wmsu-id-front').removeClass('hidden'); // Show preview
+            };
+
+            reader.readAsDataURL(file); // Convert file to DataURL
+        }
+
+        // Reset the file input's value so the user can reselect the same file if needed
+        $(this).val('');
+    });
+
+    // Reset button to cancel the upload and revert back to current image
+    $('#reset-wmsu-id-front-upload').on('click', function () {
+        $('#preview-wmsu-id-front').addClass('hidden'); // Hide preview
+        $('#current-wmsu-id-front').removeClass('hidden'); // Show current picture
+    });
+
+    // WMSU ID Back upload
+    $('#wmsu_id_back_input').on('change', function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#wmsu_id_back_preview_img').attr('src', e.target.result); // Set the preview image source
+                $('#current-wmsu-id-back').addClass('hidden'); // Hide current picture
+                $('#preview-wmsu-id-back').removeClass('hidden'); // Show preview
+            };
+
+            reader.readAsDataURL(file); // Convert file to DataURL
+        }
+
+        // Reset the file input's value so the user can reselect the same file if needed
+        $(this).val('');
+    });
+
+    // Reset button to cancel the upload and revert back to current image
+    $('#reset-wmsu-id-back-upload').on('click', function () {
+        $('#preview-wmsu-id-back').addClass('hidden'); // Hide preview
+        $('#current-wmsu-id-back').removeClass('hidden'); // Show current picture
+    });
+
+    //checkout page
+    const $quantity = $('#quantity');
+    const $subtotal = $('#subtotal');
+    const $originalPrice = $('#original-price');
+    const $discountAmount = $('#discount-amount');
+    const $total = $('#total');
+    
+    // Get prices from data attributes
+    const originalPrice = parseFloat($quantity.data('original-price'));
+    const discountedPrice = parseFloat($quantity.data('discounted-price'));
+    const maxStock = parseInt($quantity.data('max-stock'));
+
+    function updatePrices() {
+        const quantity = parseInt($quantity.val());
+        
+        // Calculate new values
+        const subtotal = quantity * discountedPrice;
+        const originalTotal = quantity * originalPrice;
+        const discountAmount = originalTotal - subtotal;
+        
+        // Update all price displays
+        $subtotal.text(formatPrice(subtotal));
+        $originalPrice.text(formatPrice(originalTotal));
+        $discountAmount.text('-' + formatPrice(discountAmount));
+        $total.text(formatPrice(subtotal));
+    }
+
+    function formatPrice(amount) {
+        return '₱' + amount.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+
+    // Handle increment button click
+    $(document).on('click', '#increment-button', function() {
+        const currentValue = parseInt($quantity.val());
+        if (currentValue < maxStock) {
+            $quantity.val(currentValue + 1);
+            updatePrices();
+        }
+    });
+
+    // Handle decrement button click
+    $(document).on('click', '#decrement-button', function() {
+        const currentValue = parseInt($quantity.val());
+        if (currentValue > 1) {
+            $quantity.val(currentValue - 1);
+            updatePrices();
+        }
+    });
 
     // TRIGGERS
     // Trigger change event on page load to set initial state

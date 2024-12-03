@@ -15,10 +15,17 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->decimal('price', 8, 2);
-            $table->decimal('discounted_price', 8, 2)->nullable();
+            $table->integer('price');
+            $table->integer('discount')->nullable();
+            $table->integer('discounted_price')->nullable();
             $table->string('image')->nullable();
+            $table->integer('stock');
+            $table->integer('quantity')->default(0);
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+
+            $table->boolean('is_buyable')->default(false);
+            $table->boolean('is_tradable')->default(false);
+
             $table->timestamps();
         });
     }
