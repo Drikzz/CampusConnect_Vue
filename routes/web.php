@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SellerController;
 
 
 Route::view('/', 'welcome')->name('index');
+Route::view('/adminlogin', 'admin.adminlogin')->name('adminlogin');
 
 // products statics
 Route::view('/products', 'products.products')->name('products');
@@ -19,6 +21,9 @@ Route::middleware('auth')->group(function () {
     Route::view('/checkout', 'products.checkout')->name('checkout');
     // Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
 
+    Route::get('/seller/products/add', [SellerController::class, 'addproduct'])->name('seller.addproduct');
+    Route::post('/seller/products', [SellerController::class, 'store'])->name('seller.products.store');
+
 });
 
 Route::middleware('guest')->group(function () {
@@ -28,7 +33,7 @@ Route::middleware('guest')->group(function () {
     // Route::post('/register/elementary', [AuthController::class, 'elementary']);
     
     Route::get('/register/highschool', [AuthController::class, 'register_form_highschool'])->name('register_form_highschool');
-    Route::post('/register/highshool', [AuthController::class, 'registerHSStudent'])->name('registerHSStudent');
+    Route::post('/register/highschool', [AuthController::class, 'registerHSStudent'])->name('registerHSStudent');
 
     Route::get('/register/college', [AuthController::class, 'register_form_college'])->name('register_form_college');
     Route::post('/register/college', [AuthController::class, 'registerCollegeStudent'])->name('registerCollegeStudent');
@@ -54,3 +59,4 @@ Route::middleware('guest')->group(function () {
 
 
 });
+
