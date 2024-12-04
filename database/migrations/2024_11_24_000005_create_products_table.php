@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->integer('stock');
             $table->integer('quantity')->default(0);
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
 
             $table->boolean('is_buyable')->default(false);
             $table->boolean('is_tradable')->default(false);
