@@ -21,6 +21,23 @@ class ProductController extends Controller
         // return response()->json($products);
     }
 
+    public function welcome()
+    {
+        $products = Product::latest()->get();
+        return view('welcome', ['products' => $products]);
+    }
+
+    public function product_details($id)
+    {
+        $product = Product::findOrFail($id);
+        $randomProducts = Product::inRandomOrder()->take(4)->get(); // Fetch 4 random products
+
+        return view('products.prod_details', [
+            'product' => $product,
+            'randomProducts' => $randomProducts,
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -40,6 +57,7 @@ class ProductController extends Controller
             'price' => ['required', 'numeric'],
             'discounted_price' => ['nullable', 'numeric'],
             'image' => ['nullable', 'image', 'file', 'extensions:jpg,png', 'max:2048'],
+            'stock' => ['required', 'numeric', 'min:0'], // Add stock validation
         ]);
 
         // create a post
@@ -96,7 +114,7 @@ class ProductController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(Product $product)
-    {   
+    {
         // find the product using the id
         $product = Product::findOrFail($id);
 

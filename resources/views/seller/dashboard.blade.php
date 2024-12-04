@@ -1,235 +1,126 @@
+<x-sellerLayout>
+    {{-- Stats Overview --}}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+                <div class="p-3 bg-blue-100 rounded-full">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                    </svg>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-2xl font-semibold text-gray-800">{{ $totalOrders }}</h3>
+                    <p class="text-gray-600">Total Orders</p>
+                </div>
+            </div>
+        </div>
 
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{{ env('APP_NAME') }}</title>
-        @vite(['resources/css/seller.css', 'resources/js/seller.js'])
-        <!-- Boxicons -->
-        <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-        <!-- My CSS -->
-  
-        <title>CC</title>
-    </head>
-    <body>
-    
-        <!-- SIDEBAR -->
-        <section id="sidebar">
-            <a href="#" class="brand">
-                <img src="{{ asset('assets/seller-img/campconnect.jpg') }}" alt="company img" id="companyimg">
-                <span class="text">CampusConnect</span>
-            </a>
-            <ul class="side-menu top">
-                <li class="active">
-                    <a href="{{ route('dashboard') }}">
-                        <i class='bx bxs-dashboard'></i>
-                        <span class="text">Dashboard</span>
-                    </a>
-                </li>
-                <li >
-                    <a href="{{ route('myproduct') }}">
-                        <i class='bx bxs-shopping-bag-alt'></i>
-                        <span class="text">My Store</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class='bx bxs-doughnut-chart'></i>
-                        <span class="text">Analytics</span>
-                    </a>
-                </li>
-                <li >
-                <a href="{{ route('wallet') }}">
-                    <i class='bx bx-wallet'></i>
-                    <span class="text">Wallet</span>
-                </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class='bx bxs-message-dots'></i>
-                        <span class="text">Message</span>
-                    </a>
-                </li>
-            </ul>
-            <ul class="side-menu">
-                <li>
-                    <a href="#">
-                        <i class='bx bxs-cog'></i>
-                        <span class="text">Settings</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="logout">
-                        <i class='bx bxs-log-out-circle'></i>
-                        <span class="text">Logout</span>
-                    </a>
-                </li>
-            </ul>
-        </section>
-        <!-- SIDEBAR -->
-    
-        <!-- CONTENT -->
-        <section id="content">
-            <!-- NAVBAR -->
-            <nav>
-                <i class='bx bx-menu'></i>
-                <a href="#" class="nav-link">Categories</a>
-                <form action="#">
-                    <div class="form-input">
-                        <input type="search" placeholder="Search...">
-                        <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
-                    </div>
-                </form>
-              
-                <a href="#" class="notification">
-                    <i class='bx bxs-bell'></i>
-                    <span class="num">8</span>
-                </a>
-                <a href="#" class="profile">
-                    <img src="{{ asset('assets/seller-img/sample-profile.jpg') }}">
-                </a>
-            </nav>
-            <!-- NAVBAR -->
-    
-            <!-- MAIN -->
-            <main>
-                <div class="head-title">
-                    <div class="left">
-                        <h1>Dashboard</h1>
-                        <ul class="breadcrumb">
-                            <li>
-                                <a href="#">Dashboard</a>
-                            </li>
-                            <li><i class='bx bx-chevron-right'></i></li>
-                            <li>
-                                <a class="active" href="#">Home</a>
-                            </li>
-                        </ul>
-                    </div>
-                   
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+                <div class="p-3 bg-green-100 rounded-full">
+                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                        </path>
+                    </svg>
                 </div>
-    
-                <ul class="box-info">
-                    <li>
-                        <i class='bx bxs-calendar-check'></i>
-                        <span class="text">
-                            <h3>5</h3>
-                            <p>Orders</p>
-                        </span>
-                    </li>
-                    <li>
-                        <i class='bx bxs-group'></i>
-                        <span class="text">
-                            <h3>3</h3>
-                            <p>trades</p>
-                        </span>
-                    </li>
-                    <li>
-                        <i class='bx bxs-dollar-circle'></i>
-                        <span class="text">
-                            <h3>2543</h3>
-                            <p>Total Sales</p>
-                        </span>
-                    </li>
-                </ul>
-    
-                <div class="table-data">
-                    <div class="order">
-                        <div class="head">
-                            <h3>Recent Orders</h3>
-                            <i class='bx bx-search'></i>
-                            <i class='bx bx-filter'></i>
-                        </div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>User</th>
-                                    <th>Date Order</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <img src="img/people.png">
-                                        <p>John Doe</p>
-                                    </td>
-                                    <td>01-10-2021</td>
-                                    <td><span class="status completed">Completed</span></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img src="img/people.png">
-                                        <p>John Doe</p>
-                                    </td>
-                                    <td>01-10-2021</td>
-                                    <td><span class="status pending">Pending</span></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img src="img/people.png">
-                                        <p>John Doe</p>
-                                    </td>
-                                    <td>01-10-2021</td>
-                                    <td><span class="status process">Process</span></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img src="img/people.png">
-                                        <p>John Doe</p>
-                                    </td>
-                                    <td>01-10-2021</td>
-                                    <td><span class="status pending">Pending</span></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img src="img/people.png">
-                                        <p>John Doe</p>
-                                    </td>
-                                    <td>01-10-2021</td>
-                                    <td><span class="status completed">Completed</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="todo">
-                       <!-- <div class="head">
-                            <h3>Todos</h3>
-                            <i class='bx bx-plus'></i>
-                            <i class='bx bx-filter'></i>
-                        </div>
-                        <ul class="todo-list">
-                             <li class="completed">
-                                <p>Todo List</p>
-                                <i class='bx bx-dots-vertical-rounded'></i>
-                            </li>
-                            <li class="completed">
-                                <p>Todo List</p>
-                                <i class='bx bx-dots-vertical-rounded'></i>
-                            </li>
-                            <li class="not-completed">
-                                <p>Todo List</p>
-                                <i class='bx bx-dots-vertical-rounded'></i>
-                            </li>
-                            <li class="completed">
-                                <p>Todo List</p>
-                                <i class='bx bx-dots-vertical-rounded'></i>
-                            </li>
-                            <li class="not-completed">
-                                <p>Todo List</p>
-                                <i class='bx bx-dots-vertical-rounded'></i>
-                            </li>
-                            -->
-                        </ul>
-                    </div>
+                <div class="ml-4">
+                    <h3 class="text-2xl font-semibold text-gray-800">₱{{ number_format($totalSales, 2) }}</h3>
+                    <p class="text-gray-600">Total Sales</p>
                 </div>
-            </main>
-            <!-- MAIN -->
-        </section>
-        <!-- CONTENT -->
-    
-        <script src="new.js"></script>
-    </body>
-    </html>
-    
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+                <div class="p-3 bg-purple-100 rounded-full">
+                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                    </svg>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-2xl font-semibold text-gray-800">{{ $activeTrades }}</h3>
+                    <p class="text-gray-600">Active Trades</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Recent Orders Table --}}
+    <div class="bg-white rounded-lg shadow">
+        <div class="flex items-center justify-between p-6 border-b">
+            <h2 class="text-lg font-semibold text-gray-800">Recent Orders</h2>
+            <div class="flex items-center space-x-3">
+                <button class="text-gray-600 hover:text-gray-900">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </button>
+                <button class="text-gray-600 hover:text-gray-900">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="p-6">
+            <table class="w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    @forelse ($recentOrders as $order)
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="h-10 w-10 flex-shrink-0">
+                                        <img class="h-10 w-10 rounded-full"
+                                            src="{{ $order->buyer->profile_picture ?? 'https://ui-avatars.com/api/?name=' . urlencode($order->buyer->first_name . ' ' . $order->buyer->last_name) }}"
+                                            alt="">
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">
+                                            {{ $order->buyer->first_name }} {{ $order->buyer->last_name }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ $order->created_at->format('d-m-Y') }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span
+                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                {{ $order->status === 'Completed'
+                                    ? 'bg-green-100 text-green-800'
+                                    : ($order->status === 'Processing'
+                                        ? 'bg-yellow-100 text-yellow-800'
+                                        : 'bg-gray-100 text-gray-800') }}">
+                                    {{ $order->status }}
+                                </span>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="3" class="px-6 py-4 text-center text-gray-500">
+                                No recent orders found
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</x-sellerLayout>
