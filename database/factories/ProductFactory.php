@@ -33,6 +33,18 @@ class ProductFactory extends Factory
         $imagePath = 'imgs/img' . $imageIndex++ . '.jpg';
         $imageUrl = asset($imagePath);
 
+        // Generate random values ensuring at least one is true 80% of the time
+        $rand = $this->faker->numberBetween(1, 100);
+        if ($rand <= 80) {
+            // 80% chance of having at least one true
+            $is_buyable = $this->faker->boolean();
+            $is_tradable = $is_buyable ? $this->faker->boolean() : true;
+        } else {
+            // 20% chance of both being true
+            $is_buyable = true;
+            $is_tradable = true;
+        }
+
         return [
             'name' => $this->faker->word(),
             'description' => $this->faker->paragraph(),
@@ -41,9 +53,10 @@ class ProductFactory extends Factory
             'discounted_price' => $discountedPrice,
             'image' => $imageUrl,
             'stock' => $this->faker->numberBetween(1, 100),
+            'quantity' => $this->faker->numberBetween(0, 100),
             'user_id' => 1,
-            'is_buyable' => $this->faker->numberBetween(0, 1),
-            'is_tradable' => $this->faker->numberBetween(0, 1),
+            'is_buyable' => $is_buyable,
+            'is_tradable' => $is_tradable,
         ];
     }
 }

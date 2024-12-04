@@ -172,10 +172,10 @@
                 {{-- product owner info --}}
                 <div class="flex justify-start items-center gap-4 mt-4">
                     <img class="w-10 h-10 rounded-full"
-                        src="{{ Storage::url('/' . $product->user->profile_picture) }}" alt="user's profile photo">
+                        src="{{ Storage::url('/' . $product->seller->profile_picture) }}" alt="user's profile photo">
 
                     <p class="font-Satoshi-bold text-base">
-                        {{ $product->user->username }}
+                        {{ $product->seller->username }}
                     </p>
 
                     <div class="flex justify-center items-center gap-1">

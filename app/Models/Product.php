@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
@@ -15,21 +17,27 @@ class Product extends Model
         'price',
         'discount',
         'discounted_price',
+        'image',
         'stock',
         'quantity',
-        'image',
         'user_id',
         'is_buyable',
-        'is_tradable',
+        'is_tradable'
     ];
 
-    public function user()
+    public function seller(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function orderItems()
+    public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    // Helper method to check if product is available
+    public function isAvailable(): bool
+    {
+        return $this->stock > 0;
     }
 }

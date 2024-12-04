@@ -51,6 +51,7 @@
 
                     <div class="flex justify-end space-x-2 border-t pt-4">
                         <button
+                            onclick="document.getElementById('order-modal-{{ $order->id }}').classList.remove('hidden')"
                             class="px-4 py-2 bg-primary-color text-white rounded-lg hover:bg-primary-color/90 text-sm">
                             View Details
                         </button>
@@ -81,5 +82,63 @@
                 </div>
             @endforelse
         </div>
+
+        {{-- Modals Container (outside of space-y-4) --}}
+        @foreach (auth()->user()->orders as $order)
+            <div id="order-modal-{{ $order->id }}"
+                class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center">
+                <div class="relative mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-semibold">Order Details #{{ $order->id }}</h3>
+                        <button
+                            onclick="document.getElementById('order-modal-{{ $order->id }}').classList.add('hidden')"
+                            class="text-gray-400 hover:text-gray-500">
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="mt-4">
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <p class="text-sm text-gray-500">Order Date</p>
+                                <p class="font-medium">{{ $order->created_at->format('F d, Y') }}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Status</p>
+                                <p class="font-medium capitalize">{{ $order->status }}</p>
+                            </div>
+                        </div>
+
+                        <div class="border-t pt-4">
+                            <h4 class="font-medium mb-2">Order Items</h4>
+                            @foreach ($order->items as $item)
+                                <div class="flex items-center space-x-4 mb-4 border-b pb-4">
+                                    <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}"
+                                        class="w-20 h-20 object-cover rounded-md">
+                                    <div class="flex-1">
+                                        <h5 class="font-medium">{{ $item->product->name }}</h5>
+                                        <p class="text-sm text-gray-600">Quantity: {{ $item->quantity }}</p>
+                                        <p class="text-primary-color font-medium">
+                                            ₱{{ number_format($item->price, 2) }}</p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <div class="border-t pt-4">
+                            <div class="flex justify-between items-center">
+                                <span class="font-medium">Total Amount:</span>
+                                <span class="text-lg font-semibold text-primary-color">
+                                    ₱{{ number_format($order->items->sum('price'), 2) }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
     </div>
 </div>

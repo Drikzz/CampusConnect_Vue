@@ -10,7 +10,14 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        return view('buyer.dashboard');
+        if (auth()->user()->is_seller == 1) {
+            return redirect()->route('dashboard.seller');
+        }
+
+        return view('buyer.dashboard', [
+            'user' => auth()->user(),
+            'user_type' => auth()->user()->user_type
+        ]);
     }
 
     public function profile()

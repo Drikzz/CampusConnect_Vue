@@ -1,4 +1,6 @@
 import 'flowbite';
+import '../js/bootstrap';
+// import '../css/seller.css';
 
 $(document).ready(function () {
     
@@ -180,9 +182,6 @@ $(document).ready(function () {
         $('.tab-content').addClass('hidden'); // Hide all tab contents
         $('#' + target).removeClass('hidden'); // Show the selected tab content
     });
-    
-    // Trigger the profile tab by default
-    // $('a[data-target="profile"]').trigger('click');
 
     // Trigger the profile tab by default if the URL contains '/dashboard/profile'
     if (window.location.pathname.includes('/dashboard/profile')) {
@@ -267,57 +266,56 @@ $(document).ready(function () {
         $('#current-wmsu-id-back').removeClass('hidden'); // Show current picture
     });
 
-    //checkout page
-    const $quantity = $('#quantity');
-    const $subtotal = $('#subtotal');
-    const $originalPrice = $('#original-price');
-    const $discountAmount = $('#discount-amount');
-    const $total = $('#total');
-    
-    // Get prices from data attributes
-    const originalPrice = parseFloat($quantity.data('original-price'));
-    const discountedPrice = parseFloat($quantity.data('discounted-price'));
-    const maxStock = parseInt($quantity.data('max-stock'));
+    //checkout page - replace the existing checkout code with this:
+    if (document.getElementById('quantity')) { // Only run on pages with quantity element
+        const quantity = document.getElementById('quantity');
+        const formQuantity = document.getElementById('form-quantity');
+        const subtotalElement = document.getElementById('subtotal');
+        const originalPriceElement = document.getElementById('original-price');
+        const discountAmountElement = document.getElementById('discount-amount');
+        const totalElement = document.getElementById('total');
+        const formTotal = document.getElementById('form-total');
 
-    function updatePrices() {
-        const quantity = parseInt($quantity.val());
-        
-        // Calculate new values
-        const subtotal = quantity * discountedPrice;
-        const originalTotal = quantity * originalPrice;
-        const discountAmount = originalTotal - subtotal;
-        
-        // Update all price displays
-        $subtotal.text(formatPrice(subtotal));
-        $originalPrice.text(formatPrice(originalTotal));
-        $discountAmount.text('-' + formatPrice(discountAmount));
-        $total.text(formatPrice(subtotal));
-    }
+        // Get values from data attributes
+        const maxStock = parseInt(quantity.dataset.maxStock);
+        const originalPrice = parseFloat(quantity.dataset.originalPrice);
+        const discountedPrice = parseFloat(quantity.dataset.discountedPrice);
 
-    function formatPrice(amount) {
-        return '₱' + amount.toLocaleString('en-US', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
+        // Format price helper
+        const formatPrice = (num) => '₱' + num.toFixed(2);
+
+        // Update all prices and quantities
+        function updateQuantityAndPrices(newValue) {
+            if (newValue >= 1 && newValue <= maxStock) {
+                quantity.value = newValue;
+                formQuantity.value = newValue;
+
+                const subtotal = newValue * discountedPrice;
+                const originalTotal = newValue * originalPrice;
+                const discountAmount = originalTotal - subtotal;
+
+                subtotalElement.textContent = formatPrice(subtotal);
+                originalPriceElement.textContent = formatPrice(originalTotal);
+                discountAmountElement.textContent = '-' + formatPrice(discountAmount);
+                totalElement.textContent = formatPrice(subtotal);
+                formTotal.value = subtotal.toFixed(2);
+            }
+        }
+
+        // Event listeners
+        $('#decrement-button').on('click', function(e) {
+            e.preventDefault();
+            updateQuantityAndPrices(parseInt(quantity.value) - 1);
         });
+
+        $('#increment-button').on('click', function(e) {
+            e.preventDefault();
+            updateQuantityAndPrices(parseInt(quantity.value) + 1);
+        });
+
+        // Initialize with starting value
+        updateQuantityAndPrices(1);
     }
-
-    // Handle increment button click
-    $(document).on('click', '#increment-button', function() {
-        const currentValue = parseInt($quantity.val());
-        if (currentValue < maxStock) {
-            $quantity.val(currentValue + 1);
-            updatePrices();
-        }
-    });
-
-    // Handle decrement button click
-    $(document).on('click', '#decrement-button', function() {
-        const currentValue = parseInt($quantity.val());
-        if (currentValue > 1) {
-            $quantity.val(currentValue - 1);
-            updatePrices();
-        }
-    });
 
     // TRIGGERS
     // Trigger change event on page load to set initial state
