@@ -59,7 +59,7 @@
                                     class="group flex items-center px-3 py-2 text-gray-800 hover:bg-gray-100 rounded-lg">
                                     Pending
                                     @php
-                                        $pendingCount = Auth::user()->soldOrders()->where('status', 'Pending')->count();
+                                        $pendingCount = Auth::user()->soldOrders()->pending()->count();
                                     @endphp
                                     @if ($pendingCount > 0)
                                         <span

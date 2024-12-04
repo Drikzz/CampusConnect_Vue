@@ -10,7 +10,7 @@
                     </svg>
                 </div>
                 <div class="ml-4">
-                    <h3 class="text-2xl font-semibold text-gray-800">5</h3>
+                    <h3 class="text-2xl font-semibold text-gray-800">{{ $totalOrders }}</h3>
                     <p class="text-gray-600">Total Orders</p>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                     </svg>
                 </div>
                 <div class="ml-4">
-                    <h3 class="text-2xl font-semibold text-gray-800">₱2,543</h3>
+                    <h3 class="text-2xl font-semibold text-gray-800">₱{{ number_format($totalSales, 2) }}</h3>
                     <p class="text-gray-600">Total Sales</p>
                 </div>
             </div>
@@ -41,7 +41,7 @@
                     </svg>
                 </div>
                 <div class="ml-4">
-                    <h3 class="text-2xl font-semibold text-gray-800">3</h3>
+                    <h3 class="text-2xl font-semibold text-gray-800">{{ $activeTrades }}</h3>
                     <p class="text-gray-600">Active Trades</p>
                 </div>
             </div>
@@ -81,25 +81,44 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
-                    <tr>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <div class="h-10 w-10 flex-shrink-0">
-                                    <img class="h-10 w-10 rounded-full" src="https://ui-avatars.com/api/?name=John+Doe"
-                                        alt="">
+                    @forelse ($recentOrders as $order)
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="h-10 w-10 flex-shrink-0">
+                                        <img class="h-10 w-10 rounded-full"
+                                            src="{{ $order->buyer->profile_picture ?? 'https://ui-avatars.com/api/?name=' . urlencode($order->buyer->first_name . ' ' . $order->buyer->last_name) }}"
+                                            alt="">
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">
+                                            {{ $order->buyer->first_name }} {{ $order->buyer->last_name }}
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="ml-4">
-                                    <div class="text-sm font-medium text-gray-900">John Doe</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">01-10-2023</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span
-                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
-                        </td>
-                    </tr>
-                    {{-- Add more rows as needed --}}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ $order->created_at->format('d-m-Y') }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span
+                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                {{ $order->status === 'Completed'
+                                    ? 'bg-green-100 text-green-800'
+                                    : ($order->status === 'Processing'
+                                        ? 'bg-yellow-100 text-yellow-800'
+                                        : 'bg-gray-100 text-gray-800') }}">
+                                    {{ $order->status }}
+                                </span>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="3" class="px-6 py-4 text-center text-gray-500">
+                                No recent orders found
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

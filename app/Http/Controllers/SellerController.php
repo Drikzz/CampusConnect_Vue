@@ -3,15 +3,38 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Product; // Make sure to create Product model
+use App\Models\Product;
+use App\Models\Order;
 use Illuminate\Support\Facades\Storage;
 
 class SellerController extends Controller
 {
     public function index()
     {
-        $products = Product::where('user_id', auth()->id())->get();
-        return view('seller.products', compact('products'));
+        $sellerId = auth()->id();
+
+        // Get total orders
+        $totalOrders = Order::where('seller_id', $sellerId)->count();
+
+        // Calculate total sales
+        $totalSales = Order::where('seller_id', $sellerId)
+            ->where('status', 'Completed')
+            ->sum('sub_total');
+
+        // Get active trades (orders with payment_method as 'trade')
+        $activeTrades = Order::where('seller_id', $sellerId)
+            ->where('payment_method', 'trade')
+            ->where('status', '!=', 'Completed')
+            ->count();
+
+        // Get recent orders
+        $recentOrders = Order::where('seller_id', $sellerId)
+            ->with('buyer')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('seller.dashboard', compact('totalOrders', 'totalSales', 'activeTrades', 'recentOrders'));
     }
 
     public function create()
