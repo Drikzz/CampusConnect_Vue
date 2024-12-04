@@ -45,7 +45,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'seller'])->group(function () {  // Changed 'Seller' to 'seller'
 
-    Route::view('/seller/dashboard', 'seller.dashboard')->name('dashboard.seller');
+    Route::get('/seller/dashboard', [SellerController::class, 'index'])->name('dashboard.seller');
     Route::get('/seller/products/add', [SellerController::class, 'addproduct'])->name('seller.addproduct');
     Route::post('/seller/products', [SellerController::class, 'store'])->name('seller.products.store');
 
