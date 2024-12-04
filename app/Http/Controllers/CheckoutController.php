@@ -21,7 +21,7 @@ class CheckoutController extends Controller
     {
         $request->validate([
             'product_id' => ['required', 'numeric'],
-            'total' => ['required', 'numeric'],
+            'sub_total' => ['required', 'numeric'], // Fix validation field name
             'delivery_estimate' => ['required', 'string'],
             'email' => ['nullable', 'email'],
             'phone' => ['required', 'string'],
@@ -39,30 +39,35 @@ class CheckoutController extends Controller
             return back()->with('error', 'Not enough stock available.');
         }
 
-        // Create the order
-        $order = Order::create([
-            'user_id' => Auth::user()->id,
-            'address' => $request->address,
-            'phone' => $request->phone,
-            'email' => $request->email,
-            'total' => $request->total,
-            'status' => 'Pending',
-            'payment_method' => $request->payment_method,
-            'delivery_estimate' => $request->delivery_estimate,
-        ]);
+        try {
+            // Create the order
+            $order = Order::create([
+                'user_id' => Auth::user()->id,
+                'seller_id' => $product->user_id,
+                'address' => "{$request->address}, {$request->city}, {$request->postal_code}",
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'sub_total' => $request->sub_total,
+                'status' => 'Pending',
+                'payment_method' => $request->payment_method,
+                'delivery_estimate' => $request->delivery_estimate,
+            ]);
 
-        // Create the order item
-        OrderItem::create([
-            'order_id' => $order->id,
-            'product_id' => $product->id,
-            'quantity' => $request->quantity,
-            'price' => $product->discounted_price,
-        ]);
+            // Create order item
+            OrderItem::create([
+                'order_id' => $order->id,
+                'product_id' => $product->id,
+                'quantity' => $request->quantity,
+                'price' => $product->discounted_price,
+                'subtotal' => $request->sub_total
+            ]);
 
-        // Deduct the stock
-        $product->stock -= $request->quantity;
-        $product->save();
+            // Update stock
+            $product->decrement('stock', $request->quantity);
 
-        return redirect()->route('dashboard.orders')->with('success', 'Order has been placed');
+            return redirect()->route('dashboard.orders')->with('success', 'Order placed successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to place order. Please try again.');
+        }
     }
 }

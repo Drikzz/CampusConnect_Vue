@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\Storage;
 
 class SellerController extends Controller
 {
+    public function index()
+    {
+        $products = Product::where('user_id', auth()->id())->get();
+        return view('seller.products', compact('products'));
+    }
+
     public function create()
     {
         return view('seller.addproduct');
@@ -44,7 +50,7 @@ class SellerController extends Controller
             'price' => $validated['price'],
             'quantity' => $validated['quantity'],
             'images' => json_encode($imagePaths),
-            'user_id' => auth()->id()  
+            'user_id' => auth()->id()
         ]);
 
         return redirect()->route('seller.products.add')

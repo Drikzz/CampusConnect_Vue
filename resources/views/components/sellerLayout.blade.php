@@ -1,81 +1,101 @@
-<!-- rename to resources/views/components/seller-layout.blade.php -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>{{ env('APP_NAME') }}</title>
-	@vite(['resources/css/seller.css', 'resources/js/seller.js'])
-	<!-- Boxicons -->
-	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-	<!-- My CSS -->
+<x-layout>
+    <div class="min-h-screen bg-gray-100">
+        {{-- Top Navigation Bar --}}
+        <nav class="bg-white shadow-sm border-b">
+            <div class="px-4 mx-auto">
+                <div class="flex h-16 items-center justify-between">
+                    <div class="flex items-center">
+                        <img src="{{ asset('assets/seller-img/campconnect.jpg') }}" class="h-8 w-8 rounded" alt="Logo">
+                        <span class="ml-2 text-xl font-bold">Seller Central</span>
+                    </div>
 
-	<title>CC</title>
-</head>
-<body>
+                    <div class="flex items-center gap-4">
+                        <span class="text-sm text-gray-600">Welcome, {{ Auth::user()->name }}</span>
+                        <form method="POST" action="{{ route('logout') }}" class="ml-4">
+                            @csrf
+                            <button type="submit" class="text-red-600 hover:text-red-800">Logout</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </nav>
 
-	<!-- SIDEBAR -->
-	<section id="sidebar">
-		<a href="#" class="brand">
-			<img src="{{ asset('assets/seller-img/campconnect.jpg') }}" alt="company img" id="companyimg">
-			<span class="text">CampusConnect</span>
-		</a>
-		<ul class="side-menu top">
-			<li>
-				<a href="{{ route('dashboard') }}">
-					<i class='bx bxs-dashboard'></i>
-					<span class="text">Dashboard</span>
-				</a>
-			</li>
-			<li >
-				<a href="{{ route('myproduct') }}">
-					<i class='bx bxs-shopping-bag-alt'></i>
-					<span class="text">My Store</span>
-				</a>
-			</li>
-			<li>
-				<a href="#">
-					<i class='bx bxs-doughnut-chart'></i>
-					<span class="text">Analytics</span>
-				</a>
-			</li>
-			<li class="active">
-			<a href="{{ route('wallet') }}">
-				<i class='bx bx-wallet'></i>
-				<span class="text">Wallet</span>
-			</a>
-			</li>
-			<li>
-				<a href="#">
-					<i class='bx bxs-message-dots'></i>
-					<span class="text">Message</span>
-				</a>
-			</li>
-		</ul>
-		<ul class="side-menu">
-			<li>
-				<a href="#">
-					<i class='bx bxs-cog'></i>
-					<span class="text">Settings</span>
-				</a>
-			</li>
-			<li>
-				<a href="#" class="logout">
-					<i class='bx bxs-log-out-circle'></i>
-					<span class="text">Logout</span>
-				</a>
-			</li>
-		</ul>
-	</section>
+        <div class="flex">
+            {{-- Sidebar with scrollable styling --}}
+            <aside class="w-64 sticky top-0 h-[calc(100vh-4rem)] bg-white border-r overflow-y-auto">
+                <nav class="mt-5 px-4 pb-24">
+                    <div class="space-y-4">
+                        <div class="pb-4">
+                            <span class="text-xs font-semibold text-gray-400 uppercase">Main Menu</span>
+                            <a href="{{ route('dashboard.seller') }}"
+                                class="mt-2 group flex items-center px-3 py-2 text-gray-800 hover:bg-gray-100 rounded-lg">
+                                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                                    </path>
+                                </svg>
+                                Dashboard
+                            </a>
+                        </div>
 
-    <!-- Main content -->
-    <main>
-        {{ $slot }}
-    </main>
-</section>
-<!-- CONTENT -->
+                        <div class="pb-4">
+                            <span class="text-xs font-semibold text-gray-400 uppercase">Products</span>
+                            <div class="mt-2 space-y-2">
+                                <a href="#"
+                                    class="group flex items-center px-3 py-2 text-gray-800 hover:bg-gray-100 rounded-lg">All
+                                    Products</a>
+                                <a href="#"
+                                    class="group flex items-center px-3 py-2 text-gray-800 hover:bg-gray-100 rounded-lg">Add
+                                    New</a>
+                                <a href="#"
+                                    class="group flex items-center px-3 py-2 text-gray-800 hover:bg-gray-100 rounded-lg">Categories</a>
+                            </div>
+                        </div>
 
-<script src="new.js"></script>
-</body>
-</html>
+                        <div class="pb-4">
+                            <span class="text-xs font-semibold text-gray-400 uppercase">Orders</span>
+                            <div class="mt-2 space-y-2">
+                                <a href="{{ route('seller.orders.pending') }}"
+                                    class="group flex items-center px-3 py-2 text-gray-800 hover:bg-gray-100 rounded-lg">
+                                    Pending
+                                    @php
+                                        $pendingCount = Auth::user()->soldOrders()->where('status', 'Pending')->count();
+                                    @endphp
+                                    @if ($pendingCount > 0)
+                                        <span
+                                            class="ml-auto bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-0.5 rounded">
+                                            {{ $pendingCount }}
+                                        </span>
+                                    @endif
+                                </a>
+                                <a href="{{ route('seller.orders.processing') }}"
+                                    class="group flex items-center px-3 py-2 text-gray-800 hover:bg-gray-100 rounded-lg">Processing</a>
+                                <a href="{{ route('seller.orders.completed') }}"
+                                    class="group flex items-center px-3 py-2 text-gray-800 hover:bg-gray-100 rounded-lg">Completed</a>
+                            </div>
+                        </div>
 
+                        <div class="pb-4">
+                            <span class="text-xs font-semibold text-gray-400 uppercase">Finance</span>
+                            <div class="mt-2 space-y-2">
+                                <a href="#"
+                                    class="group flex items-center px-3 py-2 text-gray-800 hover:bg-gray-100 rounded-lg">Earnings</a>
+                                <a href="#"
+                                    class="group flex items-center px-3 py-2 text-gray-800 hover:bg-gray-100 rounded-lg">Withdrawals</a>
+                                <a href="#"
+                                    class="group flex items-center px-3 py-2 text-gray-800 hover:bg-gray-100 rounded-lg">Reports</a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </aside>
+
+            {{-- Main Content Area --}}
+            <main class="flex-1 p-8 bg-gray-50">
+                <div class="max-w-7xl mx-auto">
+                    {{ $slot }}
+                </div>
+            </main>
+        </div>
+    </div>
+</x-layout>

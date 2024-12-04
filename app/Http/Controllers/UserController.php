@@ -146,6 +146,6 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $user->update(['is_seller' => true]);
-        return view('seller.dashboard');
+        return redirect()->route('dashboard.seller')->with('success', 'You are now a verified seller');
     }
 }
