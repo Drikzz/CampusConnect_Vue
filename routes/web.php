@@ -86,3 +86,9 @@ Route::middleware('guest')->group(function () {
     Route::view('/login', 'auth.login')->name('login');
     Route::post('/login', [AuthController::class, 'login']);
 });
+
+
+Route::get('/admin/dashboard', function () {
+    // Refer to the 'admin/admin-dashboard.blade.php' view file
+    return view('admin.admin-dashboard'); // This is correct
+})->name('admin.dashboard');
