@@ -317,6 +317,11 @@ $(document).ready(function () {
         updateQuantityAndPrices(1);
     }
 
+    $('#menuToggle').on('click', function() {
+        $('#sidebar').toggleClass('sidebar-collapsed');
+        $(this).toggleClass('rotate-90');
+    });
+
     // TRIGGERS
     // Trigger change event on page load to set initial state
     $('input[type="radio"][name="option"]:checked').trigger('change');
