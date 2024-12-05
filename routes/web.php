@@ -101,5 +101,6 @@ Route::get('/admin/dashboard', function () {
 
 Route::view('/admin/sales', 'admin.admin-sales')->name('adminsales');
    
-Route::view('/Admin-products', 'admin.admin-productManagement')->name('admin-product-management');
-Route::view('/Admin-userManagement', 'admin.admin-userManagement')->name('admin-userManagement');
+Route::view('/admin/products', 'admin.admin-productManagement')->name('admin-product-management');
+Route::view('/admin/userManagement', 'admin.admin-userManagement')->name('admin-userManagement');
+Route::view('/admin/funds', 'admin.admin-fundManagement')->name('admin-funds');
