@@ -11,8 +11,6 @@ use App\Http\Controllers\SellerController;
 
 Route::get('/', [ProductController::class, 'welcome'])->name('index');
 
-Route::view('/adminlogin', 'admin.adminlogin')->name('adminlogin');
-
 // products statics
 Route::get('/products', [ProductController::class, 'index'])->name('products');
 Route::get('/products/prod/{id}', [ProductController::class, 'product_details'])->name('prod.details');
@@ -92,15 +90,11 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
 });
 
+// Admin Routes
+Route::view('/admin/login', 'admin.adminlogin')->name('adminlogin');
 
-Route::get('/admin/dashboard', function () {
-    // Refer to the 'admin/admin-dashboard.blade.php' view file
-    return view('admin.admin-dashboard'); // This is correct
-})->name('admin.dashboard');
-
-
-Route::view('/admin/sales', 'admin.admin-sales')->name('adminsales');
-   
-Route::view('/admin/products', 'admin.admin-productManagement')->name('admin-product-management');
-Route::view('/admin/userManagement', 'admin.admin-userManagement')->name('admin-userManagement');
-Route::view('/admin/funds', 'admin.admin-fundManagement')->name('admin-funds');
+Route::view('/admin/dashboard', 'admin.admin-dashboard')->name('admin-dashboard');   
+Route::view('/admin/sales', 'admin.admin-sales')->name('admin-sales');   
+Route::view('/admin/users', 'admin.admin-userManagement')->name('admin-userManagement');
+Route::view('/admin/products', 'admin.admin-productManagement')->name('admin-productManagement');
+Route::view('/admin/funds', 'admin.admin-fundManagement')->name('admin-fundManagement');

@@ -1,4 +1,5 @@
 <x-adminLayout>
+    {{-- MAIN CONTENTS --}}
     <div class="flex flex-wrap gap-4 lg:gap-[20px]">
 
         <div class="bg-white w-full sm:w-[calc(50%-1rem)] lg:w-[500px] h-[350px] rounded-[20px] shadow-lg p-4 lg:p-[20px] flex justify-between cursor-pointer transition-all ease-in-out hover:scale-105 hover:shadow-xl mt-4 lg:mt-[20px]">
