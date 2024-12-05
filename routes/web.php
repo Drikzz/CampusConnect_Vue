@@ -17,6 +17,11 @@ Route::view('/adminlogin', 'admin.adminlogin')->name('adminlogin');
 Route::get('/products', [ProductController::class, 'index'])->name('products');
 Route::get('/products/prod/{id}', [ProductController::class, 'product_details'])->name('prod.details');
 
+// Route::get('/trade', [ProductController::class, 'index'])->name('products');
+// Route::get('/trade/prod/{id}', [ProductController::class, 'product_details'])->name('prod.details');
+
+
+
 Route::middleware('auth')->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -96,3 +101,6 @@ Route::get('/admin/dashboard', function () {
 
 Route::view('/admin/sales', 'admin.admin-sales')->name('adminsales');
    
+Route::view('/admin/products', 'admin.admin-productManagement')->name('admin-product-management');
+Route::view('/admin/userManagement', 'admin.admin-userManagement')->name('admin-userManagement');
+Route::view('/admin/funds', 'admin.admin-fundManagement')->name('admin-funds');
