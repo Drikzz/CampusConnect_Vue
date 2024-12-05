@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,14 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ env('APP_NAME') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        .sidebar-collapsed {
+            width: 80px !important;
+        }
+        .sidebar-collapsed h3 {
+            display: none;
+        }
+        .sidebar-collapsed div.flex {
+            justify-content: center;
+        }
+        .transform-active {
+            transform: rotate(90deg);
+        }
+    </style>
 </head>
 
 <body class="bg-[#cad7fda4] max-w-full overflow-x-hidden">
     <!-- Header -->
-    <header class="h-[70px] w-full px-[30px] bg-[#fafaff] fixed top-0 left-0 z-50 shadow-lg flex justify-between items-center">
+    <header class="h-[70px] w-full px-[30px] bg-[#fafaff] fixed top-0 left-0 z-50 flex justify-between items-center">
         <div class="flex gap-[60px] items-center">
-            <div class="text-[#2f8d46] font-semibold text-[27px]">Campus Connect</div>
-            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182541/Untitled-design-(30).png" class="h-[30px] cursor-pointer" id="menuicn" alt="menu-icon">
+            <div class="flex items-center gap-2">
+                <img src="{{ asset('imgs/CampusConnect.png') }}" alt="CampusConnect Logo" class="h-10 w-auto">
+                <div class="text-black font-extrabold italic text-[27px]">ADMIN</div>
+            </div>
+            <svg class="w-5 h-5 hover:scale-150 cursor-pointer transition-all duration-300" 
+                 id="menuToggle"
+                 xmlns="http://www.w3.org/2000/svg" 
+                 viewBox="0 0 24 24" 
+                 width="512" 
+                 height="512">
+                <rect y="11" width="24" height="2" rx="1"/>
+                <rect y="4" width="24" height="2" rx="1"/>
+                <rect y="18" width="24" height="2" rx="1"/>
+            </svg>
+
         </div>
 
         <!-- Search Bar -->
@@ -25,9 +51,9 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5v10M3 5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm0 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm12 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0V6a3 3 0 0 0-3-3H9m1.5-2-2 2 2 2"/>
                     </svg>
                 </div>
-                <input type="text" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search branch name..." required />
+                <input type="text" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500" placeholder="Search branch name..." required />
             </div>
-            <button type="submit" class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            <button type="submit" class="p-2.5 ms-2 text-sm font-medium text-white bg-red-700 rounded-lg border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                 <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                 </svg>
@@ -48,15 +74,15 @@
     <!-- Sidebar and Content -->
     <div class="flex pt-[70px]">
         <!-- Sidebar -->
-        <div class="min-h-[91vh] w-[250px] bg-[#ffffff] shadow-md flex flex-col justify-between py-[30px] px-[10px]">
+        <div id="sidebar" class="min-h-[91vh] w-[250px] bg-[#ffffff] shadow-md flex flex-col justify-between py-[30px] px-[10px] transition-all duration-300">
             <nav class="flex flex-col gap-[30px] items-center">
                 <div class="flex flex-col gap-[30px]">
                     <!-- Dashboard link -->
-                    <div class="flex items-center gap-4 px-5 py-4 hover:bg-gray-200 hover:border-l-4 border-gray-400 transition-all">
-                        <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24"  width="40" height="40">
+                    <div class="flex items-center gap-4 px-5 py-4  border-gray-400 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24"  width="40" height="40" class="text-red-600 fill-current">
                             <path d="M14,12c0,1.019-.308,1.964-.832,2.754l-2.875-2.875c-.188-.188-.293-.442-.293-.707V7.101c2.282,.463,4,2.48,4,4.899Zm-6-.414V7.101c-2.55,.518-4.396,2.976-3.927,5.767,.325,1.934,1.82,3.543,3.729,3.992,1.47,.345,2.86,.033,3.952-.691l-3.169-3.169c-.375-.375-.586-.884-.586-1.414Zm11-4.586h-2c-.553,0-1,.448-1,1s.447,1,1,1h2c.553,0,1-.448,1-1s-.447-1-1-1Zm0,4h-2c-.553,0-1,.448-1,1s.447,1,1,1h2c.553,0,1-.448,1-1s-.447-1-1-1Zm0,4h-2c-.553,0-1,.448-1,1s.447,1,1,1h2c.553,0,1-.448,1-1s-.447-1-1-1Zm5-7v8c0,2.757-2.243,5-5,5H5c-2.757,0-5-2.243-5-5V8C0,5.243,2.243,3,5,3h14c2.757,0,5,2.243,5,5Zm-2,0c0-1.654-1.346-3-3-3H5c-1.654,0-3,1.346-3,3v8c0,1.654,1.346,3,3,3h14c1.654,0,3-1.346,3-3V8Z"/>
                         </svg>
-                        <h3 class="text-lg">Dashboard</h3>
+                        <h3 class="text-lg text-red-600">Dashboard</h3>
                     </div>
 
                     <!-- Articles link -->
@@ -116,5 +142,14 @@
             </div>
         </div>
     </div>
+    <script>
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            const menuIcon = document.getElementById('menuToggle');
+            
+            sidebar.classList.toggle('sidebar-collapsed');
+            menuIcon.classList.toggle('transform-active');
+        });
+    </script>
 </body>
 </html>
