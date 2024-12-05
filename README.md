@@ -96,4 +96,10 @@ php artisan serve
 npm run dev
 ```
 
-- __13th__, congratulations! You're done setting up your project!
+- __13th__, run `php artisan db:seed` command:
+
+```
+php artisan db:seed
+```
+
+- __14th__, congratulations! You're done setting up your project!
