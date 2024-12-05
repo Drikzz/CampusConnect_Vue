@@ -17,6 +17,11 @@ Route::view('/adminlogin', 'admin.adminlogin')->name('adminlogin');
 Route::get('/products', [ProductController::class, 'index'])->name('products');
 Route::get('/products/prod/{id}', [ProductController::class, 'product_details'])->name('prod.details');
 
+// Route::get('/trade', [ProductController::class, 'index'])->name('products');
+// Route::get('/trade/prod/{id}', [ProductController::class, 'product_details'])->name('prod.details');
+
+
+
 Route::middleware('auth')->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
