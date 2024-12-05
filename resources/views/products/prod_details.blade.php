@@ -5,29 +5,17 @@
 
                 {{-- image gallery --}}
                 <div class="h-full w-[20%] flex flex-col justify-start items-center gap-4">
-
-                    {{-- mini images --}}
-                    <div class="w-28 h-28">
-                        <img id="img1"
-                            class="w-full h-full aspect-square object-cover hover:outline hover:outline-black"
-                            src="{{ $product->image }}" alt="">
-                    </div>
-
-                    <div class="w-28 h-28">
-                        <img id="img2"
-                            class="w-full h-full aspect-square object-cover hover:outline hover:outline-black"
-                            src="{{ $product->image }}" alt="">
-                    </div>
-
-                    <div class="w-28 h-28">
-                        <img id="img3"
-                            class="w-full h-full aspect-square object-cover hover:outline hover:outline-black"
-                            src="{{ $product->image }}" alt="">
-                    </div>
+                    @foreach ($product->images as $index => $image)
+                        <div class="w-28 h-28">
+                            <img id="img{{ $index + 1 }}"
+                                class="w-full h-full aspect-square object-cover hover:outline hover:outline-black"
+                                src="{{ $image }}" alt="">
+                        </div>
+                    @endforeach
                 </div>
 
                 <div class="h-full w-[80%] bg-black relative">
-                    <img id="mainImage" class="object-cover aspect-square w-full h-full" src="{{ $product->image }}"
+                    <img id="mainImage" class="object-cover aspect-square w-full h-full" src="{{ $product->images[0] }}"
                         alt="">
                     <button id="prevButton"
                         class="absolute left-3 top-1/2 transform -translate-y-1/2 bg-white p-4 rounded-full flex justify-center items-center">
@@ -172,10 +160,11 @@
                 {{-- product owner info --}}
                 <div class="flex justify-start items-center gap-4 mt-4">
                     <img class="w-10 h-10 rounded-full"
-                        src="{{ Storage::url('/' . $product->seller->profile_picture) }}" alt="user's profile photo">
+                        src="{{ $product->seller && $product->seller->profile_picture ? Storage::url($product->seller->profile_picture) : asset('imgs/img1.jpg') }}"
+                        alt="user's profile photo">
 
                     <p class="font-Satoshi-bold text-base">
-                        {{ $product->seller->username }}
+                        {{ $product->seller ? $product->seller->username : 'Unknown Seller' }}
                     </p>
 
                     <div class="flex justify-center items-center gap-1">
