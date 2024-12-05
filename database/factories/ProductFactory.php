@@ -21,26 +21,28 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
-        static $imageIndex = 1;
-
-        $price = $this->faker->numberBetween(100, 10000); // Price in cents
-        $discount = $this->faker->numberBetween(0, 100); // Discount percentage
-
-        // Calculate discounted price
+        $price = $this->faker->numberBetween(100, 10000);
+        $discount = $this->faker->numberBetween(0, 100);
         $discountedPrice = $price - ($price * ($discount / 100));
 
-        // Generate the full URL for the image
-        $imagePath = 'imgs/img' . $imageIndex++ . '.jpg';
-        $imageUrl = asset($imagePath);
+        // Get 5 random unique image indices from 1-8
+        $selectedIndices = collect(range(1, 8))
+            ->shuffle()
+            ->take(5)
+            ->values()
+            ->all();
 
-        // Generate random values ensuring at least one is true 80% of the time
+        // Generate image URLs for the selected indices
+        $imageUrls = array_map(function ($index) {
+            return asset("imgs/img{$index}.jpg");
+        }, $selectedIndices);
+
+        // Generate random values for is_buyable and is_tradable
         $rand = $this->faker->numberBetween(1, 100);
         if ($rand <= 80) {
-            // 80% chance of having at least one true
             $is_buyable = $this->faker->boolean();
             $is_tradable = $is_buyable ? $this->faker->boolean() : true;
         } else {
-            // 20% chance of both being true
             $is_buyable = true;
             $is_tradable = true;
         }
@@ -51,10 +53,14 @@ class ProductFactory extends Factory
             'price' => $price,
             'discount' => $discount,
             'discounted_price' => $discountedPrice,
-            'image' => $imageUrl,
+            'images' => $imageUrls,
             'stock' => $this->faker->numberBetween(1, 100),
-            'quantity' => $this->faker->numberBetween(0, 100),
-            'user_id' => 1,
+            'seller_code' => function () {
+                // Get an existing seller's code
+                return User::where('is_seller', true)->first()->seller_code;
+            },
+            'category_id' => 1,
+            'trade_method_id' => 1,
             'is_buyable' => $is_buyable,
             'is_tradable' => $is_tradable,
         ];

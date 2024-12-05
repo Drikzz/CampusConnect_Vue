@@ -29,9 +29,9 @@ return new class extends Migration
 
             // user verification
             $table->boolean('is_seller')->default(false);
-            $table->string('is_verified')->default(false);
+            $table->string('seller_code')->nullable()->unique();  // replaces seller_id
+            $table->boolean('is_verified')->default(false);
             $table->timestamp('verified_at')->nullable();
-
 
             $table->string('wmsu_id_front')->nullable();
             $table->string('wmsu_id_back')->nullable();

@@ -142,10 +142,13 @@ class UserController extends Controller
     //     return view('users.inbox', compact('threads'));
     // }
 
-    public function is_verified()
+    public function is_seller()
     {
         $user = Auth::user();
-        $user->update(['is_seller' => true]);
-        return redirect()->route('dashboard.seller')->with('success', 'You are now a verified seller');
+        $user->update([
+            'is_seller' => true,
+            'seller_code' => strtoupper(uniqid())  // Generate uppercase unique string
+        ]);
+        return redirect()->route('seller.dashboard')->with('success', 'You are now a verified seller');
     }
 }

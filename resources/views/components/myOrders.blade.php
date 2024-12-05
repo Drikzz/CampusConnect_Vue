@@ -1,3 +1,6 @@
+@props(['user', 'user_type', 'pendingOrders'])
+
+{{-- Orders Tab Heading --}}
 {{-- Orders Tab Content --}}
 <div class="max-w-5xl mx-auto py-6">
     <div class="bg-white rounded-lg shadow-md p-6">
@@ -20,7 +23,7 @@
 
         {{-- Orders List --}}
         <div class="space-y-4">
-            @forelse (auth()->user()->orders as $order)
+            @forelse ($pendingOrders as $order)
                 <div class="border rounded-lg p-4 hover:shadow-md transition-shadow">
                     <div class="flex items-center justify-between mb-4">
                         <div>
@@ -38,7 +41,7 @@
 
                     @foreach ($order->items as $item)
                         <div class="flex items-center space-x-4 mb-4">
-                            <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}"
+                            <img src="{{ $item->product->images[0] }}" alt="{{ $item->product->name }}"
                                 class="w-20 h-20 object-cover rounded-md">
                             <div class="flex-1">
                                 <h4 class="text-lg font-medium">{{ $item->product->name }}</h4>
@@ -84,7 +87,7 @@
         </div>
 
         {{-- Modals Container (outside of space-y-4) --}}
-        @foreach (auth()->user()->orders as $order)
+        @foreach ($pendingOrders as $order)
             <div id="order-modal-{{ $order->id }}"
                 class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center">
                 <div class="relative mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
@@ -116,7 +119,7 @@
                             <h4 class="font-medium mb-2">Order Items</h4>
                             @foreach ($order->items as $item)
                                 <div class="flex items-center space-x-4 mb-4 border-b pb-4">
-                                    <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}"
+                                    <img src="{{ $item->product->images[0] }}" alt="{{ $item->product->name }}"
                                         class="w-20 h-20 object-cover rounded-md">
                                     <div class="flex-1">
                                         <h5 class="font-medium">{{ $item->product->name }}</h5>
