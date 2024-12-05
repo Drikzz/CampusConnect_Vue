@@ -6,12 +6,11 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SellerController;
 
 Route::get('/', [ProductController::class, 'welcome'])->name('index');
-
-Route::view('/adminlogin', 'admin.adminlogin')->name('adminlogin');
 
 // products statics
 Route::get('/products', [ProductController::class, 'index'])->name('products');
@@ -93,14 +92,49 @@ Route::middleware('guest')->group(function () {
 });
 
 
-Route::get('/admin/dashboard', function () {
-    // Refer to the 'admin/admin-dashboard.blade.php' view file
-    return view('admin.admin-dashboard'); // This is correct
+// Admin Authentication Routes
+Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
+Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login.submit');
+
+Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
+
+// Admin Dashboard Route
+Route::get('/admin/dashboard', function() {
+    return view('admin.admin-dashboard');
 })->name('admin.dashboard');
 
+Route::get('/admin/sales', function() {
+    return view('admin.admin-sales');
+})->name('admin.sales');
 
-Route::view('/admin/sales', 'admin.admin-sales')->name('adminsales');
-   
-Route::view('/admin/products', 'admin.admin-productManagement')->name('admin-product-management');
-Route::view('/admin/userManagement', 'admin.admin-userManagement')->name('admin-userManagement');
-Route::view('/admin/funds', 'admin.admin-fundManagement')->name('admin-funds');
+Route::get('/admin/transactions', function() {
+    return view('admin.admin-transactions');
+})->name('admin.transactions');
+
+Route::get('/admin/users', function() {
+    return view('admin.admin-userManagement');
+})->name('admin.users');
+
+Route::get('/admin/reports', function() {
+    return view('admin.admin-reportManagement');
+})->name('admin.reports');
+
+Route::get('/admin/products', function() {
+    return view('admin.admin-productManagement');
+})->name('admin.products');
+
+Route::get('/admin/funds', function() {
+    return view('admin.admin-fundManagement');
+})->name('admin.funds');
+
+// PLS DON'T DELETE THIS CODE FOR A WHILE
+// Protected Admin Routes
+// Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+//     // Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+//     // Route::get('/sales', [AdminController::class, 'sales'])->name('admin.sales');
+//     // Route::get('/transactions', [AdminController::class, 'transactions'])->name('admin.transactions');
+//     // Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
+//     // Route::get('/reports', [AdminController::class, 'reports'])->name('admin.reports');
+//     Route::get('/products', [AdminController::class, 'products'])->name('admin.products');
+//     Route::get('/funds', [AdminController::class, 'funds'])->name('admin.funds');
+// });
