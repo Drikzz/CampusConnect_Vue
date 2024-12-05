@@ -14,6 +14,11 @@ class CheckoutController extends Controller
     public function summary($id)
     {
         $product = Product::find($id);
+
+        if (!$product->is_buyable) {
+            return redirect()->back()->with('error', 'This product is not available for purchase.');
+        }
+
         return view('products.order_sum', compact('product'));
     }
 
@@ -34,6 +39,11 @@ class CheckoutController extends Controller
 
         $product = Product::find($request->product_id);
 
+        // Check if product is buyable
+        if (!$product->is_buyable) {
+            return back()->with('error', 'This product is not available for purchase.');
+        }
+
         // Check if there's enough stock
         if ($product->stock < $request->quantity) {
             return back()->with('error', 'Not enough stock available.');
@@ -43,14 +53,14 @@ class CheckoutController extends Controller
             // Create the order
             $order = Order::create([
                 'user_id' => Auth::user()->id,
-                'seller_id' => $product->user_id,
+                'seller_code' => $product->seller_code, // Use product's seller_code directly
                 'address' => "{$request->address}, {$request->city}, {$request->postal_code}",
+                'delivery_estimate' => $request->delivery_estimate,
                 'phone' => $request->phone,
                 'email' => $request->email,
                 'sub_total' => $request->sub_total,
                 'status' => 'Pending',
                 'payment_method' => $request->payment_method,
-                'delivery_estimate' => $request->delivery_estimate,
             ]);
 
             // Create order item

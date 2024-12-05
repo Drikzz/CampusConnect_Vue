@@ -20,17 +20,20 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'username',
+        'password',
         'first_name',
         'last_name',
-        'user_type_id',
         'wmsu_email',
+        'user_type_id',
         'wmsu_dept_id',
         'grade_level_id',
-        'password',
         'profile_picture',
+        'is_seller',
+        'seller_code',
+        'is_verified',
+        'verified_at',
         'wmsu_id_front',
         'wmsu_id_back',
-        'is_seller',
     ];
 
     /**
@@ -61,6 +64,11 @@ class User extends Authenticatable
         return $this->hasMany(Product::class);
     }
 
+    public function sellerProducts(): HasMany
+    {
+        return $this->hasMany(Product::class, 'seller_code', 'seller_code');
+    }
+
     public function userType(): HasMany
     {
         return $this->hasMany(UserType::class);
@@ -88,6 +96,6 @@ class User extends Authenticatable
 
     public function soldOrders(): HasMany
     {
-        return $this->hasMany(Order::class, 'user_id'); // as seller
+        return $this->hasMany(Order::class, 'seller_id'); // as seller
     }
 }
