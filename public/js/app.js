@@ -358,4 +358,6 @@ $(document).ready(function () {
     // TRIGGERS
     // Trigger change event on page load to set initial state
     $('input[type="radio"][name="option"]:checked').trigger('change');
+
+
 });
