@@ -17,6 +17,11 @@ Route::view('/adminlogin', 'admin.adminlogin')->name('adminlogin');
 Route::get('/products', [ProductController::class, 'index'])->name('products');
 Route::get('/products/prod/{id}', [ProductController::class, 'product_details'])->name('prod.details');
 
+// Route::get('/trade', [ProductController::class, 'index'])->name('products');
+// Route::get('/trade/prod/{id}', [ProductController::class, 'product_details'])->name('prod.details');
+
+
+
 Route::middleware('auth')->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -86,3 +91,16 @@ Route::middleware('guest')->group(function () {
     Route::view('/login', 'auth.login')->name('login');
     Route::post('/login', [AuthController::class, 'login']);
 });
+
+
+Route::get('/admin/dashboard', function () {
+    // Refer to the 'admin/admin-dashboard.blade.php' view file
+    return view('admin.admin-dashboard'); // This is correct
+})->name('admin.dashboard');
+
+
+Route::view('/admin/sales', 'admin.admin-sales')->name('adminsales');
+   
+Route::view('/admin/products', 'admin.admin-productManagement')->name('admin-product-management');
+Route::view('/admin/userManagement', 'admin.admin-userManagement')->name('admin-userManagement');
+Route::view('/admin/funds', 'admin.admin-fundManagement')->name('admin-funds');

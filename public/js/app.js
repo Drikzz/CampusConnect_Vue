@@ -316,7 +316,7 @@ $(document).ready(function () {
         // Initialize with starting value
         updateQuantityAndPrices(1);
     }
-
+  
     function setupProductImagePreview(inputId) {
         const $input = $(`#${inputId}`);
         const $container = $input.closest('.relative');
@@ -347,6 +347,13 @@ $(document).ready(function () {
     for (let i = 1; i <= 4; i++) {
         setupProductImagePreview(`image${i}`);
     }
+    
+    //admin burger
+    $('#menuToggle').on('click', function() {
+        $('#sidebar').toggleClass('sidebar-collapsed');
+        $(this).toggleClass('rotate-90');
+    });
+
 
     // TRIGGERS
     // Trigger change event on page load to set initial state
