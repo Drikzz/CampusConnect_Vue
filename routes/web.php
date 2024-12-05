@@ -97,3 +97,7 @@ Route::get('/admin/dashboard', function () {
     // Refer to the 'admin/admin-dashboard.blade.php' view file
     return view('admin.admin-dashboard'); // This is correct
 })->name('admin.dashboard');
+
+
+Route::view('/admin/sales', 'admin.admin-sales')->name('adminsales');
+   
