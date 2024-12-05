@@ -41,7 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/sell', [DashboardController::class, 'sell'])->name('dashboard.sell');
 
     Route::get('/dashboard/sell/terms', [DashboardController::class, 'terms'])->name('dashboard.terms');
-    Route::post('/dashboard/sell/terms', [UserController::class, 'is_verified']);
+    Route::post('/dashboard/sell/terms', [UserController::class, 'is_seller']);
 
     //checkout routes
     Route::get('/products/prod/{id}/summary', [CheckoutController::class, 'summary'])->name('summary');
@@ -50,16 +50,16 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'seller'])->group(function () {  // Changed 'Seller' to 'seller'
 
-    Route::get('/seller/dashboard', [SellerController::class, 'index'])->name('dashboard.seller');
-    Route::get('/seller/products/add', [SellerController::class, 'addproduct'])->name('seller.addproduct');
-    Route::post('/seller/products', [SellerController::class, 'store'])->name('seller.products.store');
-
+    Route::get('/seller/dashboard', [SellerController::class, 'index'])->name('seller.dashboard');
+    Route::get('/seller/products/add', [SellerController::class, 'create'])->name('seller.addproduct');
+    Route::post('/seller/products/add', [SellerController::class, 'store']);
+    Route::get('/seller/products', [SellerController::class, 'products'])->name('seller.products');
     // Route::view('/', 'seller.product')->name('myproduct');
-    Route::view('/addproduct', 'seller.addproduct')->name('addproduct');
-    Route::view('/editproduct', 'seller.editproduct')->name('editproduct');
+    // Route::view('/addproduct', 'seller.addproduct')->name('addproduct');
+    // Route::view('/editproduct', 'seller.editproduct')->name('editproduct');
     Route::view('/wallet', 'seller.wallet')->name('wallet');
 
-    Route::get('/seller/orders', [OrderController::class, 'index'])->name('seller.orders');
+    Route::get('/seller/orders', [OrderController::class, 'index'])->name('seller.orders.index');
     Route::get('/seller/orders/pending', [OrderController::class, 'pending'])->name('seller.orders.pending');
     Route::get('/seller/orders/processing', [OrderController::class, 'processing'])->name('seller.orders.processing');
     Route::get('/seller/orders/completed', [OrderController::class, 'completed'])->name('seller.orders.completed');
@@ -101,5 +101,6 @@ Route::get('/admin/dashboard', function () {
 
 Route::view('/admin/sales', 'admin.admin-sales')->name('adminsales');
    
-Route::view('/Admin-products', 'admin.admin-productManagement')->name('admin-product-management');
-Route::view('/Admin-userManagement', 'admin.admin-userManagement')->name('admin-userManagement');
+Route::view('/admin/products', 'admin.admin-productManagement')->name('admin-product-management');
+Route::view('/admin/userManagement', 'admin.admin-userManagement')->name('admin-userManagement');
+Route::view('/admin/funds', 'admin.admin-fundManagement')->name('admin-funds');
