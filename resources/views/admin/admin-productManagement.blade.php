@@ -76,7 +76,7 @@
                         <td class="px-6 py-4">
                             <div class="flex justify-center items-center space-x-2">
                                 <button type="button" class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center edit-button">Edit</button>
-                                <button type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center">View</button>
+                                <button type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center view-button">View</button>
                                 <button type="button" class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center">Remove</button>
                             </div>
                         </td>
@@ -96,7 +96,7 @@
                         <td class="px-6 py-4">
                             <div class="flex justify-center items-center space-x-2">
                                 <button type="button" class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center edit-button">Edit</button>
-                                <button type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center">View</button>
+                                <button type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center view-button">View</button>
                                 <button type="button" class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center">Remove</button>
                             </div>
                         </td>
@@ -116,7 +116,7 @@
                         <td class="px-6 py-4">
                             <div class="flex justify-center items-center space-x-2">
                                 <button type="button" class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center edit-button">Edit</button>
-                                <button type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center">View</button>
+                                <button type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center view-button">View</button>
                                 <button type="button" class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center">Remove</button>
                             </div>
                         </td>
@@ -136,7 +136,7 @@
                         <td class="px-6 py-4">
                             <div class="flex justify-center items-center space-x-2">
                                 <button type="button" class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center edit-button">Edit</button>
-                                <button type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center">View</button>
+                                <button type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center view-button">View</button>
                                 <button type="button" class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center">Remove</button>
                             </div>
                         </td>
@@ -151,58 +151,146 @@
     <!-- Edit Form Modal -->
     <div id="editFormModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
         <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-            <form class="max-w-sm mx-auto">
-                <h2 class="text-xl font-bold mb-4 text-center">Edit Product</h2>
-                <div class="grid grid-cols-2 gap-4 mb-5">
+            <form class="space-y-8 container m-auto divide-y divide-gray-200">
+                <div class="space-y-8 divide-y divide-gray-200">
                     <div>
-                        <label for="seller-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seller Name</label>
-                        <input type="text" id="seller-name" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-                    </div>
-                    <div>
-                        <label for="product-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Name</label>
-                        <input type="text" id="product-name" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-4 mb-5">
-                    <div>
-                        <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
-                        <input type="text" id="category" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-                    </div>
-                    <div>
-                        <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
-                        <input type="number" id="price" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-4 mb-5">
-                    <div>
-                        <label for="promo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Promo</label>
-                        <input type="text" id="promo" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-                    </div>
-                    <div>
-                        <label for="date-listed" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date Listed</label>
-                        <input type="date" id="date-listed" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-                    </div>
-                </div>
-                <div class="mb-5">
-                    <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
-                    <input type="text" id="status" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-                </div>
-                <div class="mb-5">
-                    <label for="product-image" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Image</label>
-                    <div class="relative">
-                        <input type="file" id="product-image" class="w-full h-full" required />
-                        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                            </svg>
+                        <div>
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">Edit Transaction</h3>
+                            <p class="mt-1 text-sm text-gray-500">Update the transaction information below.</p>
+                        </div>
+                        <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                            <div class="sm:col-span-3">
+                                <label for="buyer-name" class="block text-sm font-medium text-gray-700">Buyer Name</label>
+                                <div class="mt-1">
+                                    <input type="text" name="buyer-name" id="buyer-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label for="seller-name" class="block text-sm font-medium text-gray-700">Seller Name</label>
+                                <div class="mt-1">
+                                    <input type="text" name="seller-name" id="seller-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                            </div>
+                            <div class="sm:col-span-6">
+                                <label for="product-name" class="block text-sm font-medium text-gray-700">Product Name</label>
+                                <div class="mt-1">
+                                    <input type="text" name="product-name" id="product-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label for="quantity" class="block text-sm font-medium text-gray-700">Quantity</label>
+                                <div class="mt-1">
+                                    <input type="number" name="quantity" id="quantity" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label for="total" class="block text-sm font-medium text-gray-700">Total</label>
+                                <div class="mt-1">
+                                    <input type="text" name="total" id="total" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                            </div>
+                            <div class="sm:col-span-6">
+                                <label for="transaction-method" class="block text-sm font-medium text-gray-700">Transaction Method</label>
+                                <div class="mt-1">
+                                    <input type="text" name="transaction-method" id="transaction-method" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label for="commission" class="block text-sm font-medium text-gray-700">Commission</label>
+                                <div class="mt-1">
+                                    <input type="text" name="commission" id="commission" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+                                <div class="mt-1">
+                                    <select id="status" name="status" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                                        <option>Pending</option>
+                                        <option>Approved</option>
+                                        <option>Cancelled</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="sm:col-span-6">
+                                <label for="date" class="block text-sm font-medium text-gray-700">Date</label>
+                                <div class="mt-1">
+                                    <input type="date" name="date" id="date" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                            </div>
+                            <div class="sm:col-span-6">
+                                <label for="product-image" class="block text-sm font-medium text-gray-700">Product Image</label>
+                                <div class="mt-1">
+                                    <input type="file" name="product-image" id="product-image" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="flex justify-end space-x-2">
-                    <button type="button" class="text-gray-700 bg-gray-200 hover:bg-gray-300 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" onclick="document.getElementById('editFormModal').classList.add('hidden')">Cancel</button>
-                    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Save Changes</button>
+                <div class="pt-5">
+                    <div class="flex justify-end">
+                        <button type="button" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onclick="document.getElementById('editFormModal').classList.add('hidden')">Cancel</button>
+                        <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Save</button>
+                    </div>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- View Modal -->
+    <div id="viewModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+        <div class="relative top-20 mx-auto p-5 border w-3/4 shadow-lg rounded-md bg-white">
+            <div class="space-y-8 container m-auto divide-y divide-gray-200">
+                <div class="space-y-8 divide-y divide-gray-200">
+                    <div>
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">View Product Details</h3>
+                        <p class="mt-1 text-sm text-gray-500">Product information is shown below.</p>
+                        <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                            <div class="sm:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700">Seller Name</label>
+                                <p id="view-seller-name" class="mt-1 text-sm text-gray-900"></p>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700">Product Name</label>
+                                <p id="view-product-name" class="mt-1 text-sm text-gray-900"></p>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700">Category</label>
+                                <p id="view-category" class="mt-1 text-sm text-gray-900"></p>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700">Price</label>
+                                <p id="view-price" class="mt-1 text-sm text-gray-900"></p>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700">Promo</label>
+                                <p id="view-promo" class="mt-1 text-sm text-gray-900"></p>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700">Date Listed</label>
+                                <p id="view-date-listed" class="mt-1 text-sm text-gray-900"></p>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700">Status</label>
+                                <p id="view-status" class="mt-1 text-sm text-gray-900"></p>
+                            </div>
+                            <div class="sm:col-span-6">
+                                <label class="block text-sm font-medium text-gray-700">Product Images</label>
+                                <div class="grid grid-cols-4 gap-4 mt-1">
+                                    <img id="view-image-1" class="h-24 w-24 object-cover rounded-lg">
+                                    <img id="view-image-2" class="h-24 w-24 object-cover rounded-lg">
+                                    <img id="view-image-3" class="h-24 w-24 object-cover rounded-lg">
+                                    <img id="view-image-4" class="h-24 w-24 object-cover rounded-lg">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pt-5">
+                    <div class="flex justify-end">
+                        <button type="button" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onclick="document.getElementById('viewModal').classList.add('hidden')">Close</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -214,6 +302,30 @@
         });
 
         document.getElementById('editFormModal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) {
+                e.currentTarget.classList.add('hidden');
+            }
+        });
+
+        document.querySelectorAll('.view-button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const row = e.target.closest('tr');
+                document.getElementById('view-seller-name').innerText = row.cells[0].innerText;
+                document.getElementById('view-product-name').innerText = row.cells[1].innerText;
+                document.getElementById('view-category').innerText = row.cells[2].innerText;
+                document.getElementById('view-price').innerText = row.cells[3].innerText;
+                document.getElementById('view-promo').innerText = row.cells[4].innerText;
+                document.getElementById('view-date-listed').innerText = row.cells[5].innerText;
+                document.getElementById('view-status').innerText = row.cells[6].innerText;
+                document.getElementById('view-image-1').src = row.cells[7].querySelector('img').src;
+                document.getElementById('view-image-2').src = row.cells[7].querySelector('img').src;
+                document.getElementById('view-image-3').src = row.cells[7].querySelector('img').src;
+                document.getElementById('view-image-4').src = row.cells[7].querySelector('img').src;
+                document.getElementById('viewModal').classList.remove('hidden');
+            });
+        });
+
+        document.getElementById('viewModal').addEventListener('click', (e) => {
             if (e.target === e.currentTarget) {
                 e.currentTarget.classList.add('hidden');
             }

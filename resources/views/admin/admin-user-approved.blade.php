@@ -43,17 +43,17 @@
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
                             </svg>
                         </button>
-                        <div id="dropdown" data-dropdown class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                        <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                             <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdown-button">
-                                <li><button type="button" class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" onclick="window.location.href='{{ route('admin-user-approved') }}'">Approved</button></li>
-                                <li><button type="button" class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Pending</button></li>
-                            </ul>
+                                <li><button type="button" class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Approved</button></li>
+                                <li><button type="button" class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" onclick="window.location.href='{{ route('admin.users') }}'">Pending</button></li>
+                            
                         </div>
                         <div class="relative w-full">
                             <input type="search" id="search-dropdown" class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Search" required />
                             <button type="submit" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-red-700 rounded-e-lg border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                 <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>  
                                 </svg>
                                 <span class="sr-only">Search</span>
                             </button>
@@ -70,6 +70,7 @@
                         <th scope="col" class="px-6 py-3">Profile Image</th>
                         <th scope="col" class="px-6 py-3">WMSU Email</th>
                         <th scope="col" class="px-6 py-3">User Type</th>
+                        <th scope="col" class="px-6 py-3">Status</th>
                         <th scope="col" class="px-6 py-3">Actions</th>
                     </tr>
                 </thead>
@@ -82,11 +83,12 @@
                         </td>
                         <td class="px-6 py-4">eh202201108@wmsu.edu.ph</td>
                         <td class="px-6 py-4">Student</td>
+                        <td class="px-6 py-4">Approved</td>
                         <td class="px-6 py-4">
                             <div class="flex justify-center items-center space-x-2">
-                                <button type="button" class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center">Approve</button>
+                                
                                 <button type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center view-button">View</button>
-                                <button type="button" class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center ">Reject</button>
+                                <button type="button" class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center ">Remove</button>
                             </div>
                         </td>
                     </tr>
@@ -245,7 +247,7 @@
             let filter = this.value.toUpperCase();
             let rows = document.getElementById('productTable').getElementsByTagName('tr');
             for (let i = 0; i < rows.length; i++) {
-                let cells = rows[i].getElementsByTagName('td');
+                let cells = rows[i].getElementsByTagName('th');
                 let match = false;
                 for (let j = 0; j < cells.length; j++) {
                     if (cells[j]) {

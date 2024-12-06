@@ -143,3 +143,4 @@ Route::get('/admin/funds', function() {
 
 Route::view('/Adminside-userprofile', 'admin.adminside-userprofile  ')->name('admin-userManagement');
 Route::view('/Admin-transactions', 'admin.admin-transactions')->name('admin-transactions');
+Route::view('/Admin-user-approve', 'admin.admin-user-approved')->name('admin-user-approved');
