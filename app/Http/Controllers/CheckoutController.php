@@ -13,7 +13,8 @@ class CheckoutController extends Controller
     //
     public function summary($id)
     {
-        $product = Product::find($id);
+        $product = Product::with(['seller', 'images'])
+            ->findOrFail($id);
 
         if (!$product->is_buyable) {
             return redirect()->back()->with('error', 'This product is not available for purchase.');
