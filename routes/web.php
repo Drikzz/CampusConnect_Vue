@@ -64,6 +64,10 @@ Route::middleware(['auth', 'seller'])->group(function () {  // Changed 'Seller' 
     Route::get('/seller/orders/completed', [OrderController::class, 'completed'])->name('seller.orders.completed');
     Route::get('/seller/orders/{order}', [OrderController::class, 'show'])->name('seller.orders.show');
     Route::patch('/seller/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('seller.orders.status');
+
+    Route::get('/seller/products/{product}/edit', [SellerController::class, 'edit'])->name('seller.products.edit');
+    Route::post('/seller/products/{product}/update', [SellerController::class, 'update'])->name('seller.products.update');
+    // Note: Changed from PUT to POST for better file upload compatibility
 });
 
 Route::middleware('guest')->group(function () {
@@ -140,6 +144,12 @@ Route::get('/admin/funds', function() {
 //     Route::get('/funds', [AdminController::class, 'funds'])->name('admin.funds');
 // });
 
+Route::view('/admin/sales', 'admin.admin-sales')->name('adminsales');
+
+Route::view('/admin/products', 'admin.admin-productManagement')->name('admin-product-management');
+Route::view('/admin/userManagement', 'admin.admin-userManagement')->name('admin-userManagement');
+Route::view('/admin/funds', 'admin.admin-fundManagement')->name('admin-funds');
 
 Route::view('/Adminside-userprofile', 'admin.adminside-userprofile  ')->name('admin-userManagement');
 Route::view('/Admin-transactions', 'admin.admin-transactions')->name('admin-transactions');
+

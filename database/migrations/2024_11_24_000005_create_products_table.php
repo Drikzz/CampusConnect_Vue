@@ -22,9 +22,9 @@ return new class extends Migration
             $table->integer('stock');
             $table->string('seller_code')->constrained('users')->onDelete('cascade');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
-            $table->foreignId('trade_method_id')->constrained('trade_methods')->onDelete('cascade');
-            $table->boolean('is_buyable')->default(false);
+            $table->boolean('is_buyable')->default(true);
             $table->boolean('is_tradable')->default(false);
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->timestamps();
         });
     }

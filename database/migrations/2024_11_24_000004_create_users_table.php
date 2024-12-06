@@ -32,6 +32,7 @@ return new class extends Migration
             $table->string('seller_code')->nullable()->unique();  // replaces seller_id
             $table->boolean('is_verified')->default(false);
             $table->timestamp('verified_at')->nullable();
+            
             // If this user is an admin
             $table->boolean('is_admin')->nullable()->default(false);
 
