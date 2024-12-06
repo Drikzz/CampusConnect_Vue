@@ -141,11 +141,11 @@
                 {{-- product price, sale, stock --}}
                 <div class="flex justify-start items-center gap-4 mt-4">
                     <p class="font-Satoshi-bold text-2xl">
-                        &#8369;{{ $product->discounted_price }}
+                        &#8369;{{ number_format($product->discounted_price) }}
                     </p>
 
                     <p class="font-Satoshi-bold text-2xl line-through text-gray-400">
-                        &#8369;{{ $product->price }}
+                        &#8369;{{ number_format($product->price) }}
                     </p>
 
                     <p class="font-Satoshi-bold text-2xl text-red">

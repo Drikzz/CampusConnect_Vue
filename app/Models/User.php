@@ -64,11 +64,6 @@ class User extends Authenticatable
         return $this->hasMany(Product::class);
     }
 
-    public function sellerProducts(): HasMany
-    {
-        return $this->hasMany(Product::class, 'seller_code', 'seller_code');
-    }
-
     public function userType(): HasMany
     {
         return $this->hasMany(UserType::class);
@@ -96,6 +91,6 @@ class User extends Authenticatable
 
     public function soldOrders(): HasMany
     {
-        return $this->hasMany(Order::class, 'seller_id'); // as seller
+        return $this->hasMany(Order::class, 'seller_code', 'seller_code'); // as seller
     }
 }

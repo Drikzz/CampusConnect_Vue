@@ -21,11 +21,15 @@ class Product extends Model
         'stock',
         'seller_code',
         'category_id',
-        'trade_method_id'
+        'is_buyable',
+        'is_tradable',
+        'status',
     ];
 
     protected $casts = [
-        'images' => 'array'
+        'images' => 'array',
+        'is_buyable' => 'boolean',
+        'is_tradable' => 'boolean',
     ];
 
     public function seller(): BelongsTo
@@ -49,10 +53,11 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function tradeMethod()
-    {
-        return $this->belongsTo(tradeMethod::class);
-    }
+    // Remove this method since we're not using trade_method anymore
+    // public function tradeMethod()
+    // {
+    //     return $this->belongsTo(tradeMethod::class);
+    // }
 
     public function getMainImageAttribute()
     {

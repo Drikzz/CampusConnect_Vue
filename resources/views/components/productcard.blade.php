@@ -35,11 +35,11 @@
 
     <div class="flex justify-center items-center w-fit gap-2">
         <p class="font-Satoshi-bold text-2xl">
-            &#8369;{{ $product->discounted_price }}
+            &#8369;{{ number_format($product->discounted_price) }}
         </p>
 
         <p class="font-Satoshi-bold line-through text-2xl text-gray-400">
-            &#8369;{{ $product->price }}
+            &#8369;{{ number_format($product->price) }}
         </p>
     </div>
 

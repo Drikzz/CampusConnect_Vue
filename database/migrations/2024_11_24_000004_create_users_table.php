@@ -33,7 +33,7 @@ return new class extends Migration
             $table->boolean('is_verified')->default(false);
             $table->timestamp('verified_at')->nullable();
             // If this user is an admin
-            $table->timestamp('is_admin')->default(false);
+            $table->boolean('is_admin')->default(false);
 
             $table->string('wmsu_id_front')->nullable();
             $table->string('wmsu_id_back')->nullable();
