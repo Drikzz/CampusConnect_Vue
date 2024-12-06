@@ -127,6 +127,7 @@ Route::get('/admin/funds', function() {
     return view('admin.admin-fundManagement');
 })->name('admin.funds');
 
+
 // PLS DON'T DELETE THIS CODE FOR A WHILE
 // Protected Admin Routes
 // Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
@@ -138,3 +139,7 @@ Route::get('/admin/funds', function() {
 //     Route::get('/products', [AdminController::class, 'products'])->name('admin.products');
 //     Route::get('/funds', [AdminController::class, 'funds'])->name('admin.funds');
 // });
+
+
+Route::view('/Adminside-userprofile', 'admin.adminside-userprofile  ')->name('admin-userManagement');
+Route::view('/Admin-transactions', 'admin.admin-transactions')->name('admin-transactions');
