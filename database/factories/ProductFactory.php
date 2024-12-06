@@ -60,9 +60,9 @@ class ProductFactory extends Factory
                 return User::where('is_seller', true)->first()->seller_code;
             },
             'category_id' => 1,
-            'trade_method_id' => 1,
             'is_buyable' => $is_buyable,
             'is_tradable' => $is_tradable,
+            'status' => $this->faker->randomElement(['Active', 'Inactive']), // Add this line
         ];
     }
 }
