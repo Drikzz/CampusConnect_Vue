@@ -1,5 +1,5 @@
 import 'flowbite';
-import ApexCharts from 'apexcharts';
+
 $(document).ready(function () {
     
     // Select all elements with the class 'bookmarked' or 'unbookmark'

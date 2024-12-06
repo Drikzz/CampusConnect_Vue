@@ -2,7 +2,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-[30px] justify-center items-center">
         <div class="bg-white w-full h-[150px] rounded-[20px] shadow-lg p-[20px] flex items-center justify-between cursor-pointer transition-all ease-in-out hover:scale-105 hover:shadow-xl">
             <div class="text-black">
-                <h2 class="text-[28px] font-bold leading-[1.2]">16</h2>
+                <h2 class="text-[28px] font-bold leading-[1.2]">1</h2>
                 <p class="text-[14px] text-[#a5a5a5]">Ongoing Transactions</p>
             </div>
             <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="48" height="48"><path d="M2.5,2.5C2.5,1.12,3.62,0,5,0s2.5,1.12,2.5,2.5-1.12,2.5-2.5,2.5-2.5-1.12-2.5-2.5ZM7,15h-3c-1.1,0-2-.9-2-2v-3c0-1.1,.9-2,2-2,.55,0,1-.45,1-1s-.45-1-1-1C1.79,6,0,7.79,0,10v3c0,1.48,.81,2.77,2,3.46v6.54c0,.55,.45,1,1,1s1-.45,1-1v-6h2v6c0,.55,.45,1,1,1s1-.45,1-1v-7c0-.55-.45-1-1-1ZM19,5c1.38,0,2.5-1.12,2.5-2.5s-1.12-2.5-2.5-2.5-2.5,1.12-2.5,2.5,1.12,2.5,2.5,2.5Zm1,1c-.55,0-1,.45-1,1s.45,1,1,1c1.1,0,2,.9,2,2v3c0,1.1-.9,2-2,2h-3c-.55,0-1,.45-1,1v7c0,.55,.45,1,1,1s1-.45,1-1v-6h2v6c0,.55,.45,1,1,1s1-.45,1-1v-6.54c1.19-.69,2-1.99,2-3.46v-3c0-2.21-1.79-4-4-4Zm-2.87,1.91l-1.61-1.61c-.39-.39-1.02-.39-1.41,0-.39,.39-.39,1.02,0,1.41l1.29,1.29h-6.8l1.29-1.29c.39-.39,.39-1.02,0-1.41-.39-.39-1.02-.39-1.41,0l-1.61,1.61c-1.15,1.15-1.15,3.03,0,4.19l1.61,1.61c.2,.2,.45,.29,.71,.29s.51-.1,.71-.29c.39-.39,.39-1.02,0-1.41l-1.29-1.29h6.8l-1.29,1.29c-.39,.39-.39,1.02,0,1.41,.2,.2,.45,.29,.71,.29s.51-.1,.71-.29l1.61-1.61c1.15-1.15,1.15-3.03,0-4.19Z"/></svg>
@@ -62,28 +62,33 @@
             <table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" class="px-6 py-3">User id</th>
-                        <th scope="col" class="px-6 py-3">User name</th>
-                        <th scope="col" class="px-6 py-3">Profile Image</th>
-                        <th scope="col" class="px-6 py-3">WMSU Email</th>
-                        <th scope="col" class="px-6 py-3">User Type</th>
+                        <th scope="col" class="px-6 py-3">Buyer Name</th>
+                        <th scope="col" class="px-6 py-3">Seller Name</th>
+                        <th scope="col" class="px-6 py-3">Product Name</th>
+                        <th scope="col" class="px-6 py-3">Quantity</th>
+                        <th scope="col" class="px-6 py-3">Total</th>
+                        <th scope="col" class="px-6 py-3">Transaction Method</th>
+                        <th scope="col" class="px-6 py-3">Commission</th>
+                        <th scope="col" class="px-6 py-3">Status</th>
+                        <th scope="col" class="px-6 py-3">Date</th>
                         <th scope="col" class="px-6 py-3">Actions</th>
                     </tr>
                 </thead>
                 <tbody id="productTable">
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td class="px-6 py-4">1</td>
                         <td class="px-6 py-4">John Harold</td>
-                        <td class="px-6 py-4">
-                            <img src="{{ asset('imgs/img5.jpg') }}" alt="Profile Image" class="h-12 w-12 object-cover rounded-full mx-auto">
-                        </td>
-                        <td class="px-6 py-4">eh202201108@wmsu.edu.ph</td>
-                        <td class="px-6 py-4">Student</td>
+                        <td class="px-6 py-4">Jane Doe</td>
+                        <td class="px-6 py-4">Product A</td>
+                        <td class="px-6 py-4">2</td>
+                        <td class="px-6 py-4">$40</td>
+                        <td class="px-6 py-4">Online Payment</td>
+                        <td class="px-6 py-4">50</td>
+                        <td class="px-6 py-4">Pending</td>
+                        <td class="px-6 py-4">2023-10-01</td>
                         <td class="px-6 py-4">
                             <div class="flex justify-center items-center space-x-2">
-                                <button type="button" class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center">Approve</button>
-                                <button type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center view-button">View</button>
-                                <button type="button" class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center ">Reject</button>
+                                <button type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center view-button" onclick="document.getElementById('viewFormModal').classList.remove('hidden')">View</button>
+                                <button type="button" class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center ">Cancel</button>
                             </div>
                         </td>
                     </tr>
@@ -100,57 +105,66 @@
                 <div class="space-y-8 divide-y divide-gray-200">
                     <div>
                         <div>
-                            <h3 class="text-lg leading-6 font-medium text-gray-900">Edit User</h3>
-                            <p class="mt-1 text-sm text-gray-500">Update the user information below.</p>
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">Edit Transaction</h3>
+                            <p class="mt-1 text-sm text-gray-500">Update the transaction information below.</p>
                         </div>
                         <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                             <div class="sm:col-span-3">
-                                <label for="user-id" class="block text-sm font-medium text-gray-700">User ID</label>
+                                <label for="buyer-name" class="block text-sm font-medium text-gray-700">Buyer Name</label>
                                 <div class="mt-1">
-                                    <input type="text" name="user-id" id="user-id" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" readonly>
+                                    <input type="text" name="buyer-name" id="buyer-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
                                 </div>
                             </div>
                             <div class="sm:col-span-3">
-                                <label for="user-name" class="block text-sm font-medium text-gray-700">User Name</label>
+                                <label for="seller-name" class="block text-sm font-medium text-gray-700">Seller Name</label>
                                 <div class="mt-1">
-                                    <input type="text" name="user-name" id="user-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                                    <input type="text" name="seller-name" id="seller-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
                                 </div>
                             </div>
                             <div class="sm:col-span-6">
-                                <label for="profile-image" class="block text-sm font-medium text-gray-700">Profile Image</label>
-                                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-                                    <div class="space-y-1 text-center">
-                                        <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                        <div class="flex text-sm text-gray-600">
-                                            <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
-                                                <span>Upload a file</span>
-                                                <input id="file-upload" name="file-upload" type="file" class="sr-only" onchange="previewImage(event)">
-                                            </label>
-                                            <p class="pl-1">or drag and drop</p>
-                                        </div>
-                                        <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
-                                    </div>
+                                <label for="product-name" class="block text-sm font-medium text-gray-700">Product Name</label>
+                                <div class="mt-1">
+                                    <input type="text" name="product-name" id="product-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
                                 </div>
-                                <div class="mt-2">
-                                    <img id="image-preview" class="h-24 w-24 object-cover rounded-full mx-auto" src="#" alt="Image Preview" style="display: none;">
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label for="quantity" class="block text-sm font-medium text-gray-700">Quantity</label>
+                                <div class="mt-1">
+                                    <input type="number" name="quantity" id="quantity" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label for="total" class="block text-sm font-medium text-gray-700">Total</label>
+                                <div class="mt-1">
+                                    <input type="text" name="total" id="total" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
                                 </div>
                             </div>
                             <div class="sm:col-span-6">
-                                <label for="wmsu-email" class="block text-sm font-medium text-gray-700">WMSU Email</label>
+                                <label for="transaction-method" class="block text-sm font-medium text-gray-700">Transaction Method</label>
                                 <div class="mt-1">
-                                    <input type="email" name="wmsu-email" id="wmsu-email" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                                    <input type="text" name="transaction-method" id="transaction-method" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
                                 </div>
                             </div>
-                            <div class="sm:col-span-6">
-                                <label for="user-type" class="block text-sm font-medium text-gray-700">User Type</label>
+                            <div class="sm:col-span-3">
+                                <label for="commission" class="block text-sm font-medium text-gray-700">Commission</label>
                                 <div class="mt-1">
-                                    <select id="user-type" name="user-type" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
-                                        <option>Student</option>
-                                        <option>Faculty</option>
-                                        <option>Admin</option>
+                                    <input type="text" name="commission" id="commission" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+                                <div class="mt-1">
+                                    <select id="status" name="status" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                                        <option>Pending</option>
+                                        <option>Approved</option>
+                                        <option>Cancelled</option>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="sm:col-span-6">
+                                <label for="date" class="block text-sm font-medium text-gray-700">Date</label>
+                                <div class="mt-1">
+                                    <input type="date" name="date" id="date" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
                                 </div>
                             </div>
                         </div>
@@ -173,42 +187,73 @@
                 <div class="space-y-8 divide-y divide-gray-200">
                     <div>
                         <div>
-                            <h3 class="text-lg leading-6 font-medium text-gray-900">View User</h3>
-                            <p class="mt-1 text-sm text-gray-500">User details are shown below.</p>
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">View Transaction</h3>
+                            <p class="mt-1 text-sm text-gray-500">Transaction details are shown below.</p>
                         </div>
+                        <!-- Progress Bar -->
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 mt-4">
+                            <div class="bg-blue-600 h-2.5 rounded-full" style="width: 25%"></div>
+                        </div>
+                        <div class="flex justify-between text-xs mt-1">
+                            <span>Scheduled</span>
+                            <span>Payment</span>
+                            <span>Transact</span>
+                            <span>Completed</span>
+                        </div>
+                        <!-- End Progress Bar -->
                         <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                            <div class="sm:col-span-6 text-center">
-                                <img id="view-profile-image" class="h-48 w-48 object-cover rounded-full mx-auto" src="#" alt="Profile Image">
-                            </div>
                             <div class="sm:col-span-6">
-                                <label for="view-username" class="block text-sm font-medium text-gray-700">Username</label>
+                                <label for="view-buyer-name" class="block text-sm font-medium text-gray-700">Buyer Name</label>
                                 <div class="mt-1">
-                                    <input type="text" name="view-username" id="view-username" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" readonly>
+                                    <input type="text" name="view-buyer-name" id="view-buyer-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" readonly>
                                 </div>
                             </div>
                             <div class="sm:col-span-6">
-                                <label for="view-firstname" class="block text-sm font-medium text-gray-700">First Name</label>
+                                <label for="view-seller-name" class="block text-sm font-medium text-gray-700">Seller Name</label>
                                 <div class="mt-1">
-                                    <input type="text" name="view-firstname" id="view-firstname" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" readonly>
+                                    <input type="text" name="view-seller-name" id="view-seller-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" readonly>
                                 </div>
                             </div>
                             <div class="sm:col-span-6">
-                                <label for="view-lastname" class="block text-sm font-medium text-gray-700">Last Name</label>
+                                <label for="view-product-name" class="block text-sm font-medium text-gray-700">Product Name</label>
                                 <div class="mt-1">
-                                    <input type="text" name="view-lastname" id="view-lastname" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" readonly>
+                                    <input type="text" name="view-product-name" id="view-product-name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" readonly>
+                                </div>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label for="view-quantity" class="block text-sm font-medium text-gray-700">Quantity</label>
+                                <div class="mt-1">
+                                    <input type="number" name="view-quantity" id="view-quantity" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" readonly>
+                                </div>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label for="view-total" class="block text-sm font-medium text-gray-700">Total</label>
+                                <div class="mt-1">
+                                    <input type="text" name="view-total" id="view-total" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" readonly>
                                 </div>
                             </div>
                             <div class="sm:col-span-6">
-                                <label for="view-email" class="block text-sm font-medium text-gray-700">Email</label>
+                                <label for="view-transaction-method" class="block text-sm font-medium text-gray-700">Transaction Method</label>
                                 <div class="mt-1">
-                                    <input type="email" name="view-email" id="view-email" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" readonly>
+                                    <input type="text" name="view-transaction-method" id="view-transaction-method" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" readonly>
+                                </div>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label for="view-commission" class="block text-sm font-medium text-gray-700">Commission</label>
+                                <div class="mt-1">
+                                    <input type="text" name="view-commission" id="view-commission" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" readonly>
+                                </div>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label for="view-status" class="block text-sm font-medium text-gray-700">Status</label>
+                                <div class="mt-1">
+                                    <input type="text" name="view-status" id="view-status" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" readonly>
                                 </div>
                             </div>
                             <div class="sm:col-span-6">
-                                <label for="view-additional-image" class="block text-sm font-medium text-gray-700">Id Images</label>
-                                <div class="mt-1 flex justify-center space-x-4">
-                                    <img id="view-additional-image-front" class="h-64 w-64 object-cover rounded-lg" src="{{ asset('imgs/sample-sticker.jpg') }}" alt="Additional Image Front">
-                                    <img id="view-additional-image-back" class="h-64 w-64 object-cover rounded-lg" src="{{ asset('imgs/sample-sticker.jpg') }}" alt="Additional Image Back">
+                                <label for="view-date" class="block text-sm font-medium text-gray-700">Date</label>
+                                <div class="mt-1">
+                                    <input type="date" name="view-date" id="view-date" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" readonly>
                                 </div>
                             </div>
                         </div>
@@ -216,9 +261,23 @@
                 </div>
                 <div class="pt-5">
                     <div class="flex justify-end space-x-2">
-                        <button type="button" class="bg-green-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Approve</button>
-                        <button type="button" class="bg-blue-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 view-profile-button">View Profile</button>
+                        <button type="button" class="bg-blue-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 view-profile-button">Manage Transactions</button>
                         <button type="button" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onclick="document.getElementById('viewFormModal').classList.add('hidden')">Close</button>
+                    </div>
+                </div>
+                <!-- Image Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                    <div class="bg-gray-100 p-4 rounded-lg shadow-md">
+                        <img src="#" alt="Image 1" class="w-full h-32 object-cover rounded-md">
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg shadow-md">
+                        <img src="#" alt="Image 2" class="w-full h-32 object-cover rounded-md">
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg shadow-md">
+                        <img src="#" alt="Image 3" class="w-full h-32 object-cover rounded-md">
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg shadow-md">
+                        <img src="#" alt="Image 4" class="w-full h-32 object-cover rounded-md">
                     </div>
                 </div>
             </div>
