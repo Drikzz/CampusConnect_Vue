@@ -55,14 +55,10 @@ class ProductFactory extends Factory
             'discounted_price' => $discountedPrice,
             'images' => $imageUrls,
             'stock' => $this->faker->numberBetween(1, 100),
-            'seller_code' => function () {
-                // Get an existing seller's code
-                return User::where('is_seller', true)->first()->seller_code;
-            },
             'category_id' => 1,
             'is_buyable' => $is_buyable,
             'is_tradable' => $is_tradable,
-            'status' => $this->faker->randomElement(['Active', 'Inactive']), // Add this line
+            'status' => $this->faker->randomElement(['Active', 'Inactive']),
         ];
     }
 }
