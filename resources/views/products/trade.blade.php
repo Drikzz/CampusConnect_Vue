@@ -15,7 +15,7 @@
 
         <div class="flex justify-center items-center w-full py-8">
             <p class="font-Footer italic text-4xl">
-                ALL PRODUCTS
+                TRADABLE ITEMS
             </p>
         </div>
 

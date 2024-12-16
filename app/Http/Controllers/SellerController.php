@@ -270,4 +270,48 @@ class SellerController extends Controller
             ], 500);
         }
     }
+
+    public function destroy(Product $product)
+    {
+        try {
+            // Verify seller ownership
+            if ($product->seller_code !== Auth::user()->seller_code) {
+                return redirect()->back()->with('error', 'Unauthorized action.');
+            }
+
+            // Delete associated images from storage
+            if ($product->images) {
+                foreach ($product->images as $image) {
+                    $path = str_replace('/storage/', '', parse_url($image, PHP_URL_PATH));
+                    if (Storage::disk('public')->exists($path)) {
+                        Storage::disk('public')->delete($path);
+                    }
+                }
+            }
+
+            // Delete the product
+            $product->delete();
+
+            return redirect()->route('seller.products')
+                ->with('success', 'Product deleted successfully.');
+        } catch (\Exception $e) {
+            Log::error('Product deletion error: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error deleting product. Please try again.');
+        }
+    }
+
+    public function categories()
+    {
+        $sellerCode = Auth::user()->seller_code;
+
+        $orderCounts = (object)[
+            'pendingCount' => Order::where('seller_code', $sellerCode)->where('status', 'Pending')->count(),
+            'processingCount' => Order::where('seller_code', $sellerCode)->where('status', 'Processing')->count(),
+            'completedCount' => Order::where('seller_code', $sellerCode)->where('status', 'Completed')->count(),
+        ];
+        View::share('orderCounts', $orderCounts);
+
+        return view('seller.categories', compact('orderCounts'));
+    }
 }
