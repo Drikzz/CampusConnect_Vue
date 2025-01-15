@@ -160,18 +160,15 @@
                 </div>
 
                 {{-- My Orders --}}
-                {{-- <div id="pending" class="tab-content hidden">
-                    <x-myOrders status="pending" :orders="$pendingOrders" />
-                </div> --}}
                 <div id="pending" class="tab-content hidden">
                     <x-myOrders :user="$user" :user_type="$user_type" :pendingOrders="$pendingOrders" />
                 </div>
-                {{-- <div id="to-pay" class="tab-content hidden">
-                    <x-myOrders status="to-pay" :orders="$toPayOrders" />
+                <div id="to-pay" class="tab-content hidden">
+                    <x-toPayOrders />
                 </div>
                 <div id="completed" class="tab-content hidden">
-                    <x-myOrders status="completed" :orders="$completedOrders" />
-                </div> --}}
+                    <x-completedOrders />
+                </div>
 
                 {{-- Favorites --}}
                 <div id="favorites" class="tab-content hidden">
@@ -185,4 +182,26 @@
             </div>
         </div>
     </div>
+    <script>
+        function switchOrderTab(status) {
+            // Hide all order contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+
+            // Show selected content
+            document.getElementById(status).classList.remove('hidden');
+
+            // Update tab styles
+            document.querySelectorAll('.order-tab').forEach(tab => {
+                if (tab.dataset.tab === status) {
+                    tab.classList.add('border-primary-color', 'text-primary-color');
+                    tab.classList.remove('border-transparent', 'text-gray-500');
+                } else {
+                    tab.classList.remove('border-primary-color', 'text-primary-color');
+                    tab.classList.add('border-transparent', 'text-gray-500');
+                }
+            });
+        }
+    </script>
 </x-layout>
