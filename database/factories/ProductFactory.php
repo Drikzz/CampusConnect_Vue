@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Product>
@@ -25,17 +26,11 @@ class ProductFactory extends Factory
         $discount = $this->faker->numberBetween(0, 100);
         $discountedPrice = $price - ($price * ($discount / 100));
 
-        // Get 5 random unique image indices from 1-8
-        $selectedIndices = collect(range(1, 8))
-            ->shuffle()
-            ->take(5)
-            ->values()
-            ->all();
+        // Get a random image index from 1-8
+        $selectedIndex = $this->faker->numberBetween(1, 8);
 
-        // Generate image URLs for the selected indices
-        $imageUrls = array_map(function ($index) {
-            return asset("imgs/img{$index}.jpg");
-        }, $selectedIndices);
+        // Generate image URL using the public path
+        $imageUrls = ["products/sample_imgs/img{$selectedIndex}.jpg"];
 
         // Generate random values for is_buyable and is_tradable
         $rand = $this->faker->numberBetween(1, 100);

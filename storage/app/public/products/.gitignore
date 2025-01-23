@@ -3,4 +3,5 @@
 !*.jpeg
 !*.png
 !*.gif
+!sample_imgs/
 !.gitignore
