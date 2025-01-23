@@ -70,6 +70,10 @@ class SellerController extends Controller
     {
         $sellerCode = Auth::user()->seller_code;
 
+        if (!$sellerCode) {
+            return redirect()->back()->with('error', 'Seller code not found. Please update your profile.');
+        }
+
         // Update order counts to use seller_code
         $orderCounts = (object)[
             'pendingCount' => Order::where('seller_code', $sellerCode)->where('status', 'Pending')->count(),
@@ -113,7 +117,7 @@ class SellerController extends Controller
         // Handle main image (required)
         if ($request->hasFile('main_image')) {
             $path = $request->file('main_image')->store('products', 'public');
-            $imagePaths[] = Storage::url($path);
+            $imagePaths[] = ($path);
         }
 
         // Handle additional images (optional)
@@ -121,7 +125,7 @@ class SellerController extends Controller
             foreach ($request->file('additional_images') as $image) {
                 if ($image) {
                     $path = $image->store('products', 'public');
-                    $imagePaths[] = Storage::url($path);
+                    $imagePaths[] = ($path);
                 }
             }
         }
