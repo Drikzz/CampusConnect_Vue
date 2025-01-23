@@ -9,14 +9,14 @@
                         <div class="w-28 h-28">
                             <img id="img{{ $index + 1 }}"
                                 class="w-full h-full aspect-square object-cover hover:outline hover:outline-black"
-                                src="{{ $image }}" alt="">
+                                src="{{ asset('storage/' . $image) }}" alt="">
                         </div>
                     @endforeach
                 </div>
 
                 <div class="h-full w-[80%] bg-black relative">
-                    <img id="mainImage" class="object-cover aspect-square w-full h-full" src="{{ $product->images[0] }}"
-                        alt="">
+                    <img id="mainImage" class="object-cover aspect-square w-full h-full"
+                        src="{{ asset('storage/' . $product->images[0]) }}" alt="">
                     <button id="prevButton"
                         class="absolute left-3 top-1/2 transform -translate-y-1/2 bg-white p-4 rounded-full flex justify-center items-center">
                         <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"
