@@ -62,16 +62,19 @@
                                 {{ $product->status }}
                             </span>
                         </td>
-                        <td class="flex items-center px-6 py-4">
-                            <button onclick="ProductManager.edit({{ $product->id }})"
-                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
-                            <form action="#" method="POST" class="inline"
-                                onsubmit="return confirm('Are you sure?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit"
-                                    class="font-medium text-red-600 dark:text-red-500 hover:underline ms-3">Remove</button>
-                            </form>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-4">
+                                <button onclick="ProductManager.edit({{ $product->id }})"
+                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
+                                <form action="{{ route('seller.products.delete', ['product' => $product->id]) }}"
+                                    method="POST" class="inline"
+                                    onsubmit="return confirm('Are you sure you want to delete this product? This action cannot be undone.')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 @empty

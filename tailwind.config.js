@@ -11,6 +11,11 @@ export default {
         "./node_modules/flowbite/**/*.js",
         "vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php"
     ],
+    safelist: [
+        'bg-primary-color',
+        'text-primary-color',
+        'border-primary-color',
+    ],
     theme: {
         extend: {
             fontFamily: {

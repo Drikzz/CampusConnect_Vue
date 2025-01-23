@@ -127,37 +127,62 @@
     </div>
 
     {{-- Quick Actions --}}
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <a href="{{ route('seller.addproduct') }}" class="bg-white p-4 rounded-lg shadow text-center hover:bg-gray-50">
-            <svg class="w-8 h-8 mx-auto text-blue-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-            </svg>
-            <span class="text-sm font-medium">Add Product</span>
-        </a>
-        <a href="{{ route('seller.orders.index') }}"
-            class="bg-white p-4 rounded-lg shadow text-center hover:bg-gray-50">
-            <svg class="w-8 h-8 mx-auto text-green-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-            </svg>
-            <span class="text-sm font-medium">View Orders</span>
-        </a>
-        <a href="#" class="bg-white p-4 rounded-lg shadow text-center hover:bg-gray-50">
-            <svg class="w-8 h-8 mx-auto text-yellow-500 mb-2" fill="none" stroke="currentColor"
-                viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10" />
-            </svg>
-            <span class="text-sm font-medium">Manage Stock</span>
-        </a>
-        <a href="#" class="bg-white p-4 rounded-lg shadow text-center hover:bg-gray-50">
-            <svg class="w-8 h-8 mx-auto text-purple-500 mb-2" fill="none" stroke="currentColor"
-                viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
-            <span class="text-sm font-medium">Edit Profile</span>
-        </a>
+    <div class="my-8">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4">Quick Actions</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <a href="{{ route('seller.addproduct') }}"
+                class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
+                <div class="flex flex-col items-center space-y-2">
+                    <div class="p-3 bg-blue-50 rounded-full">
+                        <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">Add Product</span>
+                </div>
+            </a>
+
+            <a href="{{ route('seller.orders.index') }}"
+                class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
+                <div class="flex flex-col items-center space-y-2">
+                    <div class="p-3 bg-green-50 rounded-full">
+                        <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">View Orders</span>
+                </div>
+            </a>
+
+            <a href="#"
+                class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
+                <div class="flex flex-col items-center space-y-2">
+                    <div class="p-3 bg-yellow-50 rounded-full">
+                        <svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10" />
+                        </svg>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">Manage Stock</span>
+                </div>
+            </a>
+
+            <a href="#"
+                class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
+                <div class="flex flex-col items-center space-y-2">
+                    <div class="p-3 bg-purple-50 rounded-full">
+                        <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">Edit Profile</span>
+                </div>
+            </a>
+        </div>
     </div>
 
     {{-- Low Stock Alert --}}

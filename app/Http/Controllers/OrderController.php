@@ -9,37 +9,22 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::where('seller_id', auth()->id())
-            ->latest()
-            ->paginate(10);
-        return view('seller.orders.index', compact('orders'));
+        return view('seller.orders.index');
     }
 
     public function pending()
     {
-        $orders = Order::where('seller_id', auth()->id())
-            ->where('status', 'Pending')
-            ->latest()
-            ->paginate(10);
-        return view('seller.orders.index', compact('orders'));
+        return view('seller.orders.pending');
     }
 
     public function processing()
     {
-        $orders = Order::where('seller_id', auth()->id())
-            ->where('status', 'Processing')
-            ->latest()
-            ->paginate(10);
-        return view('seller.orders.index', compact('orders'));
+        return view('seller.orders.processing');
     }
 
     public function completed()
     {
-        $orders = Order::where('seller_id', auth()->id())
-            ->where('status', 'Completed')
-            ->latest()
-            ->paginate(10);
-        return view('seller.orders.index', compact('orders'));
+        return view('seller.orders.completed');
     }
 
     public function show(Order $order)
