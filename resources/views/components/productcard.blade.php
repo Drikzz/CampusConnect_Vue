@@ -3,7 +3,7 @@
 <div class="w-60 h-[30rem] p-4 flex flex-col justify-between items-start gap-4 hover:shadow-lg rounded">
     <div class="relative">
         <a href="{{ route('prod.details', $product->id) }}">
-            <img src="{{ $product->images[0] }}" alt="" class="w-52 h-64 object-cover">
+            <img src="{{ asset('storage/' . $product->images[0]) }}" alt="" class="w-52 h-64 object-cover">
         </a>
         <div class="absolute bottom-2 right-2 rounded-2xl bg-white px-3 py-1">
             <p class="font-Satoshi-bold text-sm text-black">
@@ -35,11 +35,11 @@
 
     <div class="flex justify-center items-center w-fit gap-2">
         <p class="font-Satoshi-bold text-2xl">
-            &#8369;{{ $product->discounted_price }}
+            &#8369;{{ number_format($product->discounted_price) }}
         </p>
 
         <p class="font-Satoshi-bold line-through text-2xl text-gray-400">
-            &#8369;{{ $product->price }}
+            &#8369;{{ number_format($product->price) }}
         </p>
     </div>
 

@@ -1,4 +1,15 @@
 <x-layout>
+    @php
+        // Set default empty object for orderCounts if not provided
+        $orderCounts =
+            $orderCounts ??
+            (object) [
+                'pendingCount' => 0,
+                'processingCount' => 0,
+                'completedCount' => 0,
+            ];
+    @endphp
+
     <div class="min-h-screen bg-gray-100">
         {{-- Top Navigation Bar --}}
         <nav class="bg-white shadow-sm border-b">
@@ -63,7 +74,7 @@
                                     </svg>
                                     All Products
                                 </a>
-                                <a href="#"
+                                <a href="{{ route('seller.addproduct') }}"
                                     class="group flex items-center px-4 py-2 text-gray-800 hover:bg-gray-100 rounded-lg">
                                     <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -71,14 +82,18 @@
                                     </svg>
                                     Add New
                                 </a>
-                                <a href="#"
-                                    class="group flex items-center px-4 py-2 text-gray-800 hover:bg-gray-100 rounded-lg">
-                                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M4 6h16M4 12h16m-7 6h7" />
-                                    </svg>
-                                    Categories
-                                </a>
+                                {{-- Commenting out the Categories button --}}
+                                {{-- <div x-data="{ categoriesOpen: false }" class="relative">
+                                    <a href="{{ route('seller.categories') }}"
+                                        class="w-full group flex items-center px-4 py-2 text-gray-800 hover:bg-gray-100 rounded-lg">
+                                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 6h16M4 12h16m-7 6h7" />
+                                        </svg>
+                                        Categories
+                                    </a>
+                                </div> --}}
                             </div>
                         </div>
 

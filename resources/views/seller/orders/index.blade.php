@@ -1,4 +1,4 @@
-<x-seller-layout>
+<x-sellerLayout>
     <div class="bg-white shadow rounded-lg">
         <div class="p-6">
             <h2 class="text-2xl font-bold mb-4">Orders</h2>
@@ -58,4 +58,4 @@
             </div>
         </div>
     </div>
-</x-seller-layout>
+</x-sellerLayout>
