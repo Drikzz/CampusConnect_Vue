@@ -37,6 +37,7 @@ We first have to install the following in the cloned project:
 
 - Node modules
 - Vendor Files
+- Filament
 
 To install the node modules, run the command below:
 ```
@@ -52,6 +53,13 @@ npm install
 To install the vendor files, run the command below:
 ```
 composer install
+```
+
+To install the Filament, run the command below:
+```
+composer require filament/filament
+php artisan filament:install --panels
+
 ```
 
 - __6th__, copy the *.env.example* to create a *.env* using:
@@ -84,28 +92,30 @@ php artisan key:generate
 php artisan migrate
 ```
 
-- __11th__, open another terminal in vscode, run `php artisan serve` command and go to the link provided:
+- __11th__, open another terminal in vscode, run `php artisan storage:link` command and go to the link provided:
+
+```
+php artisan storage:link
+
+```
+
+- __12th__, open another terminal in vscode, run `php artisan db:seed` command:
+
+```
+php artisan db:seed
+
+```
+
+- __13th__, open another terminal in vscode, run `php artisan serve` command:
 
 ```
 php artisan serve
 ```
 
-- __12th__, open another terminal in vscode, run `npm run dev` command:
+- __14th__, lastly, open another terminal in vscode, then run `npm run dev` command:
 
 ```
 npm run dev
-```
-
-- __13th__, open another terminal in vscode, run `php artisan storage:link` command:
-
-```
-php artisan storage:link
-```
-
-- __14th__, lastly, open another terminal in vscode, then run `php artisan db:seed` command:
-
-```
-php artisan db:seed
 ```
 
 - __15th__, congratulations! You're done setting up your project!
