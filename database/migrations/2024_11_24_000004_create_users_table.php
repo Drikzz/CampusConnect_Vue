@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('username')->unique();
+            $table->string('username')->nullable()->unique();
             $table->string('password');
-            $table->string('first_name');
-            $table->string('last_name');
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
             $table->string('wmsu_email')->nullable()->unique();
 
             // based on user type on registration
@@ -30,9 +30,9 @@ return new class extends Migration
             // user verification
             $table->boolean('is_seller')->default(false);
             $table->string('seller_code')->nullable()->unique();  // replaces seller_id
-            $table->boolean('is_verified')->default(false);
+            $table->boolean('is_verified')->default(true);
             $table->timestamp('verified_at')->nullable();
-            
+
             // If this user is an admin
             $table->boolean('is_admin')->nullable()->default(false);
 

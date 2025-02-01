@@ -15,9 +15,14 @@ class DashboardController extends Controller
             return redirect()->route('seller.dashboard');
         }
 
+        $pendingOrders = Order::where('user_id', auth()->user()->id)
+            ->where('status', 'pending')
+            ->get();
+
         return view('buyer.dashboard', [
             'user' => auth()->user(),
-            'user_type' => auth()->user()->user_type
+            'user_type' => auth()->user()->user_type,
+            'pendingOrders' => $pendingOrders
         ]);
     }
 
@@ -51,29 +56,27 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
         $user_type = UserType::where('id', $user->user_type_id)->first()->name;
+
         $pendingOrders = Order::where('user_id', $user->id)
             ->where('status', 'pending')
+            ->get();
+
+        $toPayOrders = Order::where('user_id', $user->id)
+            ->where('status', 'to-pay')
+            ->get();
+
+        $completedOrders = Order::where('user_id', $user->id)
+            ->where('status', 'completed')
             ->get();
 
         return view('buyer.dashboard', [
             'user' => $user,
             'user_type' => $user_type,
-            'pendingOrders' => $pendingOrders
+            'pendingOrders' => $pendingOrders,
+            'toPayOrders' => $toPayOrders,
+            'completedOrders' => $completedOrders
         ]);
     }
-
-    // public function orders()
-    // {
-    //     $user = Auth::user();
-    //     $toPayOrders = Order::where('user_id', $user->id)->where('status', 'to-pay')->get();
-    //     $completedOrders = Order::where('user_id', $user->id)->where('status', 'completed')->get();
-
-    //     return view('dashboard', [
-    //         'user' => $user,
-    //         'toPayOrders' => $toPayOrders,
-    //         'completedOrders' => $completedOrders,
-    //     ]);
-    // }
 
     public function favorites()
     {

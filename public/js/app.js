@@ -264,8 +264,8 @@ $(document).ready(function () {
         $('#current-wmsu-id-back').removeClass('hidden'); // Show current picture
     });
 
-    //checkout page - replace the existing checkout code with this:
-    if (document.getElementById('quantity')) { // Only run on pages with quantity element
+    //checkout page quantity calculator
+    if (document.getElementById('quantity')) {
         const quantity = document.getElementById('quantity');
         const formQuantity = document.getElementById('form-quantity');
         const subtotalElement = document.getElementById('subtotal');
@@ -276,11 +276,11 @@ $(document).ready(function () {
 
         // Get values from data attributes
         const maxStock = parseInt(quantity.dataset.maxStock);
-        const originalPrice = parseFloat(quantity.dataset.originalPrice);
-        const discountedPrice = parseFloat(quantity.dataset.discountedPrice);
+        const originalPrice = parseFloat(quantity.dataset.originalPrice.replace(/[^0-9.]/g, ''));
+        const discountedPrice = parseFloat(quantity.dataset.discountedPrice.replace(/[^0-9.]/g, ''));
 
         // Format price helper
-        const formatPrice = (num) => '₱' + num.toFixed(2);
+        const formatPrice = (num) => '₱' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
         // Update all prices and quantities
         function updateQuantityAndPrices(newValue) {
@@ -296,11 +296,11 @@ $(document).ready(function () {
                 originalPriceElement.textContent = formatPrice(originalTotal);
                 discountAmountElement.textContent = '-' + formatPrice(discountAmount);
                 totalElement.textContent = formatPrice(subtotal);
-                formTotal.value = subtotal.toFixed(2);
+                formTotal.value = subtotal;
             }
         }
 
-        // Event listeners
+        // Event listeners remain the same
         $('#decrement-button').on('click', function(e) {
             e.preventDefault();
             updateQuantityAndPrices(parseInt(quantity.value) - 1);

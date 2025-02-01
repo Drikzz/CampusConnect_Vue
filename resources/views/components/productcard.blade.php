@@ -3,7 +3,7 @@
 <div class="w-60 h-[30rem] p-4 flex flex-col justify-between items-start gap-4 hover:shadow-lg rounded">
     <div class="relative">
         <a href="{{ route('prod.details', $product->id) }}">
-            <img src="{{ $product->images[0] }}" alt="" class="w-52 h-64 object-cover">
+            <img src="{{ asset('storage/' . $product->images[0]) }}" alt="" class="w-52 h-64 object-cover">
         </a>
         <div class="absolute bottom-2 right-2 rounded-2xl bg-white px-3 py-1">
             <p class="font-Satoshi-bold text-sm text-black">
