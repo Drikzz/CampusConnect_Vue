@@ -31,7 +31,7 @@ As for __XAMPP__, check your applications if you have XAMPP installed.
 ## Setting up the Cloned Laravel Repo
 - __4th__, go now to the cloned repository and do the following commands below.
 
-- __5th__, open the terminal in your VSCODE using `CTRL + SHIFT + `.
+- __5th__, open the terminal in your VSCODE using `CTRL + SHIFT + backtick`.
 
 We first have to install the following in the cloned project:
 
@@ -59,7 +59,6 @@ To install the Filament, run the command below:
 ```
 composer require filament/filament
 php artisan filament:install --panels
-
 ```
 
 - __6th__, copy the *.env.example* to create a *.env* using:
@@ -93,27 +92,21 @@ php artisan migrate
 ```
 
 - __11th__, open another terminal in vscode, run `php artisan storage:link` command and go to the link provided:
-
 ```
 php artisan storage:link
-
 ```
 
 - __12th__, open another terminal in vscode, run `php artisan db:seed` command:
-
 ```
 php artisan db:seed
-
 ```
 
 - __13th__, open another terminal in vscode, run `php artisan serve` command:
-
 ```
 php artisan serve
 ```
 
 - __14th__, lastly, open another terminal in vscode, then run `npm run dev` command:
-
 ```
 npm run dev
 ```
