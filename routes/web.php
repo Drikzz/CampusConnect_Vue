@@ -59,7 +59,8 @@ Route::middleware(['auth', 'seller'])->group(function () {  // Changed 'Seller' 
     // Route::view('/editproduct', 'seller.editproduct')->name('editproduct');
     Route::view('/wallet', 'seller.wallet')->name('wallet');
 
-    Route::get('/seller/orders', [OrderController::class, 'index'])->name('seller.orders.index');
+    Route::get('/seller/orders', [SellerController::class, 'orders'])->name('seller.orders.index');
+    // Route::get('/seller/orders', [OrderController::class, 'index'])->name('seller.orders.index');
     Route::get('/seller/orders/pending', [OrderController::class, 'pending'])->name('seller.orders.pending');
     Route::get('/seller/orders/processing', [OrderController::class, 'processing'])->name('seller.orders.processing');
     Route::get('/seller/orders/completed', [OrderController::class, 'completed'])->name('seller.orders.completed');
@@ -71,6 +72,10 @@ Route::middleware(['auth', 'seller'])->group(function () {  // Changed 'Seller' 
     Route::delete('/seller/products/{product}/remove', [SellerController::class, 'destroy'])->name('seller.products.delete');
     Route::delete('/seller/products/{product}', [SellerController::class, 'destroy'])->name('seller.products.delete');
     // Note: Changed from PUT to POST for better file upload compatibility
+
+    // Add these routes in your seller group
+    Route::get('/seller/orders/{order}', [SellerController::class, 'getOrderDetails'])->name('seller.orders.details');
+    Route::post('/seller/orders/{order}/complete', [SellerController::class, 'completeOrder'])->name('seller.orders.complete');
 
     // // Categories routes
     // Route::get('/seller/categories', [SellerController::class, 'categories'])->name('seller.categories');

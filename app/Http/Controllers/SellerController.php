@@ -11,12 +11,16 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 
+use function Pest\Laravel\get;
+
 class SellerController extends Controller
 {
 
     public function index()
     {
         $sellerCode = Auth::user()->seller_code;
+
+        $categories = Category::latest()->get();
 
         // Update order counts to use seller_code
         $orderCounts = (object)[
@@ -47,7 +51,7 @@ class SellerController extends Controller
             ->take(5)
             ->get();
 
-        return view('seller.dashboard', compact('totalOrders', 'totalSales', 'activeTrades', 'recentOrders', 'orderCounts'));
+        return view('seller.dashboard', compact('categories', 'totalOrders', 'totalSales', 'activeTrades', 'recentOrders', 'orderCounts'));
     }
 
     public function create()
@@ -317,5 +321,48 @@ class SellerController extends Controller
         View::share('orderCounts', $orderCounts);
 
         return view('seller.categories', compact('orderCounts'));
+    }
+
+    public function orders()
+    {
+        $sellerCode = Auth::user()->seller_code;
+
+        // Update order counts - removed processing
+        $orderCounts = (object)[
+            'pendingCount' => Order::where('seller_code', $sellerCode)->pending()->count(),
+            'completedCount' => Order::where('seller_code', $sellerCode)->completed()->count(),
+        ];
+        View::share('orderCounts', $orderCounts);
+
+        // Get all orders for the seller with buyer information
+        $orders = Order::where('seller_code', $sellerCode)
+            ->with(['buyer', 'items.product'])
+            ->latest()
+            ->paginate(10);
+
+        return view('seller.orders', compact('orders', 'orderCounts'));
+    }
+
+    // Add new methods for order details and completion
+    public function getOrderDetails(Order $order)
+    {
+        // Verify seller ownership
+        if ($order->seller_code !== Auth::user()->seller_code) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        return response()->json($order->load('buyer', 'items.product'));
+    }
+
+    public function completeOrder(Order $order)
+    {
+        // Verify seller ownership
+        if ($order->seller_code !== Auth::user()->seller_code) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $order->update(['status' => 'Completed']);
+
+        return response()->json(['success' => true]);
     }
 }
