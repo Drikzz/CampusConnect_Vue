@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Product;
+use App\Models\Order;
 // use App\Models\Transaction;
 // use App\Models\Review;
 // use App\Models\Message;
@@ -150,5 +151,35 @@ class UserController extends Controller
             'seller_code' => strtoupper(uniqid())  // Generate uppercase unique string
         ]);
         return redirect()->route('seller.dashboard')->with('success', 'You are now a verified seller');
+    }
+
+    public function myOrders(Request $request)
+    {
+        $status = $request->get('status', 'all');
+        $query = auth()->user()->orders()->with(['seller', 'items']);
+
+        switch ($status) {
+            case 'pending':
+                $query->pending();
+                break;
+            case 'processing':
+                $query->processing();
+                break;
+            case 'completed':
+                $query->completed();
+                break;
+        }
+
+        $orders = $query->latest()->paginate(10);
+        return view('users.orders', compact('orders', 'status'));
+    }
+
+    public function favorites()
+    {
+        $favorites = auth()->user()->bookmarks()
+            ->with(['images', 'seller'])
+            ->latest()
+            ->paginate(12);
+        return view('users.favorites', compact('favorites'));
     }
 }

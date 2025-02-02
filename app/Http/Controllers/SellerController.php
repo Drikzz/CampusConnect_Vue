@@ -175,11 +175,11 @@ class SellerController extends Controller
         View::share('orderCounts', $orderCounts);
 
         $products = Product::where('seller_code', $sellerCode)
-            ->with(['category'])  // Ensure tradeMethod is included
+            ->with(['category'])
             ->latest()
-            ->paginate(3);  // This is why you're seeing 3 items per page
+            ->paginate(25);  // Increased from 10 to 25 items per page
 
-        $categories = Category::all(); // Add this line to fetch all categories
+        $categories = Category::all();
 
         return view('seller.product', compact('products', 'orderCounts', 'categories'));
     }
