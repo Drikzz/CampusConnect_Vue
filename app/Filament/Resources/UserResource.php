@@ -23,7 +23,7 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                // Forms\Components\TextInput::make('username'),
+                Forms\Components\TextInput::make('username'),
             ]);
     }
 
@@ -31,7 +31,7 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('username'),
             ])
             ->filters([
                 //
