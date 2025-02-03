@@ -14,6 +14,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Create admin user
+        User::create([
+            'username' => 'admin',
+            'password' => Hash::make('admin123'),
+            'first_name' => 'System',
+            'last_name' => 'Administrator',
+            'wmsu_email' => 'admin@wmsu.edu.ph',
+            'user_type_id' => 1,
+            'wmsu_dept_id' => 1,
+            'is_admin' => true,
+            'is_verified' => true,
+            'verified_at' => now(),
+            'email_verified_at' => now(),
+        ]);
+
         // Create first user
         $user1 = User::create([
             'username' => 'drikz',
