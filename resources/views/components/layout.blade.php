@@ -30,7 +30,8 @@
                 </a>
 
                 {{-- trade now button --}}
-                <a href="#" class="font-Satoshi text-base text-white w-auto hover:bg-red-950 p-2 rounded-lg">
+                <a href="{{ route('trade') }}"
+                    class="font-Satoshi text-base text-white w-auto hover:bg-red-950 p-2 rounded-lg">
                     Trade Now
                 </a>
             </div>

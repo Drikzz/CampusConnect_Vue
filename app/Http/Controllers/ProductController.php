@@ -22,6 +22,12 @@ class ProductController extends Controller
         // return response()->json($products);
     }
 
+    public function trade()
+    {
+        $products = Product::where('is_tradable', true)->latest()->get();
+        return view('products.trade', ['products' => $products]);
+    }
+
     public function welcome()
     {
         $products = Product::latest()->get();

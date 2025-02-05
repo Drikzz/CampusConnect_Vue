@@ -15,6 +15,7 @@ Route::get('/', [ProductController::class, 'welcome'])->name('index');
 // products statics
 Route::get('/products', [ProductController::class, 'index'])->name('products');
 Route::get('/products/prod/{id}', [ProductController::class, 'product_details'])->name('prod.details');
+Route::get('/trade', [ProductController::class, 'trade'])->name('trade');
 
 // Route::get('/trade', [ProductController::class, 'index'])->name('products');
 // Route::get('/trade/prod/{id}', [ProductController::class, 'product_details'])->name('prod.details');
@@ -58,7 +59,8 @@ Route::middleware(['auth', 'seller'])->group(function () {  // Changed 'Seller' 
     // Route::view('/editproduct', 'seller.editproduct')->name('editproduct');
     Route::view('/wallet', 'seller.wallet')->name('wallet');
 
-    Route::get('/seller/orders', [OrderController::class, 'index'])->name('seller.orders.index');
+    Route::get('/seller/orders', [SellerController::class, 'orders'])->name('seller.orders.index');
+    // Route::get('/seller/orders', [OrderController::class, 'index'])->name('seller.orders.index');
     Route::get('/seller/orders/pending', [OrderController::class, 'pending'])->name('seller.orders.pending');
     Route::get('/seller/orders/processing', [OrderController::class, 'processing'])->name('seller.orders.processing');
     Route::get('/seller/orders/completed', [OrderController::class, 'completed'])->name('seller.orders.completed');
@@ -67,7 +69,16 @@ Route::middleware(['auth', 'seller'])->group(function () {  // Changed 'Seller' 
 
     Route::get('/seller/products/{product}/edit', [SellerController::class, 'edit'])->name('seller.products.edit');
     Route::post('/seller/products/{product}/update', [SellerController::class, 'update'])->name('seller.products.update');
+    Route::delete('/seller/products/{product}/remove', [SellerController::class, 'destroy'])->name('seller.products.delete');
+    Route::delete('/seller/products/{product}', [SellerController::class, 'destroy'])->name('seller.products.delete');
     // Note: Changed from PUT to POST for better file upload compatibility
+
+    // Add these routes in your seller group
+    Route::get('/seller/orders/{order}', [SellerController::class, 'getOrderDetails'])->name('seller.orders.details');
+    Route::post('/seller/orders/{order}/complete', [SellerController::class, 'completeOrder'])->name('seller.orders.complete');
+
+    // // Categories routes
+    // Route::get('/seller/categories', [SellerController::class, 'categories'])->name('seller.categories');
 });
 
 Route::middleware('guest')->group(function () {
@@ -97,39 +108,39 @@ Route::middleware('guest')->group(function () {
 
 
 // Admin Authentication Routes
-Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
-Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login.submit');
+// Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
+// Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login.submit');
 
-Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
+// Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
 
 // Admin Dashboard Route
-Route::get('/admin/dashboard', function() {
-    return view('admin.admin-dashboard');
-})->name('admin.dashboard');
+// Route::get('/admin/dashboard', function () {
+//     return view('admin.admin-dashboard');
+// })->name('admin.dashboard');
 
-Route::get('/admin/sales', function() {
-    return view('admin.admin-sales');
-})->name('admin.sales');
+// Route::get('/admin/sales', function () {
+//     return view('admin.admin-sales');
+// })->name('admin.sales');
 
-Route::get('/admin/transactions', function() {
-    return view('admin.admin-transactions');
-})->name('admin.transactions');
+// Route::get('/admin/transactions', function () {
+//     return view('admin.admin-transactions');
+// })->name('admin.transactions');
 
-Route::get('/admin/users', function() {
-    return view('admin.admin-userManagement');
-})->name('admin.users');
+// Route::get('/admin/users', function () {
+//     return view('admin.admin-userManagement');
+// })->name('admin.users');
 
-Route::get('/admin/reports', function() {
-    return view('admin.admin-reportManagement');
-})->name('admin.reports');
+// Route::get('/admin/reports', function () {
+//     return view('admin.admin-reportManagement');
+// })->name('admin.reports');
 
-Route::get('/admin/products', function() {
-    return view('admin.admin-productManagement');
-})->name('admin.products');
+// Route::get('/admin/products', function () {
+//     return view('admin.admin-productManagement');
+// })->name('admin.products');
 
-Route::get('/admin/funds', function() {
-    return view('admin.admin-fundManagement');
-})->name('admin.funds');
+// Route::get('/admin/funds', function () {
+//     return view('admin.admin-fundManagement');
+// })->name('admin.funds');
 
 
 // PLS DON'T DELETE THIS CODE FOR A WHILE
@@ -144,12 +155,13 @@ Route::get('/admin/funds', function() {
 //     Route::get('/funds', [AdminController::class, 'funds'])->name('admin.funds');
 // });
 
-Route::view('/admin/sales', 'admin.admin-sales')->name('adminsales');
+// Route::view('/admin/sales', 'admin.admin-sales')->name('adminsales');
 
-Route::view('/admin/products', 'admin.admin-productManagement')->name('admin-product-management');
-Route::view('/admin/userManagement', 'admin.admin-userManagement')->name('admin-userManagement');
-Route::view('/admin/funds', 'admin.admin-fundManagement')->name('admin-funds');
+// Route::view('/admin/products', 'admin.admin-productManagement')->name('admin-product-management');
+// Route::view('/admin/userManagement', 'admin.admin-userManagement')->name('admin-userManagement');
+// Route::view('/admin/funds', 'admin.admin-fundManagement')->name('admin-funds');
 
-Route::view('/Adminside-userprofile', 'admin.adminside-userprofile  ')->name('admin-userManagement');
-Route::view('/Admin-transactions', 'admin.admin-transactions')->name('admin-transactions');
+// Route::view('/Adminside-userprofile', 'admin.adminside-userprofile  ')->name('admin-userManagement');
+// Route::view('/Admin-transactions', 'admin.admin-transactions')->name('admin-transactions');
 
+// Route::view('/Admin-user-approve', 'admin.admin-user-approved')->name('admin-user-approved');

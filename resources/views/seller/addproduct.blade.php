@@ -224,7 +224,7 @@
                             </div>
                         </div>
 
-                        <!-- Footer - remove sticky positioning -->
+                        <!-- Footer -->
                         <div class="bg-white py-4 px-6 border-t border-gray-200">
                             <div class="flex justify-end gap-4">
                                 <button type="reset"
@@ -237,6 +237,7 @@
                                 </button>
                             </div>
                         </div>
+                    </div>
                 </form>
             </div>
         </div>

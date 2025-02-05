@@ -11,12 +11,16 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 
+use function Pest\Laravel\get;
+
 class SellerController extends Controller
 {
 
     public function index()
     {
         $sellerCode = Auth::user()->seller_code;
+
+        $categories = Category::latest()->get();
 
         // Update order counts to use seller_code
         $orderCounts = (object)[
@@ -47,7 +51,7 @@ class SellerController extends Controller
             ->take(5)
             ->get();
 
-        return view('seller.dashboard', compact('totalOrders', 'totalSales', 'activeTrades', 'recentOrders', 'orderCounts'));
+        return view('seller.dashboard', compact('categories', 'totalOrders', 'totalSales', 'activeTrades', 'recentOrders', 'orderCounts'));
     }
 
     public function create()
@@ -69,6 +73,10 @@ class SellerController extends Controller
     public function store(Request $request)
     {
         $sellerCode = Auth::user()->seller_code;
+
+        if (!$sellerCode) {
+            return redirect()->back()->with('error', 'Seller code not found. Please update your profile.');
+        }
 
         // Update order counts to use seller_code
         $orderCounts = (object)[
@@ -113,7 +121,7 @@ class SellerController extends Controller
         // Handle main image (required)
         if ($request->hasFile('main_image')) {
             $path = $request->file('main_image')->store('products', 'public');
-            $imagePaths[] = Storage::url($path);
+            $imagePaths[] = ($path);
         }
 
         // Handle additional images (optional)
@@ -121,7 +129,7 @@ class SellerController extends Controller
             foreach ($request->file('additional_images') as $image) {
                 if ($image) {
                     $path = $image->store('products', 'public');
-                    $imagePaths[] = Storage::url($path);
+                    $imagePaths[] = ($path);
                 }
             }
         }
@@ -171,11 +179,11 @@ class SellerController extends Controller
         View::share('orderCounts', $orderCounts);
 
         $products = Product::where('seller_code', $sellerCode)
-            ->with(['category'])  // Ensure tradeMethod is included
+            ->with(['category'])
             ->latest()
-            ->paginate(3);  // This is why you're seeing 3 items per page
+            ->paginate(25);  // Increased from 10 to 25 items per page
 
-        $categories = Category::all(); // Add this line to fetch all categories
+        $categories = Category::all();
 
         return view('seller.product', compact('products', 'orderCounts', 'categories'));
     }
@@ -269,5 +277,92 @@ class SellerController extends Controller
                 'message' => 'Error updating product: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    public function destroy(Product $product)
+    {
+        try {
+            // Verify seller ownership
+            if ($product->seller_code !== Auth::user()->seller_code) {
+                return redirect()->back()->with('error', 'Unauthorized action.');
+            }
+
+            // Delete associated images from storage
+            if ($product->images) {
+                foreach ($product->images as $image) {
+                    $path = str_replace('/storage/', '', parse_url($image, PHP_URL_PATH));
+                    if (Storage::disk('public')->exists($path)) {
+                        Storage::disk('public')->delete($path);
+                    }
+                }
+            }
+
+            // Delete the product
+            $product->delete();
+
+            return redirect()->route('seller.products')
+                ->with('success', 'Product deleted successfully.');
+        } catch (\Exception $e) {
+            Log::error('Product deletion error: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error deleting product. Please try again.');
+        }
+    }
+
+    public function categories()
+    {
+        $sellerCode = Auth::user()->seller_code;
+
+        $orderCounts = (object)[
+            'pendingCount' => Order::where('seller_code', $sellerCode)->where('status', 'Pending')->count(),
+            'processingCount' => Order::where('seller_code', $sellerCode)->where('status', 'Processing')->count(),
+            'completedCount' => Order::where('seller_code', $sellerCode)->where('status', 'Completed')->count(),
+        ];
+        View::share('orderCounts', $orderCounts);
+
+        return view('seller.categories', compact('orderCounts'));
+    }
+
+    public function orders()
+    {
+        $sellerCode = Auth::user()->seller_code;
+
+        // Update order counts - removed processing
+        $orderCounts = (object)[
+            'pendingCount' => Order::where('seller_code', $sellerCode)->pending()->count(),
+            'completedCount' => Order::where('seller_code', $sellerCode)->completed()->count(),
+        ];
+        View::share('orderCounts', $orderCounts);
+
+        // Get all orders for the seller with buyer information
+        $orders = Order::where('seller_code', $sellerCode)
+            ->with(['buyer', 'items.product'])
+            ->latest()
+            ->paginate(10);
+
+        return view('seller.orders', compact('orders', 'orderCounts'));
+    }
+
+    // Add new methods for order details and completion
+    public function getOrderDetails(Order $order)
+    {
+        // Verify seller ownership
+        if ($order->seller_code !== Auth::user()->seller_code) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        return response()->json($order->load('buyer', 'items.product'));
+    }
+
+    public function completeOrder(Order $order)
+    {
+        // Verify seller ownership
+        if ($order->seller_code !== Auth::user()->seller_code) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $order->update(['status' => 'Completed']);
+
+        return response()->json(['success' => true]);
     }
 }

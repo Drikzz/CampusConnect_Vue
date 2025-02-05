@@ -20,8 +20,7 @@
                     {{-- Current Profile Picture --}}
                     <div id="current-picture" class="relative">
                         <img id="current-img" class="h-32 w-32 object-cover rounded-full border-4 border-primary-color"
-                            src="{{ auth()->user()->profile_picture ? Storage::url(auth()->user()->profile_picture) : asset('imgs/default-avatar.png') }}"
-                            alt="Current Profile Picture">
+                            src="{{ asset('storage/' . $user->profile_picture) }}" alt="Current Profile Picture">
 
                         {{-- Upload Overlay --}}
                         <label
