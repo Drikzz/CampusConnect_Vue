@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
     // Add this route before the auth middleware group
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/profile', [DashboardController::class, 'profile'])->name('dashboard.profile');
+    Route::put('/dashboard/profile', [DashboardController::class, 'updateProfile']);
     Route::get('/dashboard/address', [DashboardController::class, 'address']);
 
     // reserve for dynamic route for the order
@@ -54,9 +55,6 @@ Route::middleware(['auth', 'seller'])->group(function () {  // Changed 'Seller' 
     Route::get('/seller/products/add', [SellerController::class, 'create'])->name('seller.addproduct');
     Route::post('/seller/products/add', [SellerController::class, 'store']);
     Route::get('/seller/products', [SellerController::class, 'products'])->name('seller.products');
-    // Route::view('/', 'seller.product')->name('myproduct');
-    // Route::view('/addproduct', 'seller.addproduct')->name('addproduct');
-    // Route::view('/editproduct', 'seller.editproduct')->name('editproduct');
     Route::view('/wallet', 'seller.wallet')->name('wallet');
 
     Route::get('/seller/orders', [SellerController::class, 'orders'])->name('seller.orders.index');
@@ -70,7 +68,7 @@ Route::middleware(['auth', 'seller'])->group(function () {  // Changed 'Seller' 
     Route::get('/seller/products/{product}/edit', [SellerController::class, 'edit'])->name('seller.products.edit');
     Route::post('/seller/products/{product}/update', [SellerController::class, 'update'])->name('seller.products.update');
     Route::delete('/seller/products/{product}/remove', [SellerController::class, 'destroy'])->name('seller.products.delete');
-    Route::delete('/seller/products/{product}', [SellerController::class, 'destroy'])->name('seller.products.delete');
+    // Route::delete('/seller/products/{product}', [SellerController::class, 'destroy'])->name('seller.products.delete');
     // Note: Changed from PUT to POST for better file upload compatibility
 
     // Add these routes in your seller group

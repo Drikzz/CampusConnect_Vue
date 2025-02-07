@@ -71,11 +71,11 @@
                                     <a href="#" data-target="pending"
                                         class="load-content flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Pending</a>
                                 </li>
-                                <li>
+                                {{-- <li>
                                     <a href="#" data-target="to-pay"
                                         class="load-content flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">To
                                         Pay</a>
-                                </li>
+                                </li> --}}
                                 <li>
                                     <a href="#" data-target="completed"
                                         class="load-content flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Completed</a>
@@ -163,9 +163,9 @@
                 <div id="pending" class="tab-content hidden">
                     <x-myOrders :user="$user" :user_type="$user_type" :pendingOrders="$pendingOrders" />
                 </div>
-                <div id="to-pay" class="tab-content hidden">
+                {{-- <div id="to-pay" class="tab-content hidden">
                     <x-toPayOrders />
-                </div>
+                </div> --}}
                 <div id="completed" class="tab-content hidden">
                     <x-completedOrders />
                 </div>

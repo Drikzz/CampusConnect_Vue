@@ -11,8 +11,9 @@
         </div>
 
         {{-- Form --}}
-        <form action="" method="POST" enctype="multipart/form-data" class="p-6 space-y-8">
+        <form action="{{ route('dashboard.profile') }}" method="POST" enctype="multipart/form-data" class="p-6 space-y-8">
             @csrf
+            @method('PUT')
 
             {{-- Profile Picture Section --}}
             <div class="flex flex-col items-center text-center">

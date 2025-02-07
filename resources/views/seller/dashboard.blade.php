@@ -88,8 +88,9 @@
                                 <div class="flex items-center">
                                     <div class="h-10 w-10 flex-shrink-0">
                                         <img class="h-10 w-10 rounded-full"
-                                            src="{{ $order->buyer->profile_picture ? Storage::url($order->buyer->profile_picture) : '' }}"
+                                            src="{{ $order->buyer->profile_picture ? asset('storage/' . $order->buyer->profile_picture) : 'storage/college/profile_picture/k90yQOdvf1hbfJOHjpz47yJ6403l5SG90lqBKVKt.jpg' }}"
                                             alt="">
+                                        @dd($order->buyer->profile_picture);
                                     </div>
                                     <div class="ml-4">
                                         <div class="text-sm font-medium text-gray-900">
@@ -249,31 +250,27 @@
 
     <!-- Add Product Modal -->
     <div id="add-product-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true"
-        class="hidden fixed inset-0 z-50 items-center justify-center overflow-y-auto overflow-x-hidden">
-        <div class="relative w-auto my-6 mx-auto max-w-4xl">
-            <!-- Modal content -->
-            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 max-h-[90vh] overflow-y-auto">
-                <!-- Modal header -->
-                <div
-                    class="sticky top-0 flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 bg-white z-10">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                        Add New Product
-                    </h3>
-                    <button type="button"
-                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                        data-modal-hide="add-product-modal">
-                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                        </svg>
-                        <span class="sr-only">Close modal</span>
-                    </button>
-                </div>
+        class="hidden fixed inset-0 flex justify-center items-center z-50 bg-gray-900 bg-opacity-50">
+        <div class="relative p-4 w-full max-w-3xl my-6">
+            <div class="relative bg-white rounded-lg shadow max-h-[90vh] overflow-y-auto">
+                <!-- Form with integrated header and footer -->
+                <form action="{{ route('seller.addproduct') }}" method="POST" enctype="multipart/form-data">
+                    <!-- Modal header -->
+                    <div class="sticky top-0 flex items-center justify-between p-4 border-b rounded-t bg-white z-10">
+                        <h3 class="text-xl font-semibold text-gray-900">Add New Product</h3>
+                        <button type="button"
+                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5"
+                            data-modal-hide="add-product-modal">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
 
-                <!-- Modal body -->
-                <div class="p-4 md:p-5">
-                    <form action="{{ route('seller.addproduct') }}" method="POST" enctype="multipart/form-data">
+                    <!-- Modal body -->
+                    <div class="p-4">
                         @csrf
                         <div class="p-6 space-y-8">
                             <!-- Product Images -->
@@ -488,23 +485,21 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Footer -->
-                            <div class="bg-white py-4 px-6 border-t border-gray-200">
-                                <div class="flex justify-end gap-4">
-                                    <button type="reset"
-                                        class="px-6 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all">
-                                        Reset Form
-                                    </button>
-                                    <button type="submit"
-                                        class="px-6 py-2 text-sm font-medium text-white bg-primary-color rounded-lg hover:bg-primary-color/90 transition-all">
-                                        Add Product
-                                    </button>
-                                </div>
-                            </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="flex justify-end gap-4 p-4 border-t sticky bottom-0 bg-white z-10">
+                        <button type="reset"
+                            class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">
+                            Reset Form
+                        </button>
+                        <button type="submit"
+                            class="px-4 py-2 text-sm font-medium text-white bg-primary-color rounded-lg hover:bg-primary-color/90">
+                            Add Product
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

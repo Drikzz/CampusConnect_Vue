@@ -105,25 +105,25 @@
 
     <!-- Edit Product Modal -->
     <div id="edit-modal" data-modal-target="edit-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true"
-        class="hidden fixed inset-0 flex justify-center items-center z-50 bg-gray-900 bg-opacity-50 overflow-y-auto">
+        class="hidden fixed inset-0 flex justify-center items-center z-50 bg-gray-900 bg-opacity-50">
         <div class="relative p-4 w-full max-w-3xl my-6">
             <div class="relative bg-white rounded-lg shadow max-h-[90vh] overflow-y-auto">
                 <!-- Modal header - Make it sticky -->
-                <div class="flex items-center justify-between p-4 border-b sticky top-0 bg-white z-10">
-                    <h3 class="text-xl font-semibold text-gray-900">Edit Product</h3>
-                    <button id="closeEditModal" type="button"
-                        class="text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd"
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                clip-rule="evenodd" />
-                        </svg>
-                    </button>
-                </div>
+                <form id="editProductForm" method="POST" enctype="multipart/form-data" class="p-4">
+                    <div class="flex items-center justify-between p-4 border-b sticky top-0 bg-white z-10">
+                        <h3 class="text-xl font-semibold text-gray-900">Edit Product</h3>
+                        <button id="closeEditModal" type="button"
+                            class="text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
 
-                <!-- Modal body -->
-                <div class="p-4">
-                    <form id="editProductForm" method="POST" enctype="multipart/form-data" class="p-4">
+                    <!-- Modal body -->
+                    <div class="p-4">
                         @csrf
                         <input type="hidden" id="editProductId" name="product_id">
                         <input type="hidden" id="currentImages" name="current_images">
@@ -285,48 +285,44 @@
                                 </div>
                             </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
 
-                <!-- Modal footer - Make it sticky -->
-                <div class="flex justify-end gap-4 p-4 border-t sticky bottom-0 bg-white z-10">
-                    <button type="button" id="closeEditModalBtn"
-                        class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">Cancel</button>
-                    <button type="submit" form="editProductForm"
-                        class="px-4 py-2 text-sm font-medium text-white bg-primary-color rounded-lg hover:bg-primary-color/90">Update
-                        Product</button>
-                </div>
+                    <!-- Modal footer - Make it sticky -->
+                    <div class="flex justify-end gap-4 p-4 border-t sticky bottom-0 bg-white z-10">
+                        <button type="button" id="closeEditModalBtn"
+                            class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">Cancel</button>
+                        <button type="submit" form="editProductForm"
+                            class="px-4 py-2 text-sm font-medium text-white bg-primary-color rounded-lg hover:bg-primary-color/90">Update
+                            Product</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
     <!-- Add Product Modal -->
     <div id="add-product-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true"
-        class="hidden fixed inset-0 z-50 items-center justify-center overflow-y-auto overflow-x-hidden">
-        <div class="relative w-auto my-6 mx-auto max-w-4xl">
-            <!-- Modal content -->
-            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 max-h-[90vh] overflow-y-auto">
-                <!-- Modal header -->
-                <div
-                    class="sticky top-0 flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 bg-white z-10">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                        Add New Product
-                    </h3>
-                    <button type="button"
-                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                        data-modal-hide="add-product-modal">
-                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                        </svg>
-                        <span class="sr-only">Close modal</span>
-                    </button>
-                </div>
+        class="hidden fixed inset-0 flex justify-center items-center z-50 bg-gray-900 bg-opacity-50">
+        <div class="relative p-4 w-full max-w-3xl my-6">
+            <div class="relative bg-white rounded-lg shadow max-h-[90vh] overflow-y-auto">
+                <!-- Form with integrated header and footer -->
+                <form action="{{ route('seller.addproduct') }}" method="POST" enctype="multipart/form-data">
+                    <!-- Modal header -->
+                    <div class="sticky top-0 flex items-center justify-between p-4 border-b rounded-t bg-white z-10">
+                        <h3 class="text-xl font-semibold text-gray-900">Add New Product</h3>
+                        <button type="button"
+                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5"
+                            data-modal-hide="add-product-modal">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
 
-                <!-- Modal body -->
-                <div class="p-4 md:p-5">
-                    <form action="{{ route('seller.addproduct') }}" method="POST" enctype="multipart/form-data">
+                    <!-- Modal body -->
+                    <div class="p-4">
                         @csrf
                         <div class="p-6 space-y-8">
                             <!-- Product Images -->
@@ -541,201 +537,108 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Footer -->
-                            <div class="bg-white py-4 px-6 border-t border-gray-200">
-                                <div class="flex justify-end gap-4">
-                                    <button type="reset"
-                                        class="px-6 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all">
-                                        Reset Form
-                                    </button>
-                                    <button type="submit"
-                                        class="px-6 py-2 text-sm font-medium text-white bg-primary-color rounded-lg hover:bg-primary-color/90 transition-all">
-                                        Add Product
-                                    </button>
-                                </div>
-                            </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="flex justify-end gap-4 p-4 border-t sticky bottom-0 bg-white z-10">
+                        <button type="reset"
+                            class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">
+                            Reset Form
+                        </button>
+                        <button type="submit"
+                            class="px-4 py-2 text-sm font-medium text-white bg-primary-color rounded-lg hover:bg-primary-color/90">
+                            Add Product
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
-    <!-- Add jQuery and modal script -->
+    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Main image preview
-            const mainImageInput = document.getElementById('mainImage');
-            const mainPreview = document.getElementById('mainPreview');
-            const mainPlaceholder = document.getElementById('mainImagePlaceholder');
+        // Main function to handle all modal interactions
+        class ProductModalHandler {
+            constructor() {
+                // Initialize modal with Flowbite
+                this.modal = new Modal(document.getElementById('edit-modal'), {
+                    placement: 'center',
+                    backdrop: 'static',
+                    closable: true,
+                });
 
-            mainImageInput.addEventListener('change', function() {
-                const file = this.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        mainPreview.querySelector('img').src = e.target.result;
-                        mainPreview.classList.remove('hidden');
-                        mainPlaceholder.classList.add('hidden');
-                    }
-                    reader.readAsDataURL(file);
+                this.setupImageHandlers();
+                this.setupFormHandlers();
+                this.setupModalClosers();
+            }
+
+            // Handle image preview functionality
+            setupImageHandlers() {
+                // Main image preview handler
+                this.handleImageInput('mainImage', 'mainPreview', 'mainImagePlaceholder');
+
+                // Additional images preview handler
+                for (let i = 1; i <= 4; i++) {
+                    this.handleImageInput(`image${i}`, `preview${i}`, `placeholder${i}`);
                 }
-            });
+            }
 
-            // Additional images preview
-            for (let i = 1; i <= 4; i++) {
-                const input = document.getElementById(`image${i}`);
-                const preview = document.getElementById(`preview${i}`);
-                const placeholder = document.getElementById(`placeholder${i}`);
+            // Handle image input changes
+            handleImageInput(inputId, previewId, placeholderId) {
+                const input = document.getElementById(inputId);
+                if (!input) return;
 
                 input.addEventListener('change', function() {
                     const file = this.files[0];
                     if (file) {
                         const reader = new FileReader();
                         reader.onload = function(e) {
-                            preview.querySelector('img').src = e.target.result;
-                            preview.classList.remove('hidden');
-                            placeholder.classList.add('hidden');
+                            const preview = document.getElementById(previewId);
+                            const placeholder = document.getElementById(placeholderId);
+                            if (preview) {
+                                const img = preview.querySelector('img') || preview;
+                                img.src = e.target.result;
+                                preview.classList.remove('hidden');
+                            }
+                            if (placeholder) placeholder.classList.add('hidden');
                         }
                         reader.readAsDataURL(file);
                     }
                 });
             }
 
-            // Add form submit handler
-            document.querySelector('form').addEventListener('submit', function(e) {
-                const formData = new FormData(this);
-                const tradeAvailability = document.querySelector('input[name="trade_availability"]:checked')
-                    .value;
+            // Handle form submissions
+            setupFormHandlers() {
+                const forms = document.querySelectorAll('form');
+                forms.forEach(form => {
+                    form.addEventListener('submit', this.handleFormSubmit.bind(this));
+                });
+            }
 
-                // Set is_buyable and is_tradable based on trade_availability selection
-                if (tradeAvailability === 'buy') {
-                    formData.append('is_buyable', '1');
-                    formData.append('is_tradable', '0');
-                } else if (tradeAvailability === 'trade') {
-                    formData.append('is_buyable', '0');
-                    formData.append('is_tradable', '1');
-                } else if (tradeAvailability === 'both') {
-                    formData.append('is_buyable', '1');
-                    formData.append('is_tradable', '1');
+            // Process form submission
+            handleFormSubmit(e) {
+                const form = e.target;
+                const formData = new FormData(form);
+                const tradeAvailability = form.querySelector('input[name="trade_availability"]:checked')?.value;
+
+                // Set trade availability values
+                if (tradeAvailability) {
+                    formData.append('is_buyable', ['buy', 'both'].includes(tradeAvailability) ? '1' : '0');
+                    formData.append('is_tradable', ['trade', 'both'].includes(tradeAvailability) ? '1' : '0');
                 }
 
-                // Submit the form
-                this.submit();
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            // Add Flowbite modal initialization
-            const modal = new Modal(document.getElementById('edit-modal'), {
-                placement: 'center',
-                backdrop: 'static',
-                closable: true,
-            });
-
-            // ProductManager object
-            window.ProductManager = {
-                edit: function(productId) {
-                    const product = {!! $products->toJson() !!}.data.find(p => p.id === productId);
-
-                    if (product) {
-                        // Set basic form values
-                        $('#editProductId').val(product.id);
-                        $('#edit_name').val(product.name);
-                        $('#edit_description').val(product.description);
-                        $('#edit_category').val(product.category_id);
-                        $('#edit_price').val(product.price);
-                        $('#edit_discount').val(product.discount || 0);
-                        $('#edit_quantity').val(product.stock);
-                        $('#edit_status').val(product.status); // Add this line
-
-                        // Map trade_method_id back to the select value
-                        const tradeMethodMap = {
-                            1: 'sell', // Sell Only
-                            2: 'trade', // Trade Only
-                            3: 'both' // Both
-                        };
-
-                        // Get the trade method value from the relationship
-                        const tradeMethodId = product.trade_method ? product.trade_method.id : 1;
-                        $('#edit_trade_method').val(tradeMethodMap[tradeMethodId]);
-
-                        // Set trade availability radio button
-                        const tradeAvailability = product.is_buyable && product.is_tradable ? 'both' :
-                            product.is_buyable ? 'buy' :
-                            product.is_tradable ? 'trade' : 'buy';
-                        $(`input[name="trade_availability"][value="${tradeAvailability}"]`).prop('checked',
-                            true);
-
-                        // Set current images
-                        if (product.images && product.images.length > 0) {
-                            // Set main image (index 0)
-                            $('#current-main-img').attr('src', product.images[0]);
-
-                            // Set additional images (indices 1-4)
-                            product.images.slice(1).forEach((image, index) => {
-                                if (index < 4) {
-                                    $(`#current-img-${index + 1}`).attr('src', image);
-                                }
-                            });
-                        }
-
-                        // Set status
-                        $('#edit_status').val(product.status);
-
-                        modal.show();
-                    }
+                // If it's the edit form, handle with AJAX
+                if (form.id === 'editProductForm') {
+                    e.preventDefault();
+                    this.handleEditSubmission(formData);
                 }
-            };
+            }
 
-            // Close modal handlers
-            $('#closeEditModal, #closeEditModalBtn').on('click', function() {
-                modal.hide();
-            });
-
-            // Handle file inputs
-            $('.hidden[type="file"]').on('change', function() {
-                const file = this.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    const inputId = $(this).attr('id');
-                    const isMainImage = inputId === 'edit_main_image';
-                    const index = isMainImage ? 'main' : inputId.replace('edit_image', '');
-
-                    reader.onload = function(e) {
-                        if (isMainImage) {
-                            $('#current-main-img').attr('src', e.target.result);
-                        } else {
-                            $(`#current-img-${index}`).attr('src', e.target.result);
-                        }
-                    };
-
-                    reader.readAsDataURL(file);
-                }
-            });
-
-            // Handle form submission
-            $('#editProductForm').on('submit', function(e) {
-                e.preventDefault();
-                const formData = new FormData(this);
-                const tradeAvailability = $('input[name="trade_availability"]:checked').val();
-
-                // Set is_buyable and is_tradable based on trade_availability selection
-                if (tradeAvailability === 'buy') {
-                    formData.append('is_buyable', '1');
-                    formData.append('is_tradable', '0');
-                } else if (tradeAvailability === 'trade') {
-                    formData.append('is_buyable', '0');
-                    formData.append('is_tradable', '1');
-                } else if (tradeAvailability === 'both') {
-                    formData.append('is_buyable', '1');
-                    formData.append('is_tradable', '1');
-                }
-
-                const productId = $('#editProductId').val();
+            // Handle edit form AJAX submission
+            handleEditSubmission(formData) {
+                const productId = document.getElementById('editProductId').value;
 
                 $.ajax({
                     url: `/seller/products/${productId}/update`,
@@ -744,23 +647,77 @@
                     processData: false,
                     contentType: false,
                     headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                     },
-                    success: function(response) {
+                    success: response => {
                         if (response.success) {
-                            // Refresh the page to show updated images
                             window.location.reload();
                         } else {
                             alert(response.message || 'Error updating product');
                         }
                     },
-                    error: function(xhr) {
+                    error: xhr => {
                         console.error('Update error:', xhr);
-                        alert('Error updating product: ' + xhr.responseJSON?.message || xhr
-                            .statusText);
+                        alert('Error updating product: ' + (xhr.responseJSON?.message || xhr.statusText));
                     }
                 });
-            });
+            }
+
+            // Setup modal close handlers
+            setupModalClosers() {
+                document.querySelectorAll('#closeEditModal, #closeEditModalBtn').forEach(button => {
+                    button.addEventListener('click', () => this.modal.hide());
+                });
+            }
+        }
+
+        // Product Manager for edit functionality
+        window.ProductManager = {
+            edit: function(productId) {
+                const product = {!! $products->toJson() !!}.data.find(p => p.id === productId);
+                if (!product) return;
+
+                // Set form values
+                const fields = {
+                    'editProductId': 'id',
+                    'edit_name': 'name',
+                    'edit_description': 'description',
+                    'edit_category': 'category_id',
+                    'edit_price': 'price',
+                    'edit_discount': 'discount',
+                    'edit_quantity': 'stock',
+                    'edit_status': 'status'
+                };
+
+                // Fill in form fields
+                Object.entries(fields).forEach(([elementId, productField]) => {
+                    document.getElementById(elementId).value = product[productField] || '';
+                });
+
+                // Set trade availability
+                const tradeAvailability = product.is_buyable && product.is_tradable ? 'both' :
+                    product.is_buyable ? 'buy' : 'trade';
+                document.querySelector(`input[name="trade_availability"][value="${tradeAvailability}"]`).checked =
+                    true;
+
+                // Set images
+                if (product.images?.length) {
+                    document.getElementById('current-main-img').src = product.images[0];
+                    product.images.slice(1).forEach((image, index) => {
+                        if (index < 4) {
+                            document.getElementById(`current-img-${index + 1}`).src = image;
+                        }
+                    });
+                }
+
+                // Show modal
+                modalHandler.modal.show();
+            }
+        };
+
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            window.modalHandler = new ProductModalHandler();
         });
     </script>
 </x-sellerLayout>
