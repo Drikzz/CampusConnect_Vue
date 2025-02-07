@@ -18,7 +18,12 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
+
+    protected static ?string $navigationLabel ='Users';
+
+
+    
 
     public static function form(Form $form): Form
     {
@@ -29,6 +34,8 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('password')->password()
                 ->dehydrateStateUsing(fn ($state) => Hash::make($state))
                 ->dehydrated(fn ($state) => filled($state)),
+                Forms\Components\DateTimePicker::make('verified_at')->seconds(false)->readonly()
+
 
             ]);
     }
@@ -37,8 +44,11 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('username'),
-                Tables\Columns\TextColumn::make('wmsu_email'),
+                Tables\Columns\TextColumn::make('username')->label('Username')->searchable(),
+                Tables\Columns\TextColumn::make('wmsu_email')->label('WMSU Email')->searchable(),
+               
+
+                
 
             ])
             ->filters([
