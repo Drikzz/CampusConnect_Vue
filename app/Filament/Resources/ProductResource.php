@@ -13,24 +13,26 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Models\Category;
+use App\Models\User;
+
 
 
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('id')->readonly()->label('ID')->columnSpan(2),
+                Forms\Components\TextInput::make('id')->disabled()->label('ID')->columnSpan(2),
                 Forms\Components\TextInput::make('name')->required()->label('Product Name')->columnSpan(2),
                 Forms\Components\TextArea::make('description')->required()->cols(5)->rows(2),
                 Forms\Components\TextInput::make('price')->required(),
                 Forms\Components\TextInput::make('discount')->required(),
-                Forms\Components\TextInput::make('discounted_price')->readonly()->label('Discounted Price'),
+                Forms\Components\TextInput::make('discounted_price')->disabled()->label('Discounted Price'),
                 Forms\Components\FileUpload::make('images')->image()->required()->directory('products'),
                 Forms\Components\CheckboxList::make('category_id')->label('Categories')->options(Category::pluck('name', 'id'))->required(),
                 Forms\Components\CheckboxList::make('options')->label('Options')

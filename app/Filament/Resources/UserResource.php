@@ -34,7 +34,8 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('password')->password()
                 ->dehydrateStateUsing(fn ($state) => Hash::make($state))
                 ->dehydrated(fn ($state) => filled($state)),
-                Forms\Components\DateTimePicker::make('verified_at')->seconds(false)->readonly()
+                Forms\Components\DateTimePicker::make('verified_at')->seconds(false)->readonly(),
+                Forms\Components\TextInput::make('seller_code')->label('Seller Code')->disabled()
 
 
             ]);
@@ -47,8 +48,6 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('username')->label('Username')->searchable(),
                 Tables\Columns\TextColumn::make('wmsu_email')->label('WMSU Email')->searchable(),
                
-
-                
 
             ])
             ->filters([
