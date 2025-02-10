@@ -113,6 +113,10 @@ Route::middleware('guest')->group(function () {
 //     return view('admin.admin-dashboard');
 // })->name('admin.dashboard');
 
+Route::get('/admin/dashboard2', function () {
+     return view('admin.admin-dashboard2');
+ })->name('admin.dashboard2');
+
 // Route::get('/admin/sales', function () {
 //     return view('admin.admin-sales');
 // })->name('admin.sales');
