@@ -41,7 +41,7 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
-                StatisticsCard::class, // Ensure this line is correct
+              
             ])
             ->middleware([
                 EncryptCookies::class,
