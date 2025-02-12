@@ -1,41 +1,73 @@
 <x-sellerLayout>
-    <div class="p-6 bg-white rounded-lg shadow">
-        <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-semibold text-gray-800">Pending Orders</h2>
-            <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-medium">5 Orders</span>
-        </div>
+    <div class="container mx-auto px-4 py-8">
+        <a href="{{ route('seller.orders.index') }}" class="py-3 px-3 bg-red outline-1 outline-red">
+            back buton
+        </a>
+        <h1 class="text-2xl font-bold mb-6">Pending Orders</h1>
 
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order
-                            ID</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Customer</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Product</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Amount</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Action</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    <tr>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#ORD-001</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">John Doe</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Gaming Mouse</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">₱1,500.00</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2024-01-20</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <button class="text-indigo-600 hover:text-indigo-900">Process</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        @if ($pendingOrders->isEmpty())
+            <div class="bg-white rounded-lg shadow p-6 text-center">
+                <p class="text-gray-500">No pending orders found.</p>
+            </div>
+        @else
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Order ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Buyer</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Total</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach ($pendingOrders as $order)
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">#{{ $order->id }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="h-10 w-10">
+                                            <img class="h-10 w-10 rounded-full object-cover"
+                                                src="{{ asset('storage/' . $order->buyer->profile_picture) }}"
+                                                alt="{{ $order->buyer->first_name }}">
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900">
+                                                {{ $order->buyer->first_name }} {{ $order->buyer->last_name }}
+                                            </div>
+                                            <div class="text-sm text-gray-500">
+                                                {{ $order->buyer->wmsu_email }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">₱{{ number_format($order->sub_total, 2) }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{ $order->created_at->format('M d, Y') }}</div>
+                                    <div class="text-sm text-gray-500">{{ $order->created_at->format('h:i A') }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <a href="{{ route('seller.orders.show', $order) }}"
+                                        class="text-primary-color hover:text-primary-color/80">View Details</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-4">
+                {{ $pendingOrders->links() }}
+            </div>
+        @endif
     </div>
 </x-sellerLayout>

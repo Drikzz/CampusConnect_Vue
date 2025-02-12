@@ -75,7 +75,6 @@ To install the **Livewire**, run the command below:
 
 ```
 composer require livewire/livewire
-
 ```
 
 -   **6th**, copy the _.env.example_ to create a _.env_ using:

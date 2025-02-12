@@ -11,12 +11,16 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 
+use function Pest\Laravel\get;
+
 class SellerController extends Controller
 {
 
     public function index()
     {
         $sellerCode = Auth::user()->seller_code;
+
+        $categories = Category::latest()->get();
 
         // Update order counts to use seller_code
         $orderCounts = (object)[
@@ -47,7 +51,8 @@ class SellerController extends Controller
             ->take(5)
             ->get();
 
-        return view('seller.dashboard', compact('totalOrders', 'totalSales', 'activeTrades', 'recentOrders', 'orderCounts'));
+        // dd($recentOrders);
+        return view('seller.dashboard', compact('categories', 'totalOrders', 'totalSales', 'activeTrades', 'recentOrders', 'orderCounts'));
     }
 
     public function create()
@@ -135,16 +140,18 @@ class SellerController extends Controller
         $is_tradable = in_array($validated['trade_availability'], ['trade', 'both']);
 
         // Calculate discounted price
-        $price = $validated['price'];
-        $discount = $validated['discount'] ?? 0;
-        $discountedPrice = $price - ($price * ($discount / 100));
+        $price = (int)(floatval($validated['price']) * 100); // Convert to cents
+        $discount = ($validated['discount'] ?? 0) / 100; // Convert percentage to decimal
+        $taxPrice = $price * $discount;
+        $discountedPrice = $price - $taxPrice;
+        $price = $price / 100; // Convert back to dollars
 
         // Create product
         $product = Product::create([
             'name' => $validated['name'],
             'description' => $validated['description'],
             'price' => $price,
-            'discount' => $discount,
+            'discount' => $validated['discount'] ?? 0,
             'discounted_price' => $discountedPrice,
             'stock' => $validated['quantity'],
             'images' => $imagePaths,
@@ -159,7 +166,7 @@ class SellerController extends Controller
             return redirect()->route('seller.products')->with('success', 'Product added successfully!');
         }
 
-        return redirect()->back()->with('error', 'Failed to add product. Please try again.');
+        // return redirect()->back()->with('error', 'Failed to add product. Please try again.');
     }
 
     public function products()
@@ -242,16 +249,18 @@ class SellerController extends Controller
             $imagePaths = array_values(array_filter($imageObj));
 
             // Calculate discounted price
-            $price = $validated['price'];
-            $discount = $validated['discount'] ?? 0;
-            $discountedPrice = $price - ($price * ($discount / 100));
+            $price = (int)(floatval($validated['price']) * 100); // Convert to cents
+            $discount = ($validated['discount'] ?? 0) / 100; // Convert percentage to decimal
+            $taxPrice = $price * $discount;
+            $discountedPrice = $price - $taxPrice;
+            $price = $price / 100; // Convert back to dollars
 
             // Update product without trade method
             $product->update([
                 'name' => $validated['name'],
                 'description' => $validated['description'],
                 'price' => $price,
-                'discount' => $discount,
+                'discount' => $validated['discount'] ?? 0,
                 'discounted_price' => $discountedPrice,
                 'stock' => $validated['quantity'],
                 'quantity' => $validated['quantity'],
@@ -317,5 +326,48 @@ class SellerController extends Controller
         View::share('orderCounts', $orderCounts);
 
         return view('seller.categories', compact('orderCounts'));
+    }
+
+    public function orders()
+    {
+        $sellerCode = Auth::user()->seller_code;
+
+        // Update order counts - removed processing
+        $orderCounts = (object)[
+            'pendingCount' => Order::where('seller_code', $sellerCode)->pending()->count(),
+            'completedCount' => Order::where('seller_code', $sellerCode)->completed()->count(),
+        ];
+        View::share('orderCounts', $orderCounts);
+
+        // Get all orders for the seller with buyer information
+        $orders = Order::where('seller_code', $sellerCode)
+            ->with(['buyer', 'items.product'])
+            ->latest()
+            ->paginate(10);
+
+        return view('seller.orders', compact('orders', 'orderCounts'));
+    }
+
+    // Add new methods for order details and completion
+    public function getOrderDetails(Order $order)
+    {
+        // Verify seller ownership
+        if ($order->seller_code !== Auth::user()->seller_code) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        return response()->json($order->load('buyer', 'items.product'));
+    }
+
+    public function completeOrder(Order $order)
+    {
+        // Verify seller ownership
+        if ($order->seller_code !== Auth::user()->seller_code) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $order->update(['status' => 'Completed']);
+
+        return response()->json(['success' => true]);
     }
 }
