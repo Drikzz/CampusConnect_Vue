@@ -1,5 +1,5 @@
 <x-layout>
-    <div class="flex flex-col w-full mt-10 mb-28 px-16">
+    <div class="flex flex-col w-full mt-10 mb-28 px-16" data-nav-loader>
 
         <div class="flex justify-start items-center gap-2 w-full pt-4">
             <a href="{{ route('index') }}" class="font-Satoshi text-base">

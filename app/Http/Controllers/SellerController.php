@@ -51,6 +51,7 @@ class SellerController extends Controller
             ->take(5)
             ->get();
 
+        // dd($recentOrders);
         return view('seller.dashboard', compact('categories', 'totalOrders', 'totalSales', 'activeTrades', 'recentOrders', 'orderCounts'));
     }
 
@@ -165,7 +166,7 @@ class SellerController extends Controller
             return redirect()->route('seller.products')->with('success', 'Product added successfully!');
         }
 
-        return redirect()->back()->with('error', 'Failed to add product. Please try again.');
+        // return redirect()->back()->with('error', 'Failed to add product. Please try again.');
     }
 
     public function products()
