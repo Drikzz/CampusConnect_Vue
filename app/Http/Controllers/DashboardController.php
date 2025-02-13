@@ -17,26 +17,33 @@ class DashboardController extends Controller
     {
         $user = auth()->user();
 
-        // Get orders
-        $totalOrders = Order::where('buyer_id', $user->id)->count();
-        $activeOrders = Order::where('buyer_id', $user->id)
-            ->whereNotIn('status', ['Completed', 'Cancelled'])
-            ->count();
-
-        // Get wishlist count
-        $wishlistCount = Wishlist::where('user_id', $user->id)->count();
-
-        // For sellers
+        // Initialize all variables with default values
+        $totalOrders = 0;
+        $activeOrders = 0;
+        $wishlistCount = 0;
         $totalSales = 0;
         $activeProducts = 0;
         $pendingOrders = 0;
 
+        // Get common data for all users
+        $totalOrders = Order::where('buyer_id', $user->id)->count();
+        $activeOrders = Order::where('buyer_id', $user->id)
+            ->whereNotIn('status', ['Completed', 'Cancelled'])
+            ->count();
+        $wishlistCount = Wishlist::where('user_id', $user->id)->count();
+
+        // Additional data for sellers
         if ($user->is_seller) {
+            // Get total sales using seller_code
             $totalSales = OrderItem::where('seller_code', $user->seller_code)
                 ->sum('subtotal');
 
-            $activeProducts = $user->products()->where('status', 'active')->count();
+            // Get active products count using seller_code
+            $activeProducts = Product::where('seller_code', $user->seller_code)
+                ->where('status', 'Active')
+                ->count();
 
+            // Get pending orders count using seller_code
             $pendingOrders = OrderItem::where('seller_code', $user->seller_code)
                 ->whereHas('order', function ($query) {
                     $query->where('status', 'Pending');

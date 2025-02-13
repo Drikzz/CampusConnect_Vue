@@ -4,7 +4,6 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 return new class extends Migration
 {
@@ -12,18 +11,15 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('slug')->unique();
-            $table->text('description')->nullable();
+            $table->string('name');
             $table->timestamps();
         });
 
-        // Insert default categories with slugs
         DB::table('categories')->insert([
-            ['name' => 'Electronics', 'slug' => Str::slug('Electronics'), 'description' => null],
-            ['name' => 'Books', 'slug' => Str::slug('Books'), 'description' => null],
-            ['name' => 'Clothing', 'slug' => Str::slug('Clothing'), 'description' => null],
-            ['name' => 'Others', 'slug' => Str::slug('Others'), 'description' => null],
+            ['name' => 'Electronics', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Books', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Clothing', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Others', 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 
