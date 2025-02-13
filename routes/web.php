@@ -17,6 +17,9 @@ Route::get('/products', [ProductController::class, 'index'])->name('products');
 Route::get('/products/prod/{id}', [ProductController::class, 'product_details'])->name('prod.details');
 Route::get('/trade', [ProductController::class, 'trade'])->name('trade');
 
+// Move these routes before any middleware groups
+Route::view('/login', 'auth.login')->name('login');
+Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth')->group(function () {
 
@@ -84,8 +87,6 @@ Route::middleware('guest')->group(function () {
     Route::post('/register/postgraduate', [AuthController::class, 'register_postGraduate'])->name('register_postGraduate');
 
     // IF LOGOUT LINK IS PRESENT, UNCOMMENT THIS ROUTE //
-    Route::view('/login', 'auth.login')->name('login');
-    Route::post('/login', [AuthController::class, 'login']);
 });
 
 

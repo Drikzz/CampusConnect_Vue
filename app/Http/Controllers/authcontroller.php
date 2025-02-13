@@ -134,28 +134,19 @@ class AuthController extends Controller
     // login User
     public function login(Request $request)
     {
-        // Validate
         $fields = $request->validate([
-            'username' => ['required', 'max:255'],
-            'wmsu_email' => ['nullable', 'max:255', 'email'], // Changed to nullable
-            'password' => ['required'],
+            'username' => 'required',
+            'password' => 'required'
         ]);
 
-        // Remove wmsu_email from credentials if empty
-        $credentials = array_filter($fields, function ($value) {
-            return !is_null($value);
-        });
-
-        // Try to login the user
-        if (Auth::attempt($credentials, $request->remember)) {
+        if (Auth::attempt($fields)) {
+            $request->session()->regenerate();
             return redirect()->intended('/');
-        } else {
-            return back()
-                ->withInput($request->only('username', 'remember')) // Add this to persist form data
-                ->withErrors([
-                    'failed' => 'The provided credentials do not match our records'
-                ]);
         }
+
+        return back()->withErrors([
+            'username' => 'The provided credentials do not match our records.',
+        ])->onlyInput('username');
     }
 
     public function showPersonalInfoForm(Request $request)
@@ -281,15 +272,9 @@ class AuthController extends Controller
                     'required',
                     'string',
                     'max:255',
-                    'unique:users,wmsu_email'
+                    'unique:users,wmsu_email',
+                    'regex:/^[a-zA-Z0-9._%+-]+@wmsu\.edu\.ph$/' // New simplified email format
                 ];
-
-                // Add specific email format validation
-                if (in_array($firstStepData['user_type_id'], ['HS', 'COL', 'PG'])) {
-                    $rules['wmsu_email'][] = 'regex:/^[a-z]{2}[0-9]{9}@wmsu\.edu\.ph$/';
-                } else { // EMP
-                    $rules['wmsu_email'][] = 'regex:/^[a-zA-Z]+\.[a-zA-Z]+@wmsu\.edu\.ph$/';
-                }
             }
 
             // Add ID verification for all except employees
@@ -302,6 +287,8 @@ class AuthController extends Controller
 
             // Merge first and second step data
             $userData = array_merge($firstStepData, $validatedData);
+            // Hash the password before saving
+            $userData['password'] = bcrypt($userData['password']);
 
             // Move profile picture from temp to final location if it exists
             if ($tempProfilePicture && Storage::disk('public')->exists($tempProfilePicture)) {
@@ -362,7 +349,7 @@ class AuthController extends Controller
             // Log in the user
             Auth::login($user);
 
-            return redirect()->route('dashboard')
+            return redirect()->route('index')
                 ->with('success', 'Registration completed successfully!');
         } catch (ValidationException $e) {
             return redirect()->back()
@@ -371,5 +358,19 @@ class AuthController extends Controller
         }
     }
 
-    // Other methods remain unchanged...
+    //Logout User
+    public function logout(Request $request)
+    {
+        //Logout the sser
+        Auth::logout();
+
+        // Invalidate user's session
+        $request->session()->invalidate();
+
+        // Regenerate CSRF token
+        $request->session()->regenerateToken();
+
+        // Redirect to home
+        return redirect('/');
+    }
 }

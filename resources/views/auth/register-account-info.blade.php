@@ -41,8 +41,7 @@
                                     Email*</label>
                                 <input type="email" id="wmsu_email" name="wmsu_email"
                                     class="bg-gray-50 border @error('wmsu_email') border-red-500 @else border-primary-color @enderror text-black rounded-lg focus:ring-primary-color focus:border-primary-color block w-full p-2.5"
-                                    value="{{ old('wmsu_email') }}"
-                                    placeholder="{{ in_array($registrationData['user_type_id'], ['HS', 'COL', 'PG']) ? 'example@wmsu.edu.ph' : 'employee@wmsu.edu.ph' }}">
+                                    value="{{ old('wmsu_email') }}" placeholder="youremail@wmsu.edu.ph">
                                 @error('wmsu_email')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
@@ -440,24 +439,8 @@
         // Email format hint based on user type
         const emailInput = document.getElementById('wmsu_email');
         if (emailInput) {
-            let placeholder = '';
-            let pattern = '';
-
-            switch (userType) {
-                case 'HS':
-                case 'COL':
-                case 'PG':
-                    placeholder = 'ab123456789@wmsu.edu.ph';
-                    pattern = '^[a-z]{2}[0-9]{9}@wmsu\\.edu\\.ph$';
-                    break;
-                case 'EMP':
-                    placeholder = 'firstname.lastname@wmsu.edu.ph';
-                    pattern = '^[a-zA-Z]+\\.[a-zA-Z]+@wmsu\\.edu\\.ph$';
-                    break;
-            }
-
-            emailInput.placeholder = placeholder;
-            emailInput.pattern = pattern;
+            emailInput.placeholder = 'youremail@wmsu.edu.ph';
+            emailInput.pattern = '^[a-zA-Z0-9._%+-]+@wmsu\\.edu\\.ph$';
         }
 
         // Add this to your existing JavaScript
