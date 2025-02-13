@@ -14,6 +14,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Add this at the start to ensure categories exist
+        $this->call(CategorySeeder::class);
+
         // Create admin user
         User::create([
             'username' => 'admin',
@@ -67,8 +70,8 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => null,
         ]);
 
-        // Create exactly 2 products per user
-        Product::factory(4)->create(['seller_code' => $user1->seller_code]); // changed from 1 to 2
-        Product::factory(4)->create(['seller_code' => $user2->seller_code]); // changed from 1 to 2
+        // Create exactly 4 products per user
+        Product::factory(4)->create(['seller_code' => $user1->seller_code]);
+        Product::factory(4)->create(['seller_code' => $user2->seller_code]);
     }
 }

@@ -23,6 +23,8 @@ class Product extends Model
         'category_id',
         'is_buyable',
         'is_tradable',
+        'condition',
+        'trade_preferences',
         'status',
     ];
 
@@ -30,6 +32,7 @@ class Product extends Model
         'images' => 'array',
         'is_buyable' => 'boolean',
         'is_tradable' => 'boolean',
+        'trade_preferences' => 'array',
     ];
 
     public function seller(): BelongsTo

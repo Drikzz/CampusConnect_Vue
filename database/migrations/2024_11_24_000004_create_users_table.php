@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('wmsu_email')->nullable()->unique();
             $table->string('phone');  // Added phone
             $table->date('date_of_birth');  // Add date of birth
-            $table->enum('gender', ['male', 'female', 'other']);  // Added gender
+            $table->enum('gender', ['male', 'female', 'non-binary', 'prefer-not-to-say']);  // Added gender
 
             // Step 2 fields - These should be nullable
             $table->foreignId('user_type_id')->nullable()->constrained('user_types')->onDelete('restrict');
