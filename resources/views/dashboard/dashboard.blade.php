@@ -19,13 +19,15 @@
         {{-- Stats Overview --}}
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             @if (auth()->user()->is_seller)
-                <x-dashboard.stat-card title="Total Sales" value="{{ $totalSales }}" icon="cash" type="money" />
-                <x-dashboard.stat-card title="Active Products" value="{{ $activeProducts }}" icon="box" />
-                <x-dashboard.stat-card title="Pending Orders" value="{{ $pendingOrders }}" icon="clock" />
+                <x-dashboard.stat-card title="Total Sales"
+                    value="₱{{ isset($totalSales) ? number_format((float) $totalSales, 2) : '0.00' }}" icon="cash"
+                    type="money" />
+                <x-dashboard.stat-card title="Active Products" value="{{ $activeProducts ?? 0 }}" icon="box" />
+                <x-dashboard.stat-card title="Pending Orders" value="{{ $pendingOrders ?? 0 }}" icon="clock" />
             @else
-                <x-dashboard.stat-card title="Total Orders" value="{{ $totalOrders }}" icon="shopping-bag" />
-                <x-dashboard.stat-card title="Wishlist Items" value="{{ $wishlistCount }}" icon="heart" />
-                <x-dashboard.stat-card title="Active Orders" value="{{ $activeOrders }}" icon="truck" />
+                <x-dashboard.stat-card title="Total Orders" value="{{ $totalOrders ?? 0 }}" icon="shopping-bag" />
+                <x-dashboard.stat-card title="Wishlist Items" value="{{ $wishlistCount ?? 0 }}" icon="heart" />
+                <x-dashboard.stat-card title="Active Orders" value="{{ $activeOrders ?? 0 }}" icon="truck" />
             @endif
         </div>
 

@@ -134,19 +134,28 @@ class AuthController extends Controller
     // login User
     public function login(Request $request)
     {
+        // First validate required fields
         $fields = $request->validate([
             'username' => 'required',
             'password' => 'required'
         ]);
 
+        // If WMSU email is provided, validate its format
+        if ($request->filled('wmsu_email')) {
+            $request->validate([
+                'wmsu_email' => 'regex:/^[a-zA-Z0-9._%+-]+@wmsu\.edu\.ph$/'
+            ]);
+        }
+
+        // Attempt authentication
         if (Auth::attempt($fields)) {
             $request->session()->regenerate();
             return redirect()->intended('/');
         }
 
         return back()->withErrors([
-            'username' => 'The provided credentials do not match our records.',
-        ])->onlyInput('username');
+            'failed' => 'The provided credentials do not match our records.',
+        ])->onlyInput('username', 'wmsu_email');
     }
 
     public function showPersonalInfoForm(Request $request)

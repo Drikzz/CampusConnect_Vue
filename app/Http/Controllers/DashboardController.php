@@ -18,32 +18,27 @@ class DashboardController extends Controller
         $user = auth()->user();
 
         // Initialize all variables with default values
-        $totalOrders = 0;
-        $activeOrders = 0;
-        $wishlistCount = 0;
-        $totalSales = 0;
-        $activeProducts = 0;
-        $pendingOrders = 0;
-
-        // Get common data for all users
         $totalOrders = Order::where('buyer_id', $user->id)->count();
         $activeOrders = Order::where('buyer_id', $user->id)
             ->whereNotIn('status', ['Completed', 'Cancelled'])
             ->count();
         $wishlistCount = Wishlist::where('user_id', $user->id)->count();
+        $totalSales = 0; // Initialize with 0 for non-sellers
+        $activeProducts = 0;
+        $pendingOrders = 0;
 
         // Additional data for sellers
         if ($user->is_seller) {
-            // Get total sales using seller_code
             $totalSales = OrderItem::where('seller_code', $user->seller_code)
+                ->whereHas('order', function ($query) {
+                    $query->where('status', 'Completed');
+                })
                 ->sum('subtotal');
 
-            // Get active products count using seller_code
             $activeProducts = Product::where('seller_code', $user->seller_code)
                 ->where('status', 'Active')
                 ->count();
 
-            // Get pending orders count using seller_code
             $pendingOrders = OrderItem::where('seller_code', $user->seller_code)
                 ->whereHas('order', function ($query) {
                     $query->where('status', 'Pending');
@@ -62,9 +57,29 @@ class DashboardController extends Controller
 
     public function profile()
     {
-        return view('dashboard.profile', [
-            'user' => auth()->user()
-        ]);
+        $user = auth()->user();
+        $is_student = $user->user_type_id == 2;
+        $is_seller = $user->is_seller;
+        $profile_picture = $user->profile_picture;
+        $first_name = $user->first_name;
+        $last_name = $user->last_name;
+        $username = $user->username;
+        $email = $user->email;
+        $wmsu_id_front = $user->wmsu_id_front;
+        $wmsu_id_back = $user->wmsu_id_back;
+
+        return view('dashboard.profile', compact(
+            'user',
+            'is_student',
+            'is_seller',
+            'profile_picture',
+            'first_name',
+            'last_name',
+            'username',
+            'email',
+            'wmsu_id_front',
+            'wmsu_id_back'
+        ));
     }
 
     public function wishlist()
