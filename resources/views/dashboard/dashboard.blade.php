@@ -19,13 +19,15 @@
         {{-- Stats Overview --}}
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             @if (auth()->user()->is_seller)
-                <x-dashboard.stat-card title="Total Sales" value="{{ $totalSales }}" icon="cash" type="money" />
-                <x-dashboard.stat-card title="Active Products" value="{{ $activeProducts }}" icon="box" />
-                <x-dashboard.stat-card title="Pending Orders" value="{{ $pendingOrders }}" icon="clock" />
+                <x-dashboard.stat-card title="Total Sales"
+                    value="₱{{ isset($totalSales) ? number_format((float) $totalSales, 2) : '0.00' }}" icon="cash"
+                    type="money" />
+                <x-dashboard.stat-card title="Active Products" value="{{ $activeProducts ?? 0 }}" icon="box" />
+                <x-dashboard.stat-card title="Pending Orders" value="{{ $pendingOrders ?? 0 }}" icon="clock" />
             @else
-                <x-dashboard.stat-card title="Total Orders" value="{{ $totalOrders }}" icon="shopping-bag" />
-                <x-dashboard.stat-card title="Wishlist Items" value="{{ $wishlistCount }}" icon="heart" />
-                <x-dashboard.stat-card title="Active Orders" value="{{ $activeOrders }}" icon="truck" />
+                <x-dashboard.stat-card title="Total Orders" value="{{ $totalOrders ?? 0 }}" icon="shopping-bag" />
+                <x-dashboard.stat-card title="Wishlist Items" value="{{ $wishlistCount ?? 0 }}" icon="heart" />
+                <x-dashboard.stat-card title="Active Orders" value="{{ $activeOrders ?? 0 }}" icon="truck" />
             @endif
         </div>
 
@@ -58,6 +60,21 @@
                                 Seller</x-dashboard.nav-item>
                         </x-dashboard.nav-section>
                     @endif
+
+                    {{-- System Actions --}}
+                    <x-dashboard.nav-section title="System">
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit"
+                                class="w-full flex items-center gap-3 px-4 py-2 text-gray-600 hover:text-primary-color hover:bg-primary-color/10 rounded-lg transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                </svg>
+                                <span>Logout</span>
+                            </button>
+                        </form>
+                    </x-dashboard.nav-section>
                 </nav>
             </aside>
 

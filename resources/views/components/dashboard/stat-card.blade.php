@@ -59,7 +59,7 @@
         <div class="ml-4">
             <h3 class="text-2xl font-semibold text-gray-800">
                 @if ($type === 'money')
-                    ₱{{ number_format($value, 2) }}
+                    ₱{{ is_numeric($value) ? number_format((float) $value, 2) : '0.00' }}
                 @else
                     {{ $value }}
                 @endif

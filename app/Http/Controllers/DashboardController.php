@@ -17,25 +17,27 @@ class DashboardController extends Controller
     {
         $user = auth()->user();
 
-        // Get orders
+        // Initialize all variables with default values
         $totalOrders = Order::where('buyer_id', $user->id)->count();
         $activeOrders = Order::where('buyer_id', $user->id)
             ->whereNotIn('status', ['Completed', 'Cancelled'])
             ->count();
-
-        // Get wishlist count
         $wishlistCount = Wishlist::where('user_id', $user->id)->count();
-
-        // For sellers
-        $totalSales = 0;
+        $totalSales = 0; // Initialize with 0 for non-sellers
         $activeProducts = 0;
         $pendingOrders = 0;
 
+        // Additional data for sellers
         if ($user->is_seller) {
             $totalSales = OrderItem::where('seller_code', $user->seller_code)
+                ->whereHas('order', function ($query) {
+                    $query->where('status', 'Completed');
+                })
                 ->sum('subtotal');
 
-            $activeProducts = $user->products()->where('status', 'active')->count();
+            $activeProducts = Product::where('seller_code', $user->seller_code)
+                ->where('status', 'Active')
+                ->count();
 
             $pendingOrders = OrderItem::where('seller_code', $user->seller_code)
                 ->whereHas('order', function ($query) {
@@ -55,9 +57,29 @@ class DashboardController extends Controller
 
     public function profile()
     {
-        return view('dashboard.profile', [
-            'user' => auth()->user()
-        ]);
+        $user = auth()->user();
+        $is_student = $user->user_type_id == 2;
+        $is_seller = $user->is_seller;
+        $profile_picture = $user->profile_picture;
+        $first_name = $user->first_name;
+        $last_name = $user->last_name;
+        $username = $user->username;
+        $email = $user->email;
+        $wmsu_id_front = $user->wmsu_id_front;
+        $wmsu_id_back = $user->wmsu_id_back;
+
+        return view('dashboard.profile', compact(
+            'user',
+            'is_student',
+            'is_seller',
+            'profile_picture',
+            'first_name',
+            'last_name',
+            'username',
+            'email',
+            'wmsu_id_front',
+            'wmsu_id_back'
+        ));
     }
 
     public function wishlist()

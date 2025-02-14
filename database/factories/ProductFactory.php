@@ -34,23 +34,6 @@ class ProductFactory extends Factory
             $imageUrls[] = "products/sample_imgs/img{$selectedIndex}.jpg";
         }
 
-        // Fix: Generate product condition using exact enum values
-        $condition = $this->faker->randomElement(['New', 'Like New', 'Good', 'Fair']);
-
-        // Determine if product is buyable and/or tradable
-        $is_buyable = $this->faker->boolean(80);
-        $is_tradable = $is_buyable ? $this->faker->boolean(40) : true;
-
-        // Generate trade preferences if tradable
-        $trade_preferences = $is_tradable ? [
-            'categories' => $this->faker->randomElements([1, 2, 3, 4, 5], $this->faker->numberBetween(1, 3)),
-            'condition_minimum' => $this->faker->randomElement(['Any', 'Good', 'Like New']),
-            'price_range' => [
-                'min' => $price * 0.8,
-                'max' => $price * 1.2,
-            ],
-        ] : null;
-
         return [
             'name' => $this->faker->words(3, true),
             'description' => $this->faker->paragraphs(2, true),
@@ -59,12 +42,11 @@ class ProductFactory extends Factory
             'discounted_price' => $discountedPrice,
             'images' => $imageUrls,
             'stock' => $this->faker->numberBetween(1, 20),
-            'category_id' => $this->faker->numberBetween(1, 5), // Match actual number of categories
-            'is_buyable' => $is_buyable,
-            'is_tradable' => $is_tradable,
-            'condition' => $condition,
-            'trade_preferences' => $trade_preferences,
-            'status' => $this->faker->randomElement(['Active', 'Inactive', 'Sold']), // Match exact enum values
+            'seller_code' => null, // Will be set in DatabaseSeeder
+            'category_id' => $this->faker->numberBetween(1, 4),
+            'is_buyable' => $this->faker->boolean(80),
+            'is_tradable' => $this->faker->boolean(20),
+            'status' => $this->faker->randomElement(['Active', 'Inactive']),
         ];
     }
 }
