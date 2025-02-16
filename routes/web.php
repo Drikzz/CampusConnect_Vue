@@ -55,6 +55,10 @@ Route::middleware('auth')->group(function () {
             Route::post('/seller/products/{product}/update', [SellerController::class, 'update'])->name('seller.products.update');
             Route::delete('/seller/products/{product}/remove', [SellerController::class, 'destroy'])->name('seller.products.delete');
         });
+
+        Route::post('/meetup-locations', [DashboardController::class, 'storeMeetupLocation'])->name('meetup-locations.store');
+        Route::put('/meetup-locations/{id}', [DashboardController::class, 'updateMeetupLocation'])->name('meetup-locations.update');
+        Route::delete('/meetup-locations/{id}', [DashboardController::class, 'deleteMeetupLocation'])->name('meetup-locations.delete');
     });
 
     //checkout routes

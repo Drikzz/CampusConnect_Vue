@@ -94,8 +94,12 @@
                                         </svg>
                                     </div>
                                     <input type="password" id="password" name="password"
-                                        class="bg-gray-50 border border-primary-color text-black placeholder:text-gray-400 text-sm rounded-lg focus:ring-primary-color focus:ring focus:outline-none focus:transition-all block w-full ps-10 p-2.5 @error('password') ring-red-500 @enderror"
+                                        class="bg-gray-50 border border-primary-color text-black placeholder:text-gray-400 text-sm rounded-lg focus:ring-primary-color focus:ring focus:outline-none focus:transition-all block w-full ps-10 p-2.5 pr-10 @error('password') ring-red-500 @enderror"
                                         placeholder="password123">
+                                    <button type="button" id="togglePassword"
+                                        class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
                                 </div>
 
                                 <div class="w-full flex justify-between items-center">
@@ -269,3 +273,20 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+
+            // Toggle the eye icon
+            const icon = this.querySelector('i');
+            icon.classList.toggle('fa-eye');
+            icon.classList.toggle('fa-eye-slash');
+        });
+    });
+</script>

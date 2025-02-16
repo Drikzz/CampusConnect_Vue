@@ -99,9 +99,10 @@ class User extends Authenticatable implements HasName
         return $this->hasMany(UserType::class);
     }
 
-    public function department(): HasMany
+    public function department()
     {
-        return $this->hasMany(Department::class);
+        // Change from hasMany to belongsTo since a user belongs to a department
+        return $this->belongsTo(Department::class, 'wmsu_dept_id');
     }
 
     public function gradeLevel(): HasMany
@@ -122,5 +123,20 @@ class User extends Authenticatable implements HasName
     public function soldOrders(): HasMany
     {
         return $this->hasMany(Order::class, 'seller_code', 'seller_code'); // as seller
+    }
+
+    public function verification()
+    {
+        return $this->hasOne(UserVerification::class);
+    }
+
+    public function usernameHistory()
+    {
+        return $this->hasMany(UsernameHistory::class);
+    }
+
+    public function meetupLocations()
+    {
+        return $this->hasMany(MeetupLocation::class);
     }
 }

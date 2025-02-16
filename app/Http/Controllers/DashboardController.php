@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
+use App\Models\GradeLevel;
+use App\Models\Location;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\UserType;
@@ -67,6 +70,8 @@ class DashboardController extends Controller
         $email = $user->email;
         $wmsu_id_front = $user->wmsu_id_front;
         $wmsu_id_back = $user->wmsu_id_back;
+        $departments = Department::all();
+        $gradeLevels = GradeLevel::all();
 
         return view('dashboard.profile', compact(
             'user',
@@ -78,7 +83,9 @@ class DashboardController extends Controller
             'username',
             'email',
             'wmsu_id_front',
-            'wmsu_id_back'
+            'wmsu_id_back',
+            'departments',
+            'gradeLevels'
         ));
     }
 
@@ -143,9 +150,14 @@ class DashboardController extends Controller
 
     public function address()
     {
-        return view('dashboard.address', [
-            'user' => auth()->user()
-        ]);
+        $user = auth()->user();
+        $meetupLocations = $user->meetupLocations()
+            ->with('location')  // Add this line to eager load location relationship
+            ->latest()
+            ->get();
+        $locations = Location::all();
+
+        return view('dashboard.address', compact('user', 'meetupLocations', 'locations'));
     }
 
     public function showSellerRegistration()
@@ -222,17 +234,51 @@ class DashboardController extends Controller
 
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
             'last_name' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:20',
+            'date_of_birth' => 'nullable|date',
             'username' => 'required|string|max:255|unique:users,username,' . $user->id,
+            'wmsu_email' => 'required|string|email|max:255|unique:users,wmsu_email,' . $user->id,
+            'wmsu_dept_id' => 'nullable|exists:departments,id',
+            'grade_level_id' => 'nullable|exists:grade_levels,id',
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'wmsu_id_front' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'wmsu_id_back' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         try {
-            if ($user->user_type_id == 2) {
-                $userType = 'college';
-                $validated = $this->uploadImage($request, $user, $userType, $validated);
+            // Handle profile picture upload
+            if ($request->hasFile('profile_picture')) {
+                $oldPicture = $user->profile_picture;
+                $path = $request->file('profile_picture')->store('profile_pictures', 'public');
+                $validated['profile_picture'] = $path;
+
+                if ($oldPicture) {
+                    Storage::disk('public')->delete($oldPicture);
+                }
+            }
+
+            // Handle WMSU ID front upload
+            if ($request->hasFile('wmsu_id_front')) {
+                $oldFront = $user->wmsu_id_front;
+                $path = $request->file('wmsu_id_front')->store('wmsu_ids', 'public');
+                $validated['wmsu_id_front'] = $path;
+
+                if ($oldFront) {
+                    Storage::disk('public')->delete($oldFront);
+                }
+            }
+
+            // Handle WMSU ID back upload
+            if ($request->hasFile('wmsu_id_back')) {
+                $oldBack = $user->wmsu_id_back;
+                $path = $request->file('wmsu_id_back')->store('wmsu_ids', 'public');
+                $validated['wmsu_id_back'] = $path;
+
+                if ($oldBack) {
+                    Storage::disk('public')->delete($oldBack);
+                }
             }
 
             $user->update($validated);
@@ -240,5 +286,92 @@ class DashboardController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to update profile: ' . $e->getMessage());
         }
+    }
+
+    public function storeMeetupLocation(Request $request)
+    {
+        $validated = $request->validate([
+            'full_name' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+            'location_id' => 'required|exists:locations,id',
+            'custom_location' => 'nullable|string|max:255',
+            'is_default' => 'nullable|boolean',  // Change to nullable
+        ]);
+
+        $user = auth()->user();
+        $location = Location::findOrFail($validated['location_id']);
+
+        // Set is_default to false if not provided
+        $is_default = $request->has('is_default') ? true : false;
+
+        if ($is_default) {
+            $user->meetupLocations()->update(['is_default' => false]);
+        }
+
+        $user->meetupLocations()->create([
+            'full_name' => $validated['full_name'],
+            'phone' => $validated['phone'],
+            'location_id' => $validated['location_id'],
+            'custom_location' => $validated['custom_location'],
+            'latitude' => $location->latitude,
+            'longitude' => $location->longitude,
+            'is_default' => $is_default,  // Use the new variable
+        ]);
+
+        return back()->with('success', 'Meetup location added successfully');
+    }
+
+    public function updateMeetupLocation(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'full_name' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+            'location_id' => 'required|exists:locations,id',
+            'custom_location' => 'nullable|string|max:255',
+            'is_default' => 'nullable|boolean',  // Change to nullable
+        ]);
+
+        $user = auth()->user();
+        $meetupLocation = $user->meetupLocations()->findOrFail($id);
+        $location = Location::findOrFail($validated['location_id']);
+
+        // Set is_default to false if not provided
+        $is_default = $request->has('is_default') ? true : false;
+
+        if ($is_default) {
+            $user->meetupLocations()->where('id', '!=', $id)->update(['is_default' => false]);
+        }
+
+        $meetupLocation->update([
+            'full_name' => $validated['full_name'],
+            'phone' => $validated['phone'],
+            'location_id' => $validated['location_id'],
+            'custom_location' => $validated['custom_location'],
+            'latitude' => $location->latitude,
+            'longitude' => $location->longitude,
+            'is_default' => $is_default,  // Use the new variable
+        ]);
+
+        return back()->with('success', 'Meetup location updated successfully');
+    }
+
+    public function deleteMeetupLocation($id)
+    {
+        $user = auth()->user();
+        $meetupLocation = $user->meetupLocations()->findOrFail($id);
+
+        // If deleting default location, make another one default if exists
+        if ($meetupLocation->is_default) {
+            $newDefault = $user->meetupLocations()
+                ->where('id', '!=', $id)
+                ->first();
+            if ($newDefault) {
+                $newDefault->update(['is_default' => true]);
+            }
+        }
+
+        $meetupLocation->delete();
+
+        return back()->with('success', 'Meetup location deleted successfully');
     }
 }

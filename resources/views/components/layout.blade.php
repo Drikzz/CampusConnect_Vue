@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ env('APP_NAME') }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/jquery-3.7.1.min.js', 'public/js/app.js', '/public/js/flowbite.min.js', 'resources/css/seller.css'])
 </head>
 
@@ -75,7 +76,7 @@
                     <!-- Profile/Auth Section -->
                     <div class="relative" x-data="{ open: false }">
                         @auth
-                            <a href="{{ route('dashboard') }}"
+                            <a href="{{ route('dashboard.profile') }}"
                                 class="flex items-center gap-3 text-white hover:text-gray-200 p-2 rounded-lg transition-colors hover:bg-white/10">
                                 @if (Auth::user()->profile_picture)
                                     <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="Profile picture"
@@ -368,6 +369,8 @@
         }
     </script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 </body>
 
 </html>
