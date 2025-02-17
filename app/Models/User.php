@@ -26,19 +26,23 @@ class User extends Authenticatable implements HasName
         'username',
         'password',
         'first_name',
+        'middle_name',
         'last_name',
         'wmsu_email',
+        'phone',     // Added phone
+        'gender',    // Added gender
+        'date_of_birth',  // Added date of birth
         'user_type_id',
         'wmsu_dept_id',
         'grade_level_id',
         'profile_picture',
+        'wmsu_id_front',
+        'wmsu_id_back',
         'is_seller',
         'seller_code',
         'is_verified',
         'verified_at',
         'is_admin',
-        'wmsu_id_front',
-        'wmsu_id_back',
     ];
 
     /**
@@ -119,4 +123,10 @@ class User extends Authenticatable implements HasName
     {
         return $this->hasMany(Order::class, 'seller_code', 'seller_code'); // as seller
     }
+
+    public function isAdmin(): bool
+    {
+        return (bool) $this->is_admin;
+    }
+
 }

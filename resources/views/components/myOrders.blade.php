@@ -8,11 +8,11 @@
                 data-tab="pending">
                 Pending
             </button>
-            <button onclick="switchOrderTab('to-pay')"
+            {{-- <button onclick="switchOrderTab('to-pay')"
                 class="border-b-2 border-transparent hover:border-gray-300 text-gray-500 hover:text-gray-700 py-4 px-1 text-sm font-medium order-tab"
                 data-tab="to-pay">
                 To Pay
-            </button>
+            </button> --}}
             <button onclick="switchOrderTab('completed')"
                 class="border-b-2 border-transparent hover:border-gray-300 text-gray-500 hover:text-gray-700 py-4 px-1 text-sm font-medium order-tab"
                 data-tab="completed">
@@ -39,8 +39,8 @@
 
                     @foreach ($order->items as $item)
                         <div class="flex items-center space-x-4 mb-4">
-                            <img src="{{ $item->product->images[0] }}" alt="{{ $item->product->name }}"
-                                class="w-20 h-20 object-cover rounded-md">
+                            <img src="{{ asset('storage/' . $item->product->images[0]) }}"
+                                alt="{{ $item->product->name }}" class="w-20 h-20 object-cover rounded-md">
                             <div class="flex-1">
                                 <h4 class="text-lg font-medium">{{ $item->product->name }}</h4>
                                 <p class="text-sm text-gray-600">Seller Code: {{ $item->product->seller_code }}</p>

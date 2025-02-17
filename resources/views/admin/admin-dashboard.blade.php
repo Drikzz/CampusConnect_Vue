@@ -267,32 +267,25 @@
             <table class="w-[100%] text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400 mt-5">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" class="px-6 py-3">Buyer</th>
-                        <th scope="col" class="px-6 py-3">Seller</th>
-                        <th scope="col" class="px-6 py-3">Item</th>
-                        <th scope="col" class="px-6 py-3">Status</th>
-                        <th scope="col" class="px-6 py-3">Date</th>
-                        <th scope="col" class="px-6 py-3">Transaction ID</th>
+                        <th scope="col" class="px-6 py-3">Product</th>
+                        <th scope="col" class="px-6 py-3">Category</th>
+                        <th scope="col" class="px-6 py-3">Stock</th>
+                        <th scope="col" class="px-6 py-3">Price</th>
+                        <th scope="col" class="px-6 py-3">Discount</th>
+                        <th scope="col" class="px-6 py-3">Discounted Price</th>
                     </tr>
                 </thead>
                 <tbody id="productTable">
+                    @foreach ($products as $product)
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td class="px-6 py-4"></td>
-                        <td class="px-6 py-4"></td>
-                        <td class="px-6 py-4">
-                            {{-- <img src="{{ asset('imgs/img5.jpg') }}" alt="Profile Image" class="h-12 w-12 object-cover rounded-full mx-auto"> --}}
-                        </td>
-                        <td class="px-6 py-4"></td>
-                        <td class="px-6 py-4"></td>
-                        {{-- <td class="px-6 py-4">
-                            <div class="flex justify-center items-center space-x-2">
-                                <button type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center">Edit</button>
-                                <button type="button" class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center">View</button>
-                                <button type="button" class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-20 py-2.5 text-center edit-button">Remove</button>
-                            </div>
-                        </td> --}}
+                        <td class="px-6 py-4">{{ $product->name }}</td>
+                        <td class="px-6 py-4">{{ $product->category->name }}</td>
+                        <td class="px-6 py-4">{{ $product->stock }}</td>
+                        <td class="px-6 py-4">${{ number_format($product->price, 2) }}</td>
+                        <td class="px-6 py-4">{{ $product->discount }}%</td>
+                        <td class="px-6 py-4">${{ number_format($product->discounted_price, 2) }}</td>
                     </tr>
-                    <!-- Repeat for other rows -->
+                    @endforeach
                 </tbody>
             </table>
             
@@ -333,15 +326,6 @@
                     <!-- Repeat for other rows -->
                 </tbody>
             </table>
-        </div>
-        
-    </div>
-
-    <div
-        class="bg-white w-full h-[350px] rounded-[20px] shadow-lg p-[20px] flex  justify-center cursor-pointer transition-all ease-in-out hover:scale-105 hover:shadow-xl mt-[40px]">
-        <div class="text-black">
-           <p class="text-[20px] text-[black] text-center font-semibold">Recently Uploaded Products</p>
-
         </div>
         
     </div>
