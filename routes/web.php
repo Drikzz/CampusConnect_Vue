@@ -101,9 +101,14 @@ Route::middleware('guest')->group(function () {
 //     return view('admin.admin-dashboard');
 // })->name('admin.dashboard');
 
-Route::get('/admin/dashboard2', function () {
-     return view('admin.admin-dashboard2');
- })->name('admin.dashboard2');
+Route::get('/admin/dashboard2', [AdminController::class, 'dashboard2'])->name('admin-dashboard2');
+Route::get('/admin/userManagement', [AdminController::class, 'userManagement'])->name('admin-userManagement');
+Route::get('/admin/userManagement/create', [AdminController::class, 'create'])->name('admin-userManagement.create');
+Route::post('/admin/userManagement', [AdminController::class, 'store'])->name('admin-userManagement.store');
+Route::get('/admin/userManagement/{user}/edit', [AdminController::class, 'edit'])->name('admin-userManagement.edit');
+Route::put('/admin/userManagement/{user}', [AdminController::class, 'update'])->name('admin-userManagement.update');
+Route::delete('/admin/userManagement/{user}', [AdminController::class, 'destroy'])->name('admin-userManagement.destroy');
+Route::get('/admin/userManagement/{user}', [AdminController::class, 'show'])->name('admin-userManagement.show');
 
 // Route::get('/admin/sales', function () {
 //     return view('admin.admin-sales');
@@ -113,22 +118,22 @@ Route::get('/admin/dashboard2', function () {
 //     return view('admin.admin-transactions');
 // })->name('admin.transactions');
 
-// Route::get('/admin/users', function () {
-//     return view('admin.admin-userManagement');
-// })->name('admin.users');
+Route::get('/admin/transactions', [AdminController::class, 'transactions'])->name('admin.transactions');
+
+ Route::get('/admin/users', function () {
+    return view('admin.admin-userManagement');
+ })->name('admin.users');
 
 // Route::get('/admin/reports', function () {
 //     return view('admin.admin-reportManagement');
 // })->name('admin.reports');
 
-// Route::get('/admin/products', function () {
-//     return view('admin.admin-productManagement');
-// })->name('admin.products');
 
 // Route::get('/admin/funds', function () {
 //     return view('admin.admin-fundManagement');
 // })->name('admin.funds');
 
+Route::get('/admin/product-management', [AdminController::class, 'productManagement'])->name('admin-productManagement');
 
 // PLS DON'T DELETE THIS CODE FOR A WHILE
 // Protected Admin Routes
