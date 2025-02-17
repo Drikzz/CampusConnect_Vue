@@ -26,19 +26,23 @@ class User extends Authenticatable implements HasName
         'username',
         'password',
         'first_name',
+        'middle_name',
         'last_name',
         'wmsu_email',
+        'phone',     // Added phone
+        'gender',    // Added gender
+        'date_of_birth',  // Added date of birth
         'user_type_id',
         'wmsu_dept_id',
         'grade_level_id',
         'profile_picture',
+        'wmsu_id_front',
+        'wmsu_id_back',
         'is_seller',
         'seller_code',
         'is_verified',
         'verified_at',
         'is_admin',
-        'wmsu_id_front',
-        'wmsu_id_back',
     ];
 
     /**
@@ -95,9 +99,10 @@ class User extends Authenticatable implements HasName
         return $this->hasMany(UserType::class);
     }
 
-    public function department(): HasMany
+    public function department()
     {
-        return $this->hasMany(Department::class);
+        // Change from hasMany to belongsTo since a user belongs to a department
+        return $this->belongsTo(Department::class, 'wmsu_dept_id');
     }
 
     public function gradeLevel(): HasMany
@@ -118,5 +123,20 @@ class User extends Authenticatable implements HasName
     public function soldOrders(): HasMany
     {
         return $this->hasMany(Order::class, 'seller_code', 'seller_code'); // as seller
+    }
+
+    public function verification()
+    {
+        return $this->hasOne(UserVerification::class);
+    }
+
+    public function usernameHistory()
+    {
+        return $this->hasMany(UsernameHistory::class);
+    }
+
+    public function meetupLocations()
+    {
+        return $this->hasMany(MeetupLocation::class);
     }
 }

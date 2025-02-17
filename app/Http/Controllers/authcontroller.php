@@ -9,163 +9,186 @@ use App\Models\UserType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\ValidationData;
+use Illuminate\Validation\ValidationException;
 
-class authcontroller extends Controller
-{  
+class AuthController extends Controller
+{
+
     // login User
-    public function login(Request $request) {
-        // Validate
+    public function login(Request $request)
+    {
+        // First validate required fields
         $fields = $request->validate([
-            'username' => ['required', 'max:255'],
-            'wmsu_email' => ['required', 'max:255', 'email'],
-            'password' => ['required'],
+            'username' => 'required',
+            'password' => 'required'
         ]);
 
-        // Try to login the user
-        if (Auth::attempt($fields, $request->remember)) {
+        // If WMSU email is provided, validate its format
+        if ($request->filled('wmsu_email')) {
+            $request->validate([
+                'wmsu_email' => 'regex:/^[a-zA-Z0-9._%+-]+@wmsu\.edu\.ph$/'
+            ]);
+        }
+
+        // Attempt authentication
+        if (Auth::attempt($fields)) {
+            $request->session()->regenerate();
             return redirect()->intended('/');
-        } else {
-            return back()->withErrors([
-                'failed' => 'The provided credentials do not match our records'
-            ]);
         }
+
+        return back()->withErrors([
+            'failed' => 'The provided credentials do not match our records.',
+        ])->onlyInput('username', 'wmsu_email');
     }
 
-    // highschool student functions
-    public function register_form_highschool(){
+    public function showPersonalInfoForm(Request $request)
+    {
+        // Clear all session data
+        $request->session()->invalidate();
+        $request->session()->regenerate();
+
+        // Clear registration data
+        $request->session()->forget(['registration_data']);
+
+        // Force client-side storage clearing
+        $clearLocalStorage = true;
+
+        // Get data for form dropdowns
+        $departments = Department::orderBy('name')->get();
         $gradeLevels = GradeLevel::orderBy('level')->get();
+        $userTypes = UserType::orderBy('name')->get();
 
-        return view('auth.register-highschool', ['gradeLevels' => $gradeLevels]);
+        return view('auth.register-personal-info', [
+            'departments' => $departments,
+            'gradeLevels' => $gradeLevels,
+            'userTypes' => $userTypes,
+            'clearLocalStorage' => $clearLocalStorage
+        ]);
     }
 
-    public function registerHSStudent(Request $request)
+    public function processPersonalInfo(Request $request)
     {
+        $validatedData = $request->validate([
+            'user_type_id' => ['required', 'exists:user_types,code'],
+            'grade_level_id' => ['nullable', 'exists:grade_levels,id'],
+            'wmsu_dept_id' => ['nullable', 'exists:departments,id'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'middle_name' => ['nullable', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'gender' => ['required', 'string', 'in:male,female,non-binary,prefer-not-to-say'],
+            'date_of_birth' => ['required', 'date', 'before:today'],
+            'phone' => ['required', 'string', 'regex:/^[0-9]{11}$/'],
+        ]);
 
-        try {
-            $fields = $request->validate([
-                'username' => ['required', 'max:255', 'unique:users'],
-                'password' => ['required', 'min:3'],
-                'first_name' => ['required', 'max:255'],
-                'last_name' => ['required', 'max:255'],
-                'wmsu_email' => ['required', 'string', 'regex:/^eh[0-9]{9}@wmsu.edu.ph$/', 'unique:users'],
-                'grade_level' => ['required', 'string'],
-                'profile_picture' => ['nullable', 'file', 'mimes:jpeg,png,jpg', 'max:2048'],
-                'wmsu_id_front' => ['required', 'file', 'mimes:jpeg,png,jpg', 'max:2048'],
-                'wmsu_id_back' => ['required', 'file', 'mimes:jpeg,png,jpg', 'max:2048'],
-            ], [
-                'wmsu_email.required' => 'Please enter your WMSU email',
-                'profile_picture.mimes' => 'Profile Picture must be in jpeg, png, or jpg format',
-                'wmsu_email.regex' => 'Email must be in format: eh123456789@wmsu.edu.ph',
-                'grade_level.required' => 'Please select a department',
-                'wmsu_id_front.required' => 'Please upload the front of your WMSU ID',
-                'wmsu_id_front.mimes' => 'WMSU ID front must be in jpeg, png, or jpg format',
-                'wmsu_id_back.required' => 'Please upload the back of your WMSU ID',
-                'wmsu_id_back.mimes' => 'WMSU Back front must be in jpeg, png, or jpg format',
-            ]);
-    
-            // Handle file uploads first
-            $profilePath = null;
-            if ($request->hasFile('profile_picture')) {
-                // Save to permanent storage
-                $profilePath = Storage::disk('public')->put('highschool/profile_pictures', $request->profile_picture);
-            }
-            
-            $idFrontPath = Storage::disk('public')->put('highschool/id_front', $request->wmsu_id_front);
-            $idBackPath = Storage::disk('public')->put('highschool/id_back', $request->wmsu_id_back);
-    
-            // Get appropriate user type
-            $userType = UserType::where('code', 'HS')->first()->id;
-            $grade_level_id = GradeLevel::where('name', $fields['grade_level'])->first()->id;
-    
-            // Create user with all data
-            $user = User::create([
-                'user_type_id'=> $userType,
-                'username' => $fields['username'],
-                'password' => $fields['password'],
-                'first_name' => $fields['first_name'],
-                'last_name' => $fields['last_name'],
-                'wmsu_email' => $fields['wmsu_email'],
-                'grade_level_id' => $grade_level_id,
-                'profile_picture' => $profilePath,
-                'wmsu_id_front' => $idFrontPath,
-                'wmsu_id_back' => $idBackPath,
-            ]);
-    
-            // Login 
-            Auth::login($user);
-    
-            // Redirect
-            return redirect('/');
-    
-        } catch (ValidationException $e) {
-            return redirect()->back()
-                ->withErrors($e->errors());
+        $request->session()->put('registration_data', $validatedData);
+        return redirect()->route('register.details');
+    }
+
+    public function showDetailsForm(Request $request)
+    {
+        // Check if we have the first step data
+        if (!$request->session()->has('registration_data')) {
+            return redirect()->route('register.personal-info');
         }
-    }
 
-    // college student functions
-    public function register_form_college()
-    {
+        $registrationData = $request->session()->get('registration_data');
+
+        // Get departments and grade levels for form dropdowns
         $departments = Department::orderBy('name')->get();
+        $gradeLevels = GradeLevel::orderBy('level')->get();
+        $userTypes = UserType::orderBy('name')->get();
 
-        return view('auth.register-college', ['departments' => $departments]);
+        return view('auth.register-account-info', [
+            'departments' => $departments,
+            'gradeLevels' => $gradeLevels,
+            'userTypes' => $userTypes,
+            'registrationData' => $registrationData
+        ]);
     }
 
-    public function registerCollegeStudent(Request $request)
+    public function completeRegistration(Request $request)
     {
+        if (!$request->session()->has('registration_data')) {
+            return redirect()->route('register.personal-info');
+        }
+
+        $firstStepData = $request->session()->get('registration_data');
+
         try {
-            $fields = $request->validate([
-                'username' => ['required', 'max:255', 'unique:users'],
-                'password' => ['required', 'min:3'],
-                'first_name' => ['required', 'max:255'],
-                'last_name' => ['required', 'max:255'],
-                'wmsu_email' => ['required', 'string', 'regex:/^eh[0-9]{9}@wmsu.edu.ph$/', 'unique:users'],
-                'wmsu_dept' => ['required', 'string'],
-                'profile_picture' => ['nullable', 'file', 'mimes:jpeg,png,jpg', 'max:2048'],
-                'wmsu_id_front' => ['required', 'file', 'mimes:jpeg,png,jpg', 'max:2048'],
-                'wmsu_id_back' => ['required', 'file', 'mimes:jpeg,png,jpg', 'max:2048'],
-            ], [
-                'wmsu_email.required' => 'Please enter your WMSU email',
-                'profile_picture.mimes' => 'Profile Picture must be in jpeg, png, or jpg format',
-                'wmsu_email.regex' => 'Email must be in format: eh123456789@wmsu.edu.ph',
-                'wmsu_dept.required' => 'Please select a department',
-                'wmsu_id_front.required' => 'Please upload the front of your WMSU ID',
-                'wmsu_id_front.mimes' => 'WMSU ID front must be in jpeg, png, or jpg format',
-                'wmsu_id_back.required' => 'Please upload the back of your WMSU ID',
-                'wmsu_id_back.mimes' => 'WMSU Back front must be in jpeg, png, or jpg format',
-            ]);
-            
-            // Handle file uploads first
-            $profilePath = null;
-            if ($request->hasFile('profile_picture')) {
-                $profilePath = Storage::disk('public')->put('college/profile_pictures', $request->profile_picture);
+            $rules = [
+                'username' => ['required', 'string', 'max:255', 'unique:users'],
+                'password' => [
+                    'required',
+                    'string',
+                    'min:8',  // Enforce minimum 8 characters
+                    'confirmed',
+                    function ($attribute, $value, $fail) {
+                        $strength = 0;
+                        if (strlen($value) >= 8) $strength++;
+                        if (preg_match('/[A-Z]/', $value)) $strength++;
+                        if (preg_match('/[a-z]/', $value)) $strength++;
+                        if (preg_match('/[0-9]/', $value)) $strength++;
+                        if (preg_match('/[^A-Za-z0-9]/', $value)) $strength++;
+                        
+                        // Require at least 4 criteria (Strong password)
+                        if ($strength < 4) {
+                            $fail('Password must meet at least 4 of these criteria: minimum 8 characters, uppercase letter, lowercase letter, number, special character.');
+                        }
+                    }
+                ],
+                'profile_picture' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048']
+            ];
+
+            // Add email validation for specific user types
+            if (in_array($firstStepData['user_type_id'], ['HS', 'COL', 'PG', 'EMP'])) {
+                $rules['wmsu_email'] = [
+                    'required',
+                    'string',
+                    'unique:users,wmsu_email',
+                    'regex:/^[a-zA-Z0-9._%+-]+@wmsu\.edu\.ph$/'
+                ];
             }
-            $idFrontPath = Storage::disk('public')->put('college/id_front', $request->wmsu_id_front);
-            $idBackPath = Storage::disk('public')->put('college/id_back', $request->wmsu_id_back);
 
-            // Get appropriate user type
-            $userType = UserType::where('code', 'COL')->first()->id;
-            $wmsu_dept_id = Department::where('code', $fields['wmsu_dept'])->first()->id;
-            // dd($wmsu_dept_id);
+            // Add ID verification for all except employees
+            if ($firstStepData['user_type_id'] !== 'EMP') {
+                $rules['wmsu_id_front'] = ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'];
+                $rules['wmsu_id_back'] = ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'];
+            }
 
-            // Create user with all data
-            $user = User::create([
-                'user_type_id'=> $userType,
-                'username' => $fields['username'],
-                'password' => $fields['password'],
-                'first_name' => $fields['first_name'],
-                'last_name' => $fields['last_name'],
-                'wmsu_email' => $fields['wmsu_email'],
-                'wmsu_dept_id' => $wmsu_dept_id,
-                'profile_picture' => $profilePath,
-                'wmsu_id_front' => $idFrontPath,
-                'wmsu_id_back' => $idBackPath,
-            ]);
+            $validatedData = $request->validate($rules);
 
+            // Merge data and hash password
+            $userData = array_merge($firstStepData, $validatedData);
+            $userData['password'] = bcrypt($userData['password']);
+
+            // Handle all file uploads consistently
+            $userType = $firstStepData['user_type_id'];
+
+            // Store profile picture
+            $userData['profile_picture'] = $request->file('profile_picture')
+                ->store($userType . '/profile_pictures', 'public');
+
+            // Store ID pictures if provided
+            if ($request->hasFile('wmsu_id_front')) {
+                $userData['wmsu_id_front'] = $request->file('wmsu_id_front')
+                    ->store($userType . '/id_front', 'public');
+            }
+            if ($request->hasFile('wmsu_id_back')) {
+                $userData['wmsu_id_back'] = $request->file('wmsu_id_back')
+                    ->store($userType . '/id_back', 'public');
+            }
+
+            // Get proper user type ID
+            $userTypeId = UserType::where('code', $userType)->first()->id;
+            $userData['user_type_id'] = $userTypeId;
+
+            // Create user and login
+            $user = User::create($userData);
+            $request->session()->forget('registration_data');
             Auth::login($user);
-            return redirect('/');
 
+            return redirect()->route('index')
+                ->with('success', 'Registration completed successfully!');
         } catch (ValidationException $e) {
             return redirect()->back()
                 ->withErrors($e->errors())
@@ -173,193 +196,9 @@ class authcontroller extends Controller
         }
     }
 
-    // alumni functions
-    public function register_form_alumni()
-    {
-        return view('auth.register-alumni');
-    }
-
-    public function registerAlumni(Request $request)
-    {
-        try {
-            $fields = $request->validate([
-                'username' => ['required', 'max:255', 'unique:users'],
-                'password' => ['required', 'min:3'],
-                'first_name' => ['required', 'max:255'],
-                'last_name' => ['required', 'max:255'],
-                'profile_picture' => ['nullable', 'file', 'mimes:jpeg,png,jpg', 'max:2048'],
-                'wmsu_id_front' => ['required', 'file', 'mimes:jpeg,png,jpg', 'max:2048'],
-                'wmsu_id_back' => ['required', 'file', 'mimes:jpeg,png,jpg', 'max:2048'],
-            ], [
-                'profile_picture.mimes' => 'Profile Picture must be in jpeg, png, or jpg format',
-                'wmsu_id_front.required' => 'Please upload the front of your WMSU ID',
-                'wmsu_id_front.mimes' => 'WMSU ID front must be in jpeg, png, or jpg format',
-            ]);
-            
-            // Handle file uploads first
-            $profilePath = null;
-            if ($request->hasFile('profile_picture')) {
-                $profilePath = Storage::disk('public')->put('alumni/profile_pictures', $request->profile_picture);
-            }
-
-            $idFrontPath = Storage::disk('public')->put('alumni/id_front', $request->wmsu_id_front);
-            $idBackPath = Storage::disk('public')->put('alumni/id_back', $request->wmsu_id_back);
-
-            // Get appropriate user type
-            $userType = UserType::where('code', 'ALM')->first()->id;
-
-            // Create user with all data
-            $user = User::create([
-                'user_type_id'=> $userType,
-                'username' => $fields['username'],
-                'password' => $fields['password'],
-                'first_name' => $fields['first_name'],
-                'last_name' => $fields['last_name'],
-                'profile_picture' => $profilePath,
-                'wmsu_id_front' => $idFrontPath,
-                'wmsu_id_back' => $idBackPath,
-            ]);
-
-            Auth::login($user);
-            return redirect('/');
-
-        } catch (ValidationException $e) {
-            return redirect()->back()
-                ->withErrors($e->errors())
-                ->withInput();
-        }
-    }
-
-    public function register_form_postgraduate()
-    {
-
-        $departments = Department::orderBy('name')->get();
-
-        return view('auth.register-postGraduate', ['departments' => $departments]);
-    }
-
-    public function register_postGraduate(Request $request)
-    {
-        try {
-            $fields = $request->validate([
-                'username' => ['required', 'max:255', 'unique:users'],
-                'password' => ['required', 'min:3'],
-                'first_name' => ['required', 'max:255'],
-                'last_name' => ['required', 'max:255'],
-                'wmsu_email' => ['required', 'string', 'regex:/^eh[0-9]{9}@wmsu.edu.ph$/', 'unique:users'],
-                'wmsu_dept' => ['required', 'string'],
-                'profile_picture' => ['nullable', 'file', 'mimes:jpeg,png,jpg', 'max:2048'],
-                'wmsu_id_front' => ['required', 'file', 'mimes:jpeg,png,jpg', 'max:2048'],
-                'wmsu_id_back' => ['required', 'file', 'mimes:jpeg,png,jpg', 'max:2048'],
-            ], [
-                'wmsu_email.required' => 'Please enter your WMSU email',
-                'profile_picture.mimes' => 'Profile Picture must be in jpeg, png, or jpg format',
-                'wmsu_email.regex' => 'Email must be in format: eh123456789@wmsu.edu.ph',
-                'wmsu_dept.required' => 'Please select a department',
-                'wmsu_id_front.required' => 'Please upload the front of your WMSU ID',
-                'wmsu_id_front.mimes' => 'WMSU ID front must be in jpeg, png, or jpg format',
-                'wmsu_id_back.required' => 'Please upload the back of your WMSU ID',
-                'wmsu_id_back.mimes' => 'WMSU Back front must be in jpeg, png, or jpg format',
-            ]);
-            
-            // Handle file uploads first
-            $profilePath = null;
-            if ($request->hasFile('profile_picture')) {
-                $profilePath = Storage::disk('public')->put('post_graduate/profile_pictures', $request->profile_picture);
-            }
-            $idFrontPath = Storage::disk('public')->put('post_graduate/id_front', $request->wmsu_id_front);
-            $idBackPath = Storage::disk('public')->put('post_graduate/id_back', $request->wmsu_id_back);
-
-            // Get appropriate user type
-            $userType = UserType::where('code', 'PG')->first()->id;
-            $wmsu_dept_id = Department::where('code', $fields['wmsu_dept'])->first()->id;
-            // dd($wmsu_dept_id);
-
-            // Create user with all data
-            $user = User::create([
-                'user_type_id'=> $userType,
-                'username' => $fields['username'],
-                'password' => $fields['password'],
-                'first_name' => $fields['first_name'],
-                'last_name' => $fields['last_name'],
-                'wmsu_email' => $fields['wmsu_email'],
-                'wmsu_dept_id' => $wmsu_dept_id,
-                'profile_picture' => $profilePath,
-                'wmsu_id_front' => $idFrontPath,
-                'wmsu_id_back' => $idBackPath,
-            ]);
-
-            Auth::login($user);
-            return redirect('/');
-
-        } catch (ValidationException $e) {
-            return redirect()->back()
-                ->withErrors($e->errors())
-                ->withInput();
-        }
-    }
-
-    //functions for employee
-    public function register_form_employee(){
-
-        return view('auth.register-employee');
-    }
-
-    public function registerEmployee(Request $request)
-    {
-        try {
-            $fields = $request->validate([
-                'username' => ['required', 'max:255', 'unique:users'],
-                'password' => ['required', 'min:3'],
-                'first_name' => ['required', 'max:255'],
-                'last_name' => ['required', 'max:255'],
-                'wmsu_email' => ['required', 'string', 'regex:/^eh[0-9]{9}@wmsu.edu.ph$/', 'unique:users'],
-                'profile_picture' => ['nullable', 'file', 'mimes:jpeg,png,jpg', 'max:2048'],
-            ], [
-                'wmsu_email.required' => 'Please enter your WMSU email',
-                'profile_picture.mimes' => 'Profile Picture must be in jpeg, png, or jpg format',
-                'wmsu_email.regex' => 'Email must be in format: eh123456789@wmsu.edu.ph',
-            ]);
-            
-            // Handle file uploads first
-            $profilePath = null;
-            if ($request->hasFile('profile_picture')) {
-                $profilePath = Storage::disk('public')->put('employee/profile_pictures', $request->profile_picture);
-            }
-            // $idFrontPath = Storage::disk('public')->put('college/id_front', $request->wmsu_id_front);
-            // $idBackPath = Storage::disk('public')->put('college/id_back', $request->wmsu_id_back);
-
-            // Get appropriate user type
-            $userType = UserType::where('code', 'EMP')->first()->id;
-            // $wmsu_dept_id = Department::where('code', $fields['wmsu_dept'])->first()->id;
-            // dd($wmsu_dept_id);
-
-            // Create user with all data
-            $user = User::create([
-                'user_type_id'=> $userType,
-                'username' => $fields['username'],
-                'password' => $fields['password'],
-                'first_name' => $fields['first_name'],
-                'last_name' => $fields['last_name'],
-                'wmsu_email' => $fields['wmsu_email'],
-                'profile_picture' => $profilePath,
-                // 'wmsu_dept_id' => $wmsu_dept_id,
-                // 'wmsu_id_front' => $idFrontPath,
-                // 'wmsu_id_back' => $idBackPath,
-            ]);
-
-            Auth::login($user);
-            return redirect('/');
-
-        } catch (ValidationException $e) {
-            return redirect()->back()
-                ->withErrors($e->errors())
-                ->withInput();
-        }
-    }
-    
     //Logout User
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
         //Logout the sser
         Auth::logout();
 

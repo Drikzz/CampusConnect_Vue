@@ -14,32 +14,30 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('username')->nullable()->unique();
-            $table->string('password');
-            $table->string('first_name')->nullable();
-            $table->string('last_name')->nullable();
+            $table->string('password')->nullable();
+            $table->string('first_name');
+            $table->string('middle_name')->nullable();
+            $table->string('last_name');
             $table->string('wmsu_email')->nullable()->unique();
+            $table->string('phone');
+            $table->date('date_of_birth');
+            $table->enum('gender', ['male', 'female', 'non-binary', 'prefer-not-to-say']);
 
-            // based on user type on registration
+            // User type and department relationships
             $table->foreignId('user_type_id')->nullable()->constrained('user_types')->onDelete('restrict');
             $table->foreignId('wmsu_dept_id')->nullable()->constrained('departments')->onDelete('restrict');
             $table->foreignId('grade_level_id')->nullable()->constrained('grade_levels')->onDelete('restrict');
 
+            // Files and images
             $table->string('profile_picture')->nullable();
-            $table->timestamp('email_verified_at')->nullable();
-
-            // user verification
-            $table->boolean('is_seller')->default(false);
-            $table->string('seller_code')->nullable()->unique();  // replaces seller_id
-            $table->boolean('is_verified')->default(true);
-            $table->timestamp('verified_at')->nullable();
-
-            // If this user is an admin
-            $table->boolean('is_admin')->nullable()->default(false);
-
             $table->string('wmsu_id_front')->nullable();
             $table->string('wmsu_id_back')->nullable();
 
-            // no rating yets
+            // Status flags
+            $table->boolean('is_seller')->default(false);
+            $table->string('seller_code')->nullable()->unique();
+            $table->boolean('is_admin')->default(false);
+
             $table->rememberToken();
             $table->timestamps();
         });

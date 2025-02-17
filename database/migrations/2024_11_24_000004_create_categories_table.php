@@ -15,12 +15,11 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // Insert default categories
         DB::table('categories')->insert([
-            ['name' => 'Electronics'],
-            ['name' => 'Books'],
-            ['name' => 'Clothing'],
-            ['name' => 'Others'],
+            ['name' => 'Electronics', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Books', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Clothing', 'created_at' => now(), 'updated_at' => now()],
+            // ['name' => 'Others', 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 

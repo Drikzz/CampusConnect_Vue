@@ -23,36 +23,30 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         $price = $this->faker->numberBetween(100, 10000);
-        $discount = $this->faker->numberBetween(0, 100);
-        $discountedPrice = $price - ($price * ($discount / 100));
+        // Generate discount as decimal (0 to 0.10)
+        $discount = $this->faker->boolean(30) ? $this->faker->randomFloat(2, 0.01, 0.90) : 0;
+        $discountedPrice = $price * (1 - $discount);
 
-        // Get a random image index from 1-8
-        $selectedIndex = $this->faker->numberBetween(1, 8);
-
-        // Generate image URL using the public path
-        $imageUrls = ["products/sample_imgs/img{$selectedIndex}.jpg"];
-
-        // Generate random values for is_buyable and is_tradable
-        $rand = $this->faker->numberBetween(1, 100);
-        if ($rand <= 80) {
-            $is_buyable = $this->faker->boolean();
-            $is_tradable = $is_buyable ? $this->faker->boolean() : true;
-        } else {
-            $is_buyable = true;
-            $is_tradable = true;
+        // Generate 1-3 random image URLs
+        $imageCount = $this->faker->numberBetween(1, 3);
+        $imageUrls = [];
+        for ($i = 0; $i < $imageCount; $i++) {
+            $selectedIndex = $this->faker->numberBetween(1, 8);
+            $imageUrls[] = "products/sample_imgs/img{$selectedIndex}.jpg";
         }
 
         return [
-            'name' => $this->faker->word(),
-            'description' => $this->faker->paragraph(),
+            'name' => $this->faker->words(3, true),
+            'description' => $this->faker->paragraphs(2, true),
             'price' => $price,
-            'discount' => $discount,
-            'discounted_price' => $discountedPrice,
+            'discount' => $discount, // Now stores as decimal (e.g., 0.05 for 5%)
+            'discounted_price' => round($discountedPrice, 2),
             'images' => $imageUrls,
-            'stock' => $this->faker->numberBetween(1, 100),
-            'category_id' => 1,
-            'is_buyable' => $is_buyable,
-            'is_tradable' => $is_tradable,
+            'stock' => $this->faker->numberBetween(1, 20),
+            'seller_code' => null, // Will be set in DatabaseSeeder
+            'category_id' => $this->faker->numberBetween(1, 4),
+            'is_buyable' => $this->faker->boolean(80),
+            'is_tradable' => $this->faker->boolean(20),
             'status' => $this->faker->randomElement(['Active', 'Inactive']),
         ];
     }
