@@ -43,9 +43,12 @@
 
                     @if (auth()->user()->is_seller)
                         <x-dashboard.nav-section title="Store Management">
-                            <x-dashboard.nav-item route="products" icon="tag">Products</x-dashboard.nav-item>
-                            <x-dashboard.nav-item route="orders" icon="shopping-cart">Orders</x-dashboard.nav-item>
-                            <x-dashboard.nav-item route="analytics" icon="chart">Analytics</x-dashboard.nav-item>
+                            <x-dashboard.nav-item route="seller.products.index"
+                                icon="tag">Products</x-dashboard.nav-item>
+                            <x-dashboard.nav-item route="seller.orders"
+                                icon="shopping-cart">Orders</x-dashboard.nav-item>
+                            <x-dashboard.nav-item route="seller.analytics"
+                                icon="chart">Analytics</x-dashboard.nav-item>
                         </x-dashboard.nav-section>
                     @else
                         <x-dashboard.nav-section title="Shopping">

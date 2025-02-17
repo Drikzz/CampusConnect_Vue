@@ -48,8 +48,8 @@
                                             d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                     </svg>
                                 </button>
-                                <button type="button" onclick="deleteLocation({{ $meetupLocation->id }})"
-                                    class="text-red-600 hover:text-red-900">
+                                <button type="button" onclick="deleteLocation({{ $meetupLocation->id }}, this)"
+                                    class="text-red-600 hover:text-red-900" data-location-id="{{ $meetupLocation->id }}">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -65,7 +65,7 @@
 
     <!-- Add Meetup Location Modal -->
     <div id="add-meetup-modal" tabindex="-1" aria-hidden="true"
-        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex items-center justify-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" aria-hidden="true"></div>
         <div class="relative p-4 w-full max-w-2xl max-h-full z-10">
             <div class="relative bg-white rounded-lg shadow">
@@ -171,18 +171,7 @@
                                         {{ $location->name }}
                                     </option>
                                 @endforeach
-                                <option value="other">Other (specify)</option>
                             </select>
-                        </div>
-
-                        <!-- Custom Location Input -->
-                        <div id="custom-location-container" class="hidden">
-                            <label for="custom_location" class="block mb-2 text-sm font-medium text-gray-900">
-                                Specify Location
-                            </label>
-                            <textarea name="custom_location" id="custom_location" rows="2"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                placeholder="Please provide detailed location information"></textarea>
                         </div>
 
                         <!-- Map Container -->
@@ -202,9 +191,16 @@
                         <label class="relative inline-flex items-center cursor-pointer">
                             <input type="checkbox" name="is_default" class="sr-only peer" value="1">
                             <div
-                                class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600">
+                                class="w-11 h-6 bg-gray-200 rounded-full peer 
+                                peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300
+                                dark:bg-gray-700 peer-checked:after:translate-x-full 
+                                peer-checked:after:border-white after:content-[''] 
+                                after:absolute after:top-[2px] after:left-[2px]
+                                after:bg-white after:border-gray-300 after:border 
+                                after:rounded-full after:h-5 after:w-5 after:transition-all
+                                dark:border-gray-600 peer-checked:bg-primary-color">
                             </div>
-                            <span class="ms-3 text-sm font-medium text-gray-900">Set as default location</span>
+                            <span class="ml-3 text-sm font-medium text-gray-900">Set as default location</span>
                         </label>
                     </div>
 
@@ -286,18 +282,7 @@
                                         {{ $location->name }}
                                     </option>
                                 @endforeach
-                                <option value="other">Other (specify)</option>
                             </select>
-                        </div>
-
-                        <!-- Custom Location Input -->
-                        <div id="custom-location-container" class="hidden">
-                            <label for="custom_location" class="block mb-2 text-sm font-medium text-gray-900">
-                                Specify Location
-                            </label>
-                            <textarea name="custom_location" id="custom_location" rows="2"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                placeholder="Please provide detailed location information"></textarea>
                         </div>
 
                         <!-- Map Container -->
@@ -317,9 +302,16 @@
                         <label class="relative inline-flex items-center cursor-pointer">
                             <input type="checkbox" name="is_default" class="sr-only peer" value="1">
                             <div
-                                class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600">
+                                class="w-11 h-6 bg-gray-200 rounded-full peer 
+                                peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300
+                                dark:bg-gray-700 peer-checked:after:translate-x-full 
+                                peer-checked:after:border-white after:content-[''] 
+                                after:absolute after:top-[2px] after:left-[2px]
+                                after:bg-white after:border-gray-300 after:border 
+                                after:rounded-full after:h-5 after:w-5 after:transition-all
+                                dark:border-gray-600 peer-checked:bg-primary-color">
                             </div>
-                            <span class="ms-3 text-sm font-medium text-gray-900">Set as default location</span>
+                            <span class="ml-3 text-sm font-medium text-gray-900">Set as default location</span>
                         </label>
                     </div>
 
@@ -340,6 +332,93 @@
     </div>
 
     <script>
+        // Replace the existing deleteLocation function with this exact version
+        function deleteLocation(productId, buttonElement) {
+            if (!confirm('Are you sure you want to delete this meetup location?')) return;
+
+            fetch(`/dashboard/meetup-locations/${productId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        const locationCard = buttonElement.closest('.bg-white');
+                        locationCard.remove();
+
+                        // Check if there are no more locations
+                        const remainingLocations = document.querySelectorAll('.grid.gap-6 > div').length;
+                        if (remainingLocations === 0) {
+                            const container = document.querySelector('.grid.gap-6').parentElement;
+                            container.innerHTML = `
+                            <div class="text-center py-8 bg-gray-50 rounded-lg">
+                                <p class="text-gray-600">No meetup locations. Add one to get started.</p>
+                            </div>
+                        `;
+                        }
+                    } else {
+                        alert(data.message || 'Failed to delete location');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error deleting location');
+                });
+        }
+
+        // Add notification helper function
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 px-6 py-3 rounded shadow-lg z-50 animate-fade-in-out ${
+                type === 'success' ? 'bg-green-500' : 'bg-red-500'
+            } text-white`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // Add this CSS for animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInOut {
+                0% { opacity: 0; transform: translateY(-20px); }
+                10% { opacity: 1; transform: translateY(0); }
+                90% { opacity: 1; transform: translateY(0); }
+                100% { opacity: 0; transform: translateY(-20px); }
+            }
+            .animate-fade-in-out {
+                animation: fadeInOut 3s ease-in-out;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Define deleteLocation in the global scope
+        window.deleteLocation = function(id) {
+            if (confirm('Are you sure you want to delete this meetup location?')) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `/dashboard/meetup-locations/${id}`;
+                form.innerHTML = `
+                    @csrf
+                    @method('DELETE')
+                `;
+                document.body.appendChild(form);
+                form.submit();
+            }
+        };
+
         document.addEventListener('DOMContentLoaded', function() {
             // Modal elements
             const addModal = document.getElementById('add-meetup-modal');
@@ -357,8 +436,6 @@
             const nameOptions = document.querySelectorAll('.name-option');
             const phoneOptions = document.querySelectorAll('.phone-option');
             const locationSelect = document.getElementById('location');
-            const customLocationContainer = document.getElementById('custom-location-container');
-            const customLocationInput = document.getElementById('custom_location');
             const latitudeInput = document.getElementById('latitude');
             const longitudeInput = document.getElementById('longitude');
 
@@ -465,15 +542,11 @@
 
             // Location Select functionality
             locationSelect.addEventListener('change', function() {
-                const isCustomLocation = this.value === 'other';
-                customLocationContainer.classList.toggle('hidden', !isCustomLocation);
-                customLocationInput.required = isCustomLocation;
-
                 // Get the selected option's text
                 const selectedLocation = this.options[this.selectedIndex].text;
 
                 // Set map view based on selected location
-                if (!isCustomLocation && this.value) {
+                if (this.value) {
                     const locations = {
                         'WMSU Canteen': [6.912892502432668, 122.06177697832719],
                         'WMSU Library': [6.912629451896356, 122.06052675192008],
@@ -539,17 +612,6 @@
                     form.querySelector('#phone').value = location.phone;
                     form.querySelector('#location').value = location.location_id;
 
-                    // Handle custom location
-                    const customLocationContainer = form.querySelector('#custom-location-container');
-                    if (location.custom_location) {
-                        form.querySelector('#location').value = 'other';
-                        customLocationContainer.classList.remove('hidden');
-                        form.querySelector('#custom_location').value = location.custom_location;
-                    } else {
-                        customLocationContainer.classList.add('hidden');
-                        form.querySelector('#custom_location').value = '';
-                    }
-
                     // Set default checkbox
                     form.querySelector('input[name="is_default"]').checked = location.is_default;
 
@@ -591,36 +653,15 @@
                 });
             });
 
-            function deleteLocation(id) {
-                if (confirm('Are you sure you want to delete this meetup location?')) {
-                    const form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = `/dashboard/meetup-locations/${id}`;
-                    form.innerHTML = `
-                        @csrf
-                        @method('DELETE')
-                    `;
-                    document.body.appendChild(form);
-                    form.submit();
-                }
-            }
-
             // Update location select handler for both modals
             function setupLocationSelectHandler(modal, mapInstance, markerRef) {
                 const locationSelect = modal.querySelector('select[name="location_id"]');
                 locationSelect.addEventListener('change', function() {
-                    const isCustomLocation = this.value === 'other';
-                    const customLocationContainer = modal.querySelector('#custom-location-container');
-                    const customLocationInput = modal.querySelector('#custom_location');
-
-                    customLocationContainer.classList.toggle('hidden', !isCustomLocation);
-                    customLocationInput.required = isCustomLocation;
-
                     // Get the selected option's text
                     const selectedLocation = this.options[this.selectedIndex].text;
 
                     // Set map view based on selected location
-                    if (!isCustomLocation && this.value) {
+                    if (this.value) {
                         const locations = {
                             'WMSU Canteen': [6.912892502432668, 122.06177697832719],
                             'WMSU Library': [6.912629451896356, 122.06052675192008],
@@ -728,3 +769,21 @@
     </script>
 
 @endsection
+
+@push('scripts')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+@endpush
+
+@push('styles')
+    <style>
+        /* Add styles for switch transition */
+        .peer:checked~div {
+            background-color: var(--primary-color);
+        }
+
+        .peer:checked~div:after {
+            transform: translateX(100%);
+            border-color: white;
+        }
+    </style>
+@endpush

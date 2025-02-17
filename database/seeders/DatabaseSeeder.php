@@ -147,7 +147,7 @@ class DatabaseSeeder extends Seeder
             for ($i = 0; $i < 4; $i++) {
                 Product::factory()->create([
                     'seller_code' => $user->seller_code,
-                    'category_id' => rand(1, 4),
+                    'category_id' => rand(1, 3),
                     'status' => 'Active'
                 ]);
             }

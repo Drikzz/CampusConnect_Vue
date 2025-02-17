@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\GradeLevel;
 use App\Models\Location;
+use App\Models\MeetupLocation;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\UserType;
@@ -294,14 +295,12 @@ class DashboardController extends Controller
             'full_name' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
             'location_id' => 'required|exists:locations,id',
-            'custom_location' => 'nullable|string|max:255',
-            'is_default' => 'nullable|boolean',  // Change to nullable
+            'is_default' => 'nullable|boolean',
         ]);
 
         $user = auth()->user();
         $location = Location::findOrFail($validated['location_id']);
 
-        // Set is_default to false if not provided
         $is_default = $request->has('is_default') ? true : false;
 
         if ($is_default) {
@@ -312,10 +311,9 @@ class DashboardController extends Controller
             'full_name' => $validated['full_name'],
             'phone' => $validated['phone'],
             'location_id' => $validated['location_id'],
-            'custom_location' => $validated['custom_location'],
             'latitude' => $location->latitude,
             'longitude' => $location->longitude,
-            'is_default' => $is_default,  // Use the new variable
+            'is_default' => $is_default,
         ]);
 
         return back()->with('success', 'Meetup location added successfully');
@@ -327,15 +325,13 @@ class DashboardController extends Controller
             'full_name' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
             'location_id' => 'required|exists:locations,id',
-            'custom_location' => 'nullable|string|max:255',
-            'is_default' => 'nullable|boolean',  // Change to nullable
+            'is_default' => 'nullable|boolean',
         ]);
 
         $user = auth()->user();
         $meetupLocation = $user->meetupLocations()->findOrFail($id);
         $location = Location::findOrFail($validated['location_id']);
 
-        // Set is_default to false if not provided
         $is_default = $request->has('is_default') ? true : false;
 
         if ($is_default) {
@@ -346,10 +342,9 @@ class DashboardController extends Controller
             'full_name' => $validated['full_name'],
             'phone' => $validated['phone'],
             'location_id' => $validated['location_id'],
-            'custom_location' => $validated['custom_location'],
             'latitude' => $location->latitude,
             'longitude' => $location->longitude,
-            'is_default' => $is_default,  // Use the new variable
+            'is_default' => $is_default,
         ]);
 
         return back()->with('success', 'Meetup location updated successfully');
@@ -357,21 +352,21 @@ class DashboardController extends Controller
 
     public function deleteMeetupLocation($id)
     {
-        $user = auth()->user();
-        $meetupLocation = $user->meetupLocations()->findOrFail($id);
+        try {
+            $meetupLocation = MeetupLocation::findOrFail($id);
+            $meetupLocation->delete();
 
-        // If deleting default location, make another one default if exists
-        if ($meetupLocation->is_default) {
-            $newDefault = $user->meetupLocations()
-                ->where('id', '!=', $id)
-                ->first();
-            if ($newDefault) {
-                $newDefault->update(['is_default' => true]);
+            if (request()->ajax()) {
+                return response()->json(['success' => true, 'message' => 'Location deleted successfully']);
             }
+
+            return redirect()->back()->with('success', 'Location deleted successfully');
+        } catch (\Exception $e) {
+            if (request()->ajax()) {
+                return response()->json(['success' => false, 'message' => 'Error deleting location'], 500);
+            }
+
+            return redirect()->back()->with('error', 'Error deleting location');
         }
-
-        $meetupLocation->delete();
-
-        return back()->with('success', 'Meetup location deleted successfully');
     }
 }
