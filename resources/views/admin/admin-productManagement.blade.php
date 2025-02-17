@@ -45,7 +45,7 @@
                         <tr class="border-t">
                             <td class="p-3"><input type="checkbox" class="selectProduct" value="{{ $product->id }}"></td>
                             <td class="p-3">
-                                <img src="{{ asset($product->images[0] ?? 'default-image.jpg') }}" class="w-12 h-12 rounded">
+                                <img src="{{ asset('storage/' . ($product->images[0] ?? 'default-image.jpg')) }}" class="w-12 h-12 rounded">
                             </td>
                             <td class="p-3">{{ $product->name }}</td>
                             <td class="p-3">{{ $product->category->name }}</td>
@@ -123,9 +123,9 @@
                 document.getElementById('viewProductPrice').innerText = `$${parseFloat(product.price).toFixed(2)}`;
 
                 if (product.images && product.images.length > 0) {
-                    document.getElementById('viewProductImage').src = product.images[0];
+                    document.getElementById('viewProductImage').src = '{{ asset('storage') }}/' + product.images[0];
                 } else {
-                    document.getElementById('viewProductImage').src = 'default-image.jpg';
+                    document.getElementById('viewProductImage').src = '{{ asset('storage/default-image.jpg') }}';
                 }
 
                 document.getElementById('viewProductCondition').innerText = product.condition;
