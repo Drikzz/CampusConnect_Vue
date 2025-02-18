@@ -51,6 +51,7 @@ class SellerController extends Controller
             ->take(5)
             ->get();
 
+        // dd($recentOrders);
         return view('seller.dashboard', compact('categories', 'totalOrders', 'totalSales', 'activeTrades', 'recentOrders', 'orderCounts'));
     }
 
@@ -139,16 +140,18 @@ class SellerController extends Controller
         $is_tradable = in_array($validated['trade_availability'], ['trade', 'both']);
 
         // Calculate discounted price
-        $price = $validated['price'];
-        $discount = $validated['discount'] ?? 0;
-        $discountedPrice = $price - ($price * ($discount / 100));
+        $price = (int)(floatval($validated['price']) * 100); // Convert to cents
+        $discount = ($validated['discount'] ?? 0) / 100; // Convert percentage to decimal
+        $taxPrice = $price * $discount;
+        $discountedPrice = $price - $taxPrice;
+        $price = $price / 100; // Convert back to dollars
 
         // Create product
         $product = Product::create([
             'name' => $validated['name'],
             'description' => $validated['description'],
             'price' => $price,
-            'discount' => $discount,
+            'discount' => $validated['discount'] ?? 0,
             'discounted_price' => $discountedPrice,
             'stock' => $validated['quantity'],
             'images' => $imagePaths,
@@ -163,7 +166,7 @@ class SellerController extends Controller
             return redirect()->route('seller.products')->with('success', 'Product added successfully!');
         }
 
-        return redirect()->back()->with('error', 'Failed to add product. Please try again.');
+        // return redirect()->back()->with('error', 'Failed to add product. Please try again.');
     }
 
     public function products()
@@ -246,16 +249,18 @@ class SellerController extends Controller
             $imagePaths = array_values(array_filter($imageObj));
 
             // Calculate discounted price
-            $price = $validated['price'];
-            $discount = $validated['discount'] ?? 0;
-            $discountedPrice = $price - ($price * ($discount / 100));
+            $price = (int)(floatval($validated['price']) * 100); // Convert to cents
+            $discount = ($validated['discount'] ?? 0) / 100; // Convert percentage to decimal
+            $taxPrice = $price * $discount;
+            $discountedPrice = $price - $taxPrice;
+            $price = $price / 100; // Convert back to dollars
 
             // Update product without trade method
             $product->update([
                 'name' => $validated['name'],
                 'description' => $validated['description'],
                 'price' => $price,
-                'discount' => $discount,
+                'discount' => $validated['discount'] ?? 0,
                 'discounted_price' => $discountedPrice,
                 'stock' => $validated['quantity'],
                 'quantity' => $validated['quantity'],

@@ -23,6 +23,8 @@ class Product extends Model
         'category_id',
         'is_buyable',
         'is_tradable',
+        'condition',
+        'trade_preferences',
         'status',
     ];
 
@@ -30,6 +32,7 @@ class Product extends Model
         'images' => 'array',
         'is_buyable' => 'boolean',
         'is_tradable' => 'boolean',
+        'trade_preferences' => 'array',
     ];
 
     public function seller(): BelongsTo
@@ -67,6 +70,16 @@ class Product extends Model
     public function images(): HasMany
     {
         return $this->hasMany(Product::class, 'images');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function getImageAttribute($value)
+    {
+        return asset('storage/' . $value);
     }
 
     // public function variants(): HasMany
