@@ -96,11 +96,12 @@ Route::middleware('guest')->group(function () {
 
 // Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
 
-// Admin Dashboard Route
+// // Admin Dashboard Route
 // Route::get('/admin/dashboard', function () {
 //     return view('admin.admin-dashboard');
 // })->name('admin.dashboard');
 
+// NEW ADMIN ROUTES
 Route::get('/admin/dashboard2', [AdminController::class, 'dashboard2'])->name('admin-dashboard2');
 Route::get('/admin/userManagement', [AdminController::class, 'userManagement'])->name('admin-userManagement');
 Route::get('/admin/userManagement/create', [AdminController::class, 'create'])->name('admin-userManagement.create');
