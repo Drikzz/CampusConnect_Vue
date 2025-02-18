@@ -1,7 +1,7 @@
 @php
   use App\Models\Product;
-  use App\Models.User;
-  use App\Models.Order;
+  use App\Models\User;
+  use App\Models\Order;
 
   $listedProducts = Product::count();
   $totalUsers = User::count();
@@ -52,12 +52,12 @@
       </div>
     </div>
   </div>
+
   <div class="flex gap-4">
     <div class="relative flex flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md flex-1">
       <div class="relative mx-4 mt-4 flex flex-col gap-4 overflow-hidden rounded-none bg-transparent bg-clip-border text-gray-700 shadow-none md:flex-row md:items-center justify-between">
         <div>
           <h6 class="block font-sans text-base font-semibold leading-relaxed tracking-normal text-blue-gray-900 antialiased">Transaction Overview</h6>
-          <p class="block max-w-sm font-sans text-sm font-normal leading-normal text-gray-700 antialiased"></p>
         </div>
         <div class="relative">
           <button class="text-red-500 hover:text-red-700 focus:outline-none" onclick="toggleDropdown('dropdown1')">
@@ -78,7 +78,6 @@
       <div class="relative mx-4 mt-4 flex flex-col gap-4 overflow-hidden rounded-none bg-transparent bg-clip-border text-gray-700 shadow-none md:flex-row md:items-center justify-between">
         <div>
           <h6 class="block font-sans text-base font-semibold leading-relaxed tracking-normal text-blue-gray-900 antialiased">User Registrations</h6>
-          <p class="block max-w-sm font-sans text-sm font-normal leading-normal text-gray-700 antialiased"></p>
         </div>
         <div class="relative">
           <button class="text-red-500 hover:text-red-700 focus:outline-none" onclick="toggleDropdown('dropdown2')">
@@ -96,12 +95,12 @@
       </div>
     </div>
   </div>
+
   <div class="flex gap-4">
     <div class="relative flex flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md flex-1">
       <div class="relative mx-4 mt-4 flex flex-col gap-4 overflow-hidden rounded-none bg-transparent bg-clip-border text-gray-700 shadow-none md:flex-row md:items-center justify-between">
         <div>
           <h6 class="block font-sans text-base font-semibold leading-relaxed tracking-normal text-blue-gray-900 antialiased">Products</h6>
-          <p class="block max-w-sm font-sans text-sm font-normal leading-normal text-gray-700 antialiased"></p>
         </div>
       </div>
       <div class="pt-6 px-2 pb-0">
@@ -114,7 +113,7 @@
               <th class="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Price</th>
               <th class="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Discount</th>
               <th class="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Discounted Price</th>
-              <th class="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Condition</th>
+              <th class="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Image</th>
             </tr>
           </thead>
           <tbody>
@@ -126,7 +125,9 @@
               <td class="py-2 px-4 border-b border-gray-200">${{ number_format($product->price, 2) }}</td>
               <td class="py-2 px-4 border-b border-gray-200">{{ $product->discount }}%</td>
               <td class="py-2 px-4 border-b border-gray-200">${{ number_format($product->discounted_price, 2) }}</td>
-              <td class="py-2 px-4 border-b border-gray-200">{{ $product->condition }}</td>
+              <td class="py-2 px-4 border-b border-gray-200">
+                <img src="{{ asset('storage/' . ($product->images[0] ?? 'default-image.jpg')) }}" class="w-16 h-16 object-cover">
+              </td>
             </tr>
             @endforeach
           </tbody>
@@ -137,6 +138,7 @@
       </div>
     </div>
   </div>
+
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
   <script>
     function toggleDropdown(id) {
@@ -158,7 +160,7 @@
     const lineChart = new ApexCharts(document.querySelector("#line-chart"), {
       series: [{
         name: "Transactions",
-        data: [{{ $dailyTransactions }}, {{ $weeklyTransactions }}, {{ $monthlyTransactions }}],
+        data: {!! json_encode([$dailyTransactions, $weeklyTransactions, $monthlyTransactions]) !!},
       }],
       chart: {
         type: "line",
@@ -194,7 +196,7 @@
     const barChart = new ApexCharts(document.querySelector("#bar-chart"), {
       series: [{
         name: "User Registrations",
-        data: [{{ $dailyRegistrations }}, {{ $weeklyRegistrations }}, {{ $monthlyRegistrations }}],
+        data: {!! json_encode([$dailyRegistrations, $weeklyRegistrations, $monthlyRegistrations]) !!},
       }],
       chart: {
         type: "bar",
@@ -225,28 +227,5 @@
       tooltip: { theme: "dark" },
     });
     barChart.render();
-
-    function updateChart(period, type) {
-      let data;
-      if (type === 'transactions') {
-        if (period === 'daily') {
-          data = [{{ $dailyTransactions }}];
-        } else if (period === 'weekly') {
-          data = [{{ $weeklyTransactions }}];
-        } else if (period === 'monthly') {
-          data = [{{ $monthlyTransactions }}];
-        }
-        lineChart.updateSeries([{ data }]);
-      } else if (type === 'registrations') {
-        if (period === 'daily') {
-          data = [{{ $dailyRegistrations }}];
-        } else if (period === 'weekly') {
-          data = [{{ $weeklyRegistrations }}];
-        } else if (period === 'monthly') {
-          data = [{{ $monthlyRegistrations }}];
-        }
-        barChart.updateSeries([{ data }]);
-      }
-    }
   </script>
 </x-adminLayout2>
