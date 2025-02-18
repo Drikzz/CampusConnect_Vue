@@ -15,12 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->integer('price');
-            $table->integer('discount')->nullable();
-            $table->integer('discounted_price')->nullable();
+            $table->decimal('price', 10, 2);
+            $table->integer('discount')->default(0);
+            $table->decimal('discounted_price', 10, 2)->nullable();
             $table->json('images')->nullable();
             $table->integer('stock');
-            $table->string('seller_code')->constrained('users')->onDelete('cascade');
+            $table->string('seller_code');
+            $table->foreign('seller_code')->references('seller_code')->on('users')->onDelete('cascade');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->boolean('is_buyable')->default(true);
             $table->boolean('is_tradable')->default(false);

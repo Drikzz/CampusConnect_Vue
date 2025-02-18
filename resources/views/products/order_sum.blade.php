@@ -23,7 +23,8 @@
                                     class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border rounded-lg space-y-4 sm:space-y-0">
                                     {{-- Product Image and Name --}}
                                     <div class="flex items-center gap-4 w-full sm:w-auto">
-                                        <img src="{{ $product->images[0] }}" alt="{{ $product->name }}"
+                                        <img src="{{ asset('storage/' . $product->images[0]) }}"
+                                            alt="{{ $product->name }}"
                                             class="w-16 h-16 object-cover rounded-md flex-shrink-0">
                                         <h3 class="font-Satoshi-bold">{{ Str::ucfirst($product->name) }}</h3>
                                     </div>
@@ -83,7 +84,7 @@
                             <div class="border-t border-gray-100 py-4 mb-6">
                                 <h4 class="font-Satoshi-bold mb-2">Seller Information</h4>
                                 <div class="flex items-center gap-3">
-                                    <img src="{{ Storage::url($product->seller->profile_picture) ?? 'default.jpg' }}"
+                                    <img src="{{ asset('storage/' . $product->seller->profile_picture) }}"
                                         class="w-8 h-8 rounded-full object-cover">
                                     <div>
                                         <p class="font-medium">{{ $product->seller->first_name }}</p>
