@@ -75,6 +75,16 @@ class Product extends Model
         return $this->hasMany(Product::class, 'images');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function getImageAttribute($value)
+    {
+        return asset('storage/' . $value);
+    }
+
     // public function variants(): HasMany
     // {
     //     return $this->hasMany(ProductVariant::class);
