@@ -99,10 +99,10 @@ Route::middleware('guest')->group(function () {
 
 
 // Admin Authentication Routes
-// Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
-// Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login.submit');
+Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
+Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login.submit');
 
-// Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
+Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
 
 // // Admin Dashboard Route
 // Route::get('/admin/dashboard', function () {
