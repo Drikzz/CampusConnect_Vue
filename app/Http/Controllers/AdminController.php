@@ -10,6 +10,7 @@ use App\Models\Order; // Import the Order model
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log; // Import the Log facade
 
 class AdminController extends Controller
 {
@@ -20,28 +21,16 @@ class AdminController extends Controller
 
     public function login(Request $request)
     {
-        // Validate
-        $credentials = $request->validate([
-            'username' => 'required',
-            'password' => 'required'
-        ]);
+        $credentials = $request->only('username', 'password');
 
-        // Try to login the user
-        if (Auth::attempt($credentials, $request->remember)) {
-            // Check if user is admin
-            if (Auth::user()->is_admin) {
-                return redirect()->intended('/admin/dashboard');
-            }
-            
-            Auth::logout();
-            return back()->withErrors([
-                'failed' => 'You do not have admin privileges'
-            ]);
+        if (Auth::attempt($credentials)) {
+            // Authentication passed...
+            return redirect()->intended('/admin/dashboard');
         }
 
         return back()->withErrors([
-            'failed' => 'The provided credentials do not match our records'
-        ]);
+            'username' => 'The provided credentials do not match our records.',
+        ])->withInput($request->only('username'));
     }
 
     public function logout(Request $request) {
@@ -55,7 +44,7 @@ class AdminController extends Controller
 
     public function dashboard2()
     {
-        return view('admin.admin-dashboard2');
+        return view('admin.dashboard2');
     }
 
     public function userManagement()
@@ -243,5 +232,10 @@ class AdminController extends Controller
     public function fundManagement()
     {
         return view('admin.admin-fundManagement');
+    }
+
+    public function dashboard()
+    {
+        return view('admin.admin-dashboard2');
     }
 }
