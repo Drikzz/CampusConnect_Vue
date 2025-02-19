@@ -155,6 +155,8 @@ Route::delete('/admin/products/{id}', [AdminController::class, 'destroyProduct']
 Route::post('/admin/products/bulk-delete', [AdminController::class, 'bulkDestroyProducts']);
 Route::put('/admin/products/{id}', [AdminController::class, 'updateProduct'])->name('admin.updateProduct');
 
+Route::get('/admin/fundManagement', [AdminController::class, 'fundManagement'])->name('admin-fundManagement');
+
 // PLS DON'T DELETE THIS CODE FOR A WHILE
 // Protected Admin Routes
 // Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {

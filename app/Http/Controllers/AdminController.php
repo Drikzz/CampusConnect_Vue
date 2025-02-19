@@ -239,4 +239,9 @@ class AdminController extends Controller
         $product = Product::findOrFail($id);
         return response()->json($product);
     }
+
+    public function fundManagement()
+    {
+        return view('admin.admin-fundManagement');
+    }
 }

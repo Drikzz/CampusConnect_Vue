@@ -230,6 +230,15 @@
                         }
                     });
                 }
+
+                function showEditForm(userId) {
+                    fetch(`/admin/userManagement/${userId}/edit`)
+                        .then(response => response.text())
+                        .then(html => {
+                            document.getElementById('edit-user-content').innerHTML = html;
+                            document.getElementById('edit-user-modal').classList.remove('hidden');
+                        });
+                }
             });
 
             function showUserDetails(userId) {
@@ -238,15 +247,6 @@
                     .then(html => {
                         document.getElementById('user-details-content').innerHTML = html;
                         document.getElementById('user-details-modal').classList.remove('hidden');
-                    });
-            }
-
-            function showEditForm(userId) {
-                fetch(`/admin/userManagement/${userId}/edit`)
-                    .then(response => response.text())
-                    .then(html => {
-                        document.getElementById('edit-user-content').innerHTML = html;
-                        document.getElementById('edit-user-modal').classList.remove('hidden');
                     });
             }
 
