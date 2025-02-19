@@ -25,12 +25,20 @@ class AdminController extends Controller
             'username' => 'required',
             'password' => 'required'
         ]);
-    
-        // Check credentials
-        if ($credentials['username'] === 'admin' && $credentials['password'] === 'admin1234') {
-            return redirect()->route('admin-dashboard2');
+
+        // Try to login the user
+        if (Auth::attempt($credentials, $request->remember)) {
+            // Check if user is admin
+            if (Auth::user()->is_admin) {
+                return redirect()->intended('/admin/dashboard');
+            }
+            
+            Auth::logout();
+            return back()->withErrors([
+                'failed' => 'You do not have admin privileges'
+            ]);
         }
-    
+
         return back()->withErrors([
             'failed' => 'The provided credentials do not match our records'
         ]);
