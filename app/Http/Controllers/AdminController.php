@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Transaction;
+use App\Models\Order; // Import the Order model
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -51,60 +52,76 @@ class AdminController extends Controller
     return redirect()->route('admin.login');
 }
 
-//     public function dashboard()
-//     {
-//         $totalUsers = User::count();
-//         $totalProducts = Product::count();
-//         $totalTransactions = Transaction::sum('amount');
-        
-//         return view('admin.dashboard', compact('totalUsers', 'totalProducts', 'totalTransactions'));
-//     }
+    public function dashboard2()
+    {
+        return view('admin.admin-dashboard2');
+    }
 
-//     public function users()
-//     {
-//         $users = User::paginate(10);
-//         return view('admin.users.index', compact('users'));
-//     }
+    public function userManagement()
+    {
+        $users = User::all();
+        return view('admin.admin-userManagement', compact('users'));
+    }
 
-//     public function products()
-//     {
-//         $products = Product::paginate(10);
-//         return view('admin.products.index', compact('products'));
-//     }
+    public function create()
+    {
+        return view('admin.create-user');
+    }
 
-//     public function transactions()
-//     {
-//         $transactions = Transaction::with(['user'])->paginate(10);
-//         return view('admin.transactions.index', compact('transactions'));
-//     }
+    public function store(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|unique:users',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'wmsu_email' => 'required|email|unique:users',
+            'password' => 'required|min:6',
+        ]);
 
-//     public function reports()
-//     {
-//         $salesData = Transaction::select(
-//             DB::raw('DATE(created_at) as date'),
-//             DB::raw('SUM(amount) as total')
-//         )
-//         ->groupBy('date')
-//         ->orderBy('date', 'DESC')
-//         ->get();
+        User::create($request->all());
 
-//         return view('admin.reports', compact('salesData'));
-//     }
+        return redirect()->route('admin-userManagement')->with('success', 'User created successfully.');
+    }
 
-//     public function profile()
-//     {
-//         return view('admin.profile');
-//     }
+    public function edit(User $user)
+    {
+        return view('admin.edit-user', compact('user'));
+    }
 
-//     public function updateProfile(Request $request)
-//     {
-//         $validated = $request->validate([
-//             'name' => 'required|string|max:255',
-//             'email' => 'required|email|unique:users,email,' . auth()->id(),
-//         ]);
+    public function update(Request $request, User $user)
+    {
+        $request->validate([
+            'username' => 'required|unique:users,username,' . $user->id,
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'wmsu_email' => 'required|email|unique:users,wmsu_email,' . $user->id,
+        ]);
 
-//         auth()->user()->update($validated);
+        $user->update($request->all());
 
-//         return redirect()->back()->with('success', 'Profile updated successfully');
-//     }
- }
+        return redirect()->route('admin-userManagement')->with('success', 'User updated successfully.');
+    }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+
+        return redirect()->route('admin-userManagement')->with('success', 'User deleted successfully.');
+    }
+
+    public function show(User $user)
+    {
+        return view('admin.user-details', compact('user'));
+    }
+
+    public function transactions()
+    {
+        $transactions = Order::with(['buyer', 'seller', 'items.product.images'])->get();
+        return view('admin.admin-transactions', compact('transactions'));
+    }
+
+    public function productManagement() {
+        $products = Product::all();
+        return view('admin.admin-productManagement', compact('products'));
+    }
+}

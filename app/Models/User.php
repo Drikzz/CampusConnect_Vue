@@ -125,6 +125,7 @@ class User extends Authenticatable implements HasName
         return $this->hasMany(Order::class, 'seller_code', 'seller_code'); // as seller
     }
 
+
     public function verification()
     {
         return $this->hasOne(UserVerification::class);
