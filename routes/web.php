@@ -21,6 +21,8 @@ Route::get('/trade', [ProductController::class, 'trade'])->name('trade');
 Route::view('/login', 'auth.login')->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
+// Admin login routes
+
 Route::middleware('auth')->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -97,85 +99,37 @@ Route::middleware('guest')->group(function () {
     // IF LOGOUT LINK IS PRESENT, UNCOMMENT THIS ROUTE //
 });
 
+// Admin routes with middleware
+Route::middleware(['auth', 'admin'])->prefix('admin')->namespace('Admin')->group(function () {
+    Route::resource('productManagement', 'ProductManagementController');
+    
+    Route::get('/dashboard2', [AdminController::class, 'dashboard2'])->name('admin-dashboard2');
+    Route::get('/userManagement', [AdminController::class, 'userManagement'])->name('admin-userManagement');
+    Route::get('/userManagement/create', [AdminController::class, 'create'])->name('admin-userManagement.create');
+    Route::post('/userManagement', [AdminController::class, 'store'])->name('admin-userManagement.store');
+    Route::get('/userManagement/{user}/edit', [AdminController::class, 'edit'])->name('admin-userManagement.edit');
+    Route::put('/userManagement/{user}', [AdminController::class, 'update'])->name('admin-userManagement.update');
+    Route::delete('/userManagement/{user}', [AdminController::class, 'destroy'])->name('admin-userManagement.destroy');
+    Route::get('/userManagement/{user}', [AdminController::class, 'show'])->name('admin-userManagement.show');
 
-// Admin Authentication Routes
-Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
+    Route::get('/product-management', [AdminController::class, 'productManagement'])->name('admin.productManagement');
+    Route::post('/product-management/store', [AdminController::class, 'storeProduct'])->name('admin.productManagement.store');
+    Route::delete('/products/{id}', [AdminController::class, 'destroyProduct']);
+    Route::post('/products/bulk-delete', [AdminController::class, 'bulkDestroyProducts']);
+    Route::put('/products/{id}', [AdminController::class, 'updateProduct'])->name('admin.updateProduct');
+    Route::get('/products/{id}', [AdminController::class, 'getProduct'])->name('admin.getProduct');
+    
+    Route::get('/transactions', [AdminController::class, 'transactions'])->name('admin.transactions');
+    Route::delete('/transactions/{id}', [AdminController::class, 'destroyTransaction'])->name('admin.transactions.destroy');
+    Route::post('/transactions/bulk-delete', [AdminController::class, 'bulkDestroyTransactions'])->name('admin.transactions.bulkDestroy');
+    Route::post('/transactions/{id}/cancel', [AdminController::class, 'cancelTransaction']);
+    
+    Route::get('/users', function () {
+        return view('admin.admin-userManagement');
+    })->name('admin.users');
+
+    Route::view('/admin/login', 'admin.adminlogin')->name('admin.login');
 Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login.submit');
+Route::post('/admin/login/filter', [AdminController::class, 'login'])->name('admin.login.filter');
 
-Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
-
-// // Admin Dashboard Route
-// Route::get('/admin/dashboard', function () {
-//     return view('admin.admin-dashboard');
-// })->name('admin.dashboard');
-
-// NEW ADMIN ROUTES
-Route::get('/admin/dashboard2', [AdminController::class, 'dashboard2'])->name('admin-dashboard2');
-Route::get('/admin/userManagement', [AdminController::class, 'userManagement'])->name('admin-userManagement');
-Route::get('/admin/userManagement/create', [AdminController::class, 'create'])->name('admin-userManagement.create');
-Route::post('/admin/userManagement', [AdminController::class, 'store'])->name('admin-userManagement.store');
-Route::get('/admin/userManagement/{user}/edit', [AdminController::class, 'edit'])->name('admin-userManagement.edit');
-Route::put('/admin/userManagement/{user}', [AdminController::class, 'update'])->name('admin-userManagement.update');
-Route::delete('/admin/userManagement/{user}', [AdminController::class, 'destroy'])->name('admin-userManagement.destroy');
-Route::get('/admin/userManagement/{user}', [AdminController::class, 'show'])->name('admin-userManagement.show');
-
-// Route::get('/admin/sales', function () {
-//     return view('admin.admin-sales');
-// })->name('admin.sales');
-
-// Route::get('/admin/transactions', function () {
-//     return view('admin.admin-transactions');
-// })->name('admin.transactions');
-
-Route::get('/admin/transactions', [AdminController::class, 'transactions'])->name('admin.transactions');
-Route::delete('/admin/transactions/{id}', [AdminController::class, 'destroyTransaction'])->name('admin.transactions.destroy');
-Route::post('/admin/transactions/bulk-delete', [AdminController::class, 'bulkDestroyTransactions'])->name('admin.transactions.bulkDestroy');
-Route::post('/admin/transactions/{id}/cancel', [AdminController::class, 'cancelTransaction']);
-
-Route::get('/admin/products/{id}', [AdminController::class, 'getProduct'])->name('admin.getProduct');
-
- Route::get('/admin/users', function () {
-    return view('admin.admin-userManagement');
- })->name('admin.users');
-
-// Route::get('/admin/reports', function () {
-//     return view('admin.admin-reportManagement');
-// })->name('admin.reports');
-
-
-// Route::get('/admin/funds', function () {
-//     return view('admin.admin-fundManagement');
-// })->name('admin.funds');
-
-Route::get('/admin/product-management', [AdminController::class, 'productManagement'])->name('admin.productManagement');
-
-Route::get('/admin-productManagement', [AdminController::class, 'productManagement'])->name('admin-productManagement');
-
-Route::delete('/admin/products/{id}', [AdminController::class, 'destroyProduct']);
-Route::post('/admin/products/bulk-delete', [AdminController::class, 'bulkDestroyProducts']);
-Route::put('/admin/products/{id}', [AdminController::class, 'updateProduct'])->name('admin.updateProduct');
-
-Route::get('/admin/fundManagement', [AdminController::class, 'fundManagement'])->name('admin-fundManagement');
-
-// PLS DON'T DELETE THIS CODE FOR A WHILE
-// Protected Admin Routes
-// Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
-//     // Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-//     // Route::get('/sales', [AdminController::class, 'sales'])->name('admin.sales');
-//     // Route::get('/transactions', [AdminController::class, 'transactions'])->name('admin.transactions');
-//     // Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
-//     // Route::get('/reports', [AdminController::class, 'reports'])->name('admin.reports');
-//     Route::get('/products', [AdminController::class, 'products'])->name('admin.products');
-//     Route::get('/funds', [AdminController::class, 'funds'])->name('admin.funds');
-// });
-
-// Route::view('/admin/sales', 'admin.admin-sales')->name('adminsales');
-
-// Route::view('/admin/products', 'admin.admin-productManagement')->name('admin-product-management');
-// Route::view('/admin/userManagement', 'admin.admin-userManagement')->name('admin-userManagement');
-// Route::view('/admin/funds', 'admin.admin-fundManagement')->name('admin-funds');
-
-// Route::view('/Adminside-userprofile', 'admin.adminside-userprofile  ')->name('admin-userManagement');
-// Route::view('/Admin-transactions', 'admin.admin-transactions')->name('admin-transactions');
-
-// Route::view('/Admin-user-approve', 'admin.admin-user-approved')->name('admin-user-approved');
+});

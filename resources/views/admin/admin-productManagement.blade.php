@@ -191,6 +191,10 @@
                             <input type="text" class="form-control" id="productName" name="name" required>
                         </div>
                         <div class="form-group">
+                            <label for="productDescription">Description</label>
+                            <textarea class="form-control" id="productDescription" name="description" required></textarea>
+                        </div>
+                        <div class="form-group">
                             <label for="productCategory">Category</label>
                             <select class="form-control" id="productCategory" name="category_id" required>
                                 @foreach ($categories as $category)
@@ -348,7 +352,7 @@
             }
 
             function editProduct(productId) {
-                fetch(`/admin/products/${productId}`)
+                fetch(`/admin/productManagement/${productId}`)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Network response was not ok');
@@ -356,7 +360,7 @@
                         return response.json();
                     })
                     .then(product => {
-                        document.getElementById('editProductForm').action = `/admin/products/${productId}`;
+                        document.getElementById('editProductForm').action = `/admin/productManagement/${productId}`;
                         document.getElementById('productName').value = product.name;
                         document.getElementById('productDescription').value = product.description;
                         document.getElementById('productPrice').value = product.price;
@@ -372,7 +376,7 @@
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        alert('Failed to fetch product details.');
+                        alert('Failed to fetch product details. Please try again later.');
                     });
             }
 

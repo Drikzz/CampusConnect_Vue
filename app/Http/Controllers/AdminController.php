@@ -10,6 +10,7 @@ use App\Models\Order; // Import the Order model
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log; // Import the Log facade
 
 class AdminController extends Controller
 {
@@ -20,20 +21,27 @@ class AdminController extends Controller
 
     public function login(Request $request)
     {
-        // Validate
-        $credentials = $request->validate([
-            'username' => 'required',
-            'password' => 'required'
-        ]);
-    
-        // Check credentials
-        if ($credentials['username'] === 'admin' && $credentials['password'] === 'admin1234') {
-            return redirect()->route('admin-dashboard2');
+        $username = $request->input('username');
+        $password = $request->input('password');
+
+        // Log the input for debugging
+        Log::debug('Admin login attempt', ['username' => $username, 'password' => $password]);
+
+        $adminUser = DB::table('users')
+            ->where('username', $username)
+            ->where('password', $password)
+            ->where('is_admin', true)
+            ->first();
+
+        if ($adminUser) {
+            // Login successful, redirect to admin dashboard
+            Log::debug('Admin login successful', ['user_id' => $adminUser->id]);
+            return redirect()->route('admin.dashboard');
+        } else {
+            // Login failed, log the error and redirect back with error
+            Log::error('Admin login failed', ['username' => $username]);
+            return redirect()->back()->withErrors(['Invalid credentials or not an admin user.']);
         }
-    
-        return back()->withErrors([
-            'failed' => 'The provided credentials do not match our records'
-        ]);
     }
 
     public function logout(Request $request) {

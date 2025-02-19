@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            background-image: url('/public/imgs/wmsu_pic.jpg');
+            background-image: url('/imgs/wmsu_pic.jpg');
             background-position: center;
             background-size: cover;
             background-repeat: no-repeat;
@@ -20,7 +20,7 @@
     <div class="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
         <h2 class="mb-6 text-3xl font-bold text-center text-gray-800">ADMIN</h2>
         
-        <form action="{{ route('admin.login') }}" method="POST">
+        <form action="{{ route('admin.login.filter') }}" method="POST">
             @csrf
             <!-- Username -->
             <div class="mb-4">
@@ -70,7 +70,6 @@
             }
         }
 
-       
         window.onload = function() {
             document.getElementById("username").value = "";
             document.getElementById("password").value = "";
