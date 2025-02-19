@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminLoginRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 
 class AdminLoginController extends Controller
 {
@@ -15,15 +16,16 @@ class AdminLoginController extends Controller
     public function login(AdminLoginRequest $request)
     {
         $credentials = $request->only('username', 'password');
+        $user = $this->filterAdminUsers($credentials['username'], $credentials['password']);
 
-        if (Auth::attempt($credentials)) {
-            // Authentication passed...
-            return redirect()->intended('dashboard');
+        if ($user) {
+            Auth::login($user);
+            return redirect()->intended('/admin/dashboard');
         }
 
         return back()->withErrors([
             'username' => 'The provided credentials do not match our records.',
-        ]);
+        ])->withInput($request->only('username'));
     }
 
     /**
@@ -41,5 +43,13 @@ class AdminLoginController extends Controller
         }
 
         return null;
+    }
+
+    /**
+     * Redirect to admin dashboard after authentication.
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        return redirect()->route('admin.dashboard');
     }
 }

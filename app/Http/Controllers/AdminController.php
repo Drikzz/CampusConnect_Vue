@@ -21,27 +21,16 @@ class AdminController extends Controller
 
     public function login(Request $request)
     {
-        $username = $request->input('username');
-        $password = $request->input('password');
+        $credentials = $request->only('username', 'password');
 
-        // Log the input for debugging
-        Log::debug('Admin login attempt', ['username' => $username, 'password' => $password]);
-
-        $adminUser = DB::table('users')
-            ->where('username', $username)
-            ->where('password', $password)
-            ->where('is_admin', true)
-            ->first();
-
-        if ($adminUser) {
-            // Login successful, redirect to admin dashboard
-            Log::debug('Admin login successful', ['user_id' => $adminUser->id]);
-            return redirect()->route('admin.dashboard');
-        } else {
-            // Login failed, log the error and redirect back with error
-            Log::error('Admin login failed', ['username' => $username]);
-            return redirect()->back()->withErrors(['Invalid credentials or not an admin user.']);
+        if (Auth::attempt($credentials)) {
+            // Authentication passed...
+            return redirect()->intended('/admin/dashboard');
         }
+
+        return back()->withErrors([
+            'username' => 'The provided credentials do not match our records.',
+        ])->withInput($request->only('username'));
     }
 
     public function logout(Request $request) {
@@ -55,7 +44,7 @@ class AdminController extends Controller
 
     public function dashboard2()
     {
-        return view('admin.admin-dashboard2');
+        return view('admin.dashboard2');
     }
 
     public function userManagement()
@@ -243,5 +232,10 @@ class AdminController extends Controller
     public function fundManagement()
     {
         return view('admin.admin-fundManagement');
+    }
+
+    public function dashboard()
+    {
+        return view('admin.admin-dashboard2');
     }
 }

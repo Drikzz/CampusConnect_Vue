@@ -22,6 +22,13 @@ Route::view('/login', 'auth.login')->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
 // Admin login routes
+Route::view('/admin/login', 'admin.adminlogin')->name('admin.login');
+Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login.submit');
+Route::post('/admin/login/filter', [AdminController::class, 'login'])->name('admin.login.filter');
+
+Route::get('/admin/login', function () {
+    return view('admin.adminlogin');
+})->name('admin.login');
 
 Route::middleware('auth')->group(function () {
 
@@ -100,36 +107,34 @@ Route::middleware('guest')->group(function () {
 });
 
 // Admin routes with middleware
-Route::middleware(['auth', 'admin'])->prefix('admin')->namespace('Admin')->group(function () {
-    Route::resource('productManagement', 'ProductManagementController');
-    
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard2', [AdminController::class, 'dashboard2'])->name('admin-dashboard2');
-    Route::get('/userManagement', [AdminController::class, 'userManagement'])->name('admin-userManagement');
-    Route::get('/userManagement/create', [AdminController::class, 'create'])->name('admin-userManagement.create');
-    Route::post('/userManagement', [AdminController::class, 'store'])->name('admin-userManagement.store');
-    Route::get('/userManagement/{user}/edit', [AdminController::class, 'edit'])->name('admin-userManagement.edit');
-    Route::put('/userManagement/{user}', [AdminController::class, 'update'])->name('admin-userManagement.update');
-    Route::delete('/userManagement/{user}', [AdminController::class, 'destroy'])->name('admin-userManagement.destroy');
-    Route::get('/userManagement/{user}', [AdminController::class, 'show'])->name('admin-userManagement.show');
-
-    Route::get('/product-management', [AdminController::class, 'productManagement'])->name('admin.productManagement');
-    Route::post('/product-management/store', [AdminController::class, 'storeProduct'])->name('admin.productManagement.store');
-    Route::delete('/products/{id}', [AdminController::class, 'destroyProduct']);
-    Route::post('/products/bulk-delete', [AdminController::class, 'bulkDestroyProducts']);
-    Route::put('/products/{id}', [AdminController::class, 'updateProduct'])->name('admin.updateProduct');
-    Route::get('/products/{id}', [AdminController::class, 'getProduct'])->name('admin.getProduct');
-    
-    Route::get('/transactions', [AdminController::class, 'transactions'])->name('admin.transactions');
-    Route::delete('/transactions/{id}', [AdminController::class, 'destroyTransaction'])->name('admin.transactions.destroy');
-    Route::post('/transactions/bulk-delete', [AdminController::class, 'bulkDestroyTransactions'])->name('admin.transactions.bulkDestroy');
-    Route::post('/transactions/{id}/cancel', [AdminController::class, 'cancelTransaction']);
-    
-    Route::get('/users', function () {
-        return view('admin.admin-userManagement');
-    })->name('admin.users');
-
-    Route::view('/admin/login', 'admin.adminlogin')->name('admin.login');
-Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login.submit');
-Route::post('/admin/login/filter', [AdminController::class, 'login'])->name('admin.login.filter');
-
 });
+Route::get('/dashboard2', [AdminController::class, 'dashboard2'])->name('admin-dashboard2');
+Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    
+Route::resource('productManagement', 'ProductManagementController');
+
+Route::get('/userManagement', [AdminController::class, 'userManagement'])->name('admin-userManagement');
+Route::get('/userManagement/create', [AdminController::class, 'create'])->name('admin-userManagement.create');
+Route::post('/userManagement', [AdminController::class, 'store'])->name('admin-userManagement.store');
+Route::get('/userManagement/{user}/edit', [AdminController::class, 'edit'])->name('admin-userManagement.edit');
+Route::put('/userManagement/{user}', [AdminController::class, 'update'])->name('admin-userManagement.update');
+Route::delete('/userManagement/{user}', [AdminController::class, 'destroy'])->name('admin-userManagement.destroy');
+Route::get('/userManagement/{user}', [AdminController::class, 'show'])->name('admin-userManagement.show');
+
+Route::get('/product-management', [AdminController::class, 'productManagement'])->name('admin.productManagement');
+Route::post('/product-management/store', [AdminController::class, 'storeProduct'])->name('admin.productManagement.store');
+Route::delete('/products/{id}', [AdminController::class, 'destroyProduct']);
+Route::post('/products/bulk-delete', [AdminController::class, 'bulkDestroyProducts']);
+Route::put('/products/{id}', [AdminController::class, 'updateProduct'])->name('admin.updateProduct');
+Route::get('/products/{id}', [AdminController::class, 'getProduct'])->name('admin.getProduct');
+
+Route::get('/transactions', [AdminController::class, 'transactions'])->name('admin.transactions');
+Route::delete('/transactions/{id}', [AdminController::class, 'destroyTransaction'])->name('admin.transactions.destroy');
+Route::post('/transactions/bulk-delete', [AdminController::class, 'bulkDestroyTransactions'])->name('admin.transactions.bulkDestroy');
+Route::post('/transactions/{id}/cancel', [AdminController::class, 'cancelTransaction']);
+
+Route::get('/users', function () {
+    return view('admin.admin-userManagement');
+})->name('admin.users');

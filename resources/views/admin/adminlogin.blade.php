@@ -20,13 +20,23 @@
     <div class="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
         <h2 class="mb-6 text-3xl font-bold text-center text-gray-800">ADMIN</h2>
         
-        <form action="{{ route('admin.login.filter') }}" method="POST">
+        @if ($errors->any())
+            <div class="mb-4 text-red-700">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form action="{{ route('admin.login.submit') }}" method="POST">
             @csrf
             <!-- Username -->
             <div class="mb-4">
                 <label for="username" class="block text-sm font-medium text-gray-700">Username:</label>
                 <div class="relative flex items-center">
-                    <input type="text" id="username" name="username" required 
+                    <input type="text" id="username" name="username" value="{{ old('username') }}" required 
                         class="w-full p-2 pl-10 border border-red-700 rounded-md focus:outline-none focus:ring focus:ring-red-300">
                     <span class="absolute left-3 text-red-700">
                         <i class="fas fa-user"></i>
