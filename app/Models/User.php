@@ -94,9 +94,9 @@ class User extends Authenticatable implements HasName
         return $this->hasMany(Product::class);
     }
 
-    public function userType(): HasMany
+    public function userType()
     {
-        return $this->hasMany(UserType::class);
+        return $this->belongsTo(UserType::class, 'user_type_id');
     }
 
     public function department()
@@ -138,5 +138,13 @@ class User extends Authenticatable implements HasName
     public function meetupLocations()
     {
         return $this->hasMany(MeetupLocation::class);
+    }
+
+    public function getDefaultMeetupLocation()
+    {
+        return $this->meetupLocations()
+            ->where('is_active', true)
+            ->where('is_default', true)
+            ->first();
     }
 }

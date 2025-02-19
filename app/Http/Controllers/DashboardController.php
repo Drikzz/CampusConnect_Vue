@@ -14,6 +14,7 @@ use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log; // Add this at the top with other imports
 
 class DashboardController extends Controller
 {
@@ -62,6 +63,35 @@ class DashboardController extends Controller
     public function profile()
     {
         $user = auth()->user();
+
+        // Initialize stats with default values
+        $totalOrders = Order::where('buyer_id', $user->id)->count();
+        $activeOrders = Order::where('buyer_id', $user->id)
+            ->whereNotIn('status', ['Completed', 'Cancelled'])
+            ->count();
+        $wishlistCount = Wishlist::where('user_id', $user->id)->count();
+        $totalSales = 0;
+        $activeProducts = 0;
+        $pendingOrders = 0;
+
+        // Additional data for sellers
+        if ($user->is_seller) {
+            $totalSales = OrderItem::where('seller_code', $user->seller_code)
+                ->whereHas('order', function ($query) {
+                    $query->where('status', 'Completed');
+                })
+                ->sum('subtotal');
+
+            $activeProducts = Product::where('seller_code', $user->seller_code)
+                ->where('status', 'Active')
+                ->count();
+
+            $pendingOrders = OrderItem::where('seller_code', $user->seller_code)
+                ->whereHas('order', function ($query) {
+                    $query->where('status', 'Pending');
+                })->count();
+        }
+
         $is_student = $user->user_type_id == 2;
         $is_seller = $user->is_seller;
         $profile_picture = $user->profile_picture;
@@ -86,7 +116,13 @@ class DashboardController extends Controller
             'wmsu_id_front',
             'wmsu_id_back',
             'departments',
-            'gradeLevels'
+            'gradeLevels',
+            'totalOrders',
+            'activeOrders',
+            'wishlistCount',
+            'totalSales',
+            'activeProducts',
+            'pendingOrders'
         ));
     }
 
@@ -131,7 +167,45 @@ class DashboardController extends Controller
 
     public function products()
     {
-        return $this->index();
+        $user = auth()->user();
+
+        // Get seller statistics
+        $totalSales = 0;
+        $activeProducts = 0;
+        $pendingOrders = 0;
+        $products = collect(); // Initialize empty collection for products
+        $categories = \App\Models\Category::all(); // Add categories for the form
+
+        if ($user->is_seller) {
+            $totalSales = OrderItem::where('seller_code', $user->seller_code)
+                ->whereHas('order', function ($query) {
+                    $query->where('status', 'Completed');
+                })
+                ->sum('subtotal');
+
+            $activeProducts = Product::where('seller_code', $user->seller_code)
+                ->where('status', 'Active')
+                ->count();
+
+            $pendingOrders = OrderItem::where('seller_code', $user->seller_code)
+                ->whereHas('order', function ($query) {
+                    $query->where('status', 'Pending');
+                })->count();
+
+            // Get paginated products
+            $products = Product::where('seller_code', $user->seller_code)
+                ->with(['category'])
+                ->latest()
+                ->paginate(10);
+        }
+
+        return view('dashboard.seller.products', compact(
+            'totalSales',
+            'activeProducts',
+            'pendingOrders',
+            'products',
+            'categories'
+        ));
     }
 
     public function analytics()
@@ -153,12 +227,42 @@ class DashboardController extends Controller
     {
         $user = auth()->user();
         $meetupLocations = $user->meetupLocations()
-            ->with('location')  // Add this line to eager load location relationship
+            ->with('location')
+            ->orderByDesc('is_default')
             ->latest()
             ->get();
         $locations = Location::all();
 
-        return view('dashboard.address', compact('user', 'meetupLocations', 'locations'));
+        // Add seller statistics
+        $totalSales = 0;
+        $activeProducts = 0;
+        $pendingOrders = 0;
+
+        if ($user->is_seller) {
+            $totalSales = OrderItem::where('seller_code', $user->seller_code)
+                ->whereHas('order', function ($query) {
+                    $query->where('status', 'Completed');
+                })
+                ->sum('subtotal');
+
+            $activeProducts = Product::where('seller_code', $user->seller_code)
+                ->where('status', 'Active')
+                ->count();
+
+            $pendingOrders = OrderItem::where('seller_code', $user->seller_code)
+                ->whereHas('order', function ($query) {
+                    $query->where('status', 'Pending');
+                })->count();
+        }
+
+        return view('dashboard.address', compact(
+            'user',
+            'meetupLocations',
+            'locations',
+            'totalSales',
+            'activeProducts',
+            'pendingOrders'
+        ));
     }
 
     public function showSellerRegistration()
@@ -233,140 +337,237 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'middle_name' => 'nullable|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'phone' => 'nullable|string|max:20',
-            'date_of_birth' => 'nullable|date',
-            'username' => 'required|string|max:255|unique:users,username,' . $user->id,
-            'wmsu_email' => 'required|string|email|max:255|unique:users,wmsu_email,' . $user->id,
-            'wmsu_dept_id' => 'nullable|exists:departments,id',
-            'grade_level_id' => 'nullable|exists:grade_levels,id',
-            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'wmsu_id_front' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'wmsu_id_back' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        ]);
-
         try {
-            // Handle profile picture upload
+            // Get user type code
+            $userType = UserType::find($user->user_type_id);
+            if (!$userType) {
+                throw new \Exception('User type not found');
+            }
+
+            // Basic validation
+            $validated = $request->validate([
+                'first_name' => 'required|string|max:255',
+                'middle_name' => 'nullable|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'phone' => 'nullable|string|max:20',
+                'date_of_birth' => 'nullable|date',
+                'username' => 'required|string|max:255|unique:users,username,' . $user->id,
+                'wmsu_email' => 'required|string|email|max:255|unique:users,wmsu_email,' . $user->id,
+                'wmsu_dept_id' => 'nullable|exists:departments,id',
+                'grade_level_id' => 'nullable|exists:grade_levels,id',
+                'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'wmsu_id_front' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'wmsu_id_back' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
+
+            // Handle profile picture
             if ($request->hasFile('profile_picture')) {
-                $oldPicture = $user->profile_picture;
-                $path = $request->file('profile_picture')->store('profile_pictures', 'public');
-                $validated['profile_picture'] = $path;
-
-                if ($oldPicture) {
-                    Storage::disk('public')->delete($oldPicture);
+                if ($user->profile_picture) {
+                    Storage::disk('public')->delete($user->profile_picture);
                 }
+                $validated['profile_picture'] = $request->file('profile_picture')
+                    ->store($userType->code . '/profile_pictures', 'public');
             }
 
-            // Handle WMSU ID front upload
+            // Handle ID front
             if ($request->hasFile('wmsu_id_front')) {
-                $oldFront = $user->wmsu_id_front;
-                $path = $request->file('wmsu_id_front')->store('wmsu_ids', 'public');
-                $validated['wmsu_id_front'] = $path;
-
-                if ($oldFront) {
-                    Storage::disk('public')->delete($oldFront);
+                if ($user->wmsu_id_front) {
+                    Storage::disk('public')->delete($user->wmsu_id_front);
                 }
+                $validated['wmsu_id_front'] = $request->file('wmsu_id_front')
+                    ->store($userType->code . '/id_front', 'public');
             }
 
-            // Handle WMSU ID back upload
+            // Handle ID back
             if ($request->hasFile('wmsu_id_back')) {
-                $oldBack = $user->wmsu_id_back;
-                $path = $request->file('wmsu_id_back')->store('wmsu_ids', 'public');
-                $validated['wmsu_id_back'] = $path;
-
-                if ($oldBack) {
-                    Storage::disk('public')->delete($oldBack);
+                if ($user->wmsu_id_back) {
+                    Storage::disk('public')->delete($user->wmsu_id_back);
                 }
+                $validated['wmsu_id_back'] = $request->file('wmsu_id_back')
+                    ->store($userType->code . '/id_back', 'public');
             }
 
+            // Update user
             $user->update($validated);
-            return back()->with('success', 'Profile updated successfully');
+
+            return redirect()->back()->with('success', 'Profile updated successfully');
         } catch (\Exception $e) {
-            return back()->with('error', 'Failed to update profile: ' . $e->getMessage());
+            Log::error('Profile update error', [
+                'user_id' => $user->id,
+                'error' => $e->getMessage()
+            ]);
+
+            return redirect()->back()
+                ->with('error', 'Failed to update profile: ' . $e->getMessage())
+                ->withInput();
         }
     }
 
     public function storeMeetupLocation(Request $request)
     {
-        $validated = $request->validate([
-            'full_name' => 'required|string|max:255',
-            'phone' => 'required|string|max:20',
-            'location_id' => 'required|exists:locations,id',
-            'is_default' => 'nullable|boolean',
-        ]);
+        try {
+            $validated = $request->validate([
+                'full_name' => 'required|string|max:255',
+                'phone' => 'required|string|max:20',
+                'location_id' => 'required|exists:locations,id',
+                'latitude' => 'required|numeric|between:-90,90',
+                'longitude' => 'required|numeric|between:-180,180',
+                'available_from' => 'required',
+                'available_until' => 'required|after:available_from',
+                'available_days' => 'required|array',
+                'available_days.*' => 'required|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday',
+                'max_daily_meetups' => 'required|integer|min:1|max:50',
+                'is_default' => 'nullable|boolean',
+            ]);
 
-        $user = auth()->user();
-        $location = Location::findOrFail($validated['location_id']);
+            $user = auth()->user();
 
-        $is_default = $request->has('is_default') ? true : false;
+            // Check if trying to set as default when another default exists
+            if (
+                $request->has('is_default') &&
+                !$request->has('confirmed_default_change') &&
+                $user->meetupLocations()->where('is_default', true)->exists()
+            ) {
 
-        if ($is_default) {
-            $user->meetupLocations()->update(['is_default' => false]);
+                return response()->json([
+                    'needs_confirmation' => true,
+                    'message' => 'Another location is already set as default. Do you want to make this location the new default?',
+                    'data' => $validated
+                ]);
+            }
+
+            // If setting as default or confirmed, remove default from others
+            if ($request->has('is_default') || $request->has('confirmed_default_change')) {
+                $user->meetupLocations()->update(['is_default' => false]);
+            }
+
+            $meetupLocation = $user->meetupLocations()->create([
+                'full_name' => $validated['full_name'],
+                'phone' => $validated['phone'],
+                'location_id' => $validated['location_id'],
+                'latitude' => $validated['latitude'],
+                'longitude' => $validated['longitude'],
+                'available_from' => $validated['available_from'],
+                'available_until' => $validated['available_until'],
+                'available_days' => json_encode($validated['available_days']),
+                'max_daily_meetups' => $validated['max_daily_meetups'],
+                'is_default' => $request->has('is_default') || $request->has('confirmed_default_change'),
+                'is_active' => true,
+            ]);
+
+            // If this is the first location, make it default
+            if ($user->meetupLocations()->count() === 1) {
+                $meetupLocation->update(['is_default' => true]);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Meetup location added successfully',
+                'redirect' => route('dashboard.address')
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error storing meetup location: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to add meetup location: ' . $e->getMessage()
+            ], 500);
         }
-
-        $user->meetupLocations()->create([
-            'full_name' => $validated['full_name'],
-            'phone' => $validated['phone'],
-            'location_id' => $validated['location_id'],
-            'latitude' => $location->latitude,
-            'longitude' => $location->longitude,
-            'is_default' => $is_default,
-        ]);
-
-        return back()->with('success', 'Meetup location added successfully');
     }
 
     public function updateMeetupLocation(Request $request, $id)
     {
-        $validated = $request->validate([
-            'full_name' => 'required|string|max:255',
-            'phone' => 'required|string|max:20',
-            'location_id' => 'required|exists:locations,id',
-            'is_default' => 'nullable|boolean',
-        ]);
+        try {
+            $validated = $request->validate([
+                'full_name' => 'required|string|max:255',
+                'phone' => 'required|string|max:20',
+                'location_id' => 'required|exists:locations,id',
+                'latitude' => 'required|numeric|between:-90,90',
+                'longitude' => 'required|numeric|between:-180,180',
+                'available_from' => 'required',
+                'available_until' => 'required|after:available_from',
+                'available_days' => 'required|array',
+                'available_days.*' => 'required|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday',
+                'max_daily_meetups' => 'required|integer|min:1|max:50',
+                'is_default' => 'nullable|boolean',
+            ]);
 
-        $user = auth()->user();
-        $meetupLocation = $user->meetupLocations()->findOrFail($id);
-        $location = Location::findOrFail($validated['location_id']);
+            $user = auth()->user();
+            $meetupLocation = $user->meetupLocations()->findOrFail($id);
 
-        $is_default = $request->has('is_default') ? true : false;
+            // Check if trying to set as default when another default exists
+            if (
+                $request->has('is_default') &&
+                !$request->has('confirmed_default_change') &&
+                !$meetupLocation->is_default &&
+                $user->meetupLocations()->where('is_default', true)->exists()
+            ) {
 
-        if ($is_default) {
-            $user->meetupLocations()->where('id', '!=', $id)->update(['is_default' => false]);
+                return response()->json([
+                    'needs_confirmation' => true,
+                    'message' => 'Another location is already set as default. Do you want to make this location the new default?',
+                    'data' => $validated
+                ]);
+            }
+
+            // If setting as default or confirmed, remove default from others
+            if (($request->has('is_default') || $request->has('confirmed_default_change')) && !$meetupLocation->is_default) {
+                $user->meetupLocations()->where('id', '!=', $id)->update(['is_default' => false]);
+            }
+
+            $meetupLocation->update([
+                'full_name' => $validated['full_name'],
+                'phone' => $validated['phone'],
+                'location_id' => $validated['location_id'],
+                'latitude' => $validated['latitude'],
+                'longitude' => $validated['longitude'],
+                'available_from' => $validated['available_from'],
+                'available_until' => $validated['available_until'],
+                'available_days' => json_encode($validated['available_days']),
+                'max_daily_meetups' => $validated['max_daily_meetups'],
+                'is_default' => $request->has('is_default') || $request->has('confirmed_default_change') || $meetupLocation->is_default,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Meetup location updated successfully',
+                'redirect' => route('dashboard.address')
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error updating meetup location: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update meetup location: ' . $e->getMessage()
+            ], 500);
         }
-
-        $meetupLocation->update([
-            'full_name' => $validated['full_name'],
-            'phone' => $validated['phone'],
-            'location_id' => $validated['location_id'],
-            'latitude' => $location->latitude,
-            'longitude' => $location->longitude,
-            'is_default' => $is_default,
-        ]);
-
-        return back()->with('success', 'Meetup location updated successfully');
     }
 
     public function deleteMeetupLocation($id)
     {
         try {
-            $meetupLocation = MeetupLocation::findOrFail($id);
-            $meetupLocation->delete();
+            $user = auth()->user();
+            $location = $user->meetupLocations()->findOrFail($id);
+            $wasDefault = $location->is_default;
 
-            if (request()->ajax()) {
-                return response()->json(['success' => true, 'message' => 'Location deleted successfully']);
+            $location->delete();
+
+            // If we deleted the default location, make another one default
+            if ($wasDefault) {
+                $newDefault = $user->meetupLocations()->first();
+                if ($newDefault) {
+                    $newDefault->update(['is_default' => true]);
+                }
             }
 
-            return redirect()->back()->with('success', 'Location deleted successfully');
+            return response()->json([
+                'success' => true,
+                'message' => 'Meetup location deleted successfully'
+            ]);
         } catch (\Exception $e) {
-            if (request()->ajax()) {
-                return response()->json(['success' => false, 'message' => 'Error deleting location'], 500);
-            }
-
-            return redirect()->back()->with('error', 'Error deleting location');
+            Log::error('Error deleting meetup location: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error deleting meetup location: ' . $e->getMessage()
+            ], 500);
         }
     }
 }

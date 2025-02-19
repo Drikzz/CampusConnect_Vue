@@ -45,35 +45,40 @@ Route::middleware('auth')->group(function () {
 
         Route::post('/meetup-locations', [DashboardController::class, 'storeMeetupLocation'])->name('meetup-locations.store');
         Route::put('/meetup-locations/{id}', [DashboardController::class, 'updateMeetupLocation'])->name('meetup-locations.update');
-        Route::delete('/meetup-locations/{id}', [DashboardController::class, 'deleteMeetupLocation'])->name('meetup-locations.delete');
+        Route::delete('/meetup-locations/{id}', [DashboardController::class, 'deleteMeetupLocation'])->name('meetup-locations.destroy');
+
+        // Product management routes
+        Route::prefix('seller')->group(function () {
+            // Seller dashboard routes
+            Route::get('/', [SellerController::class, 'index'])->name('seller.index');
+            Route::get('/products', [SellerController::class, 'products'])->name('seller.products');
+            Route::get('/orders', [SellerController::class, 'orders'])->name('seller.orders');
+            Route::get('/analytics', [SellerController::class, 'analytics'])->name('seller.analytics');
+            Route::get('/orders/{order}', [SellerController::class, 'showOrder'])->name('seller.orders.show');
+            Route::put('/orders/{order}/status', [SellerController::class, 'updateOrderStatus'])->name('seller.orders.update-status');
+            Route::post('/orders/{order}/schedule-meetup', [SellerController::class, 'scheduleMeetup'])->name('seller.orders.schedule-meetup');
+
+            // Product CRUD routes
+            Route::post('/products', [SellerController::class, 'store'])->name('dashboard.seller.products.store');
+            Route::get('/products/{id}/edit', [SellerController::class, 'edit'])->name('dashboard.seller.products.edit');
+            Route::put('/products/{id}', [SellerController::class, 'update'])->name('dashboard.seller.products.update');
+            Route::delete('/products/{id}', [SellerController::class, 'destroy'])->name('dashboard.seller.products.destroy');
+            Route::post('/products/{product}/restore', [SellerController::class, 'restore'])->name('dashboard.seller.products.restore');
+            Route::delete('/products/{product}/force-delete', [SellerController::class, 'forceDelete'])->name('dashboard.seller.products.force-delete');
+
+            // Add meetup location routes inside seller prefix
+            Route::post('/meetup-locations', [DashboardController::class, 'storeMeetupLocation'])
+                ->name('meetup-locations.store');
+            Route::put('/meetup-locations/{id}', [DashboardController::class, 'updateMeetupLocation'])
+                ->name('meetup-locations.update');
+            Route::delete('/meetup-locations/{id}', [DashboardController::class, 'deleteMeetupLocation'])
+                ->name('meetup-locations.destroy');
+        });
     });
 
     //checkout routes
     Route::get('/products/prod/{id}/summary', [CheckoutController::class, 'summary'])->name('summary');
     Route::post('/checkout/process', [CheckoutController::class, 'checkout'])->name('checkout.process');
-});
-
-// Seller routes should be last
-Route::middleware(['auth', 'seller'])->prefix('dashboard/seller')->name('dashboard.seller.')->group(function () {
-    // Dashboard & Analytics
-    Route::get('/', [SellerController::class, 'index'])->name('dashboard');
-    Route::get('/analytics', [SellerController::class, 'analytics'])->name('analytics');
-
-    // Products Management (these won't conflict with public routes now)
-    Route::get('/manage-products', [SellerController::class, 'products'])->name('products.index');
-    Route::post('/manage-products', [SellerController::class, 'store'])->name('products.store');
-    Route::get('/manage-products/{product}/edit', [SellerController::class, 'edit'])->name('products.edit');
-    Route::put('/manage-products/{product}', [SellerController::class, 'update'])->name('products.update');
-    Route::delete('/manage-products/{product}', [SellerController::class, 'destroy'])->name('products.destroy');
-
-    // Orders Management
-    Route::get('/orders', [SellerController::class, 'orders'])->name('orders');
-    Route::get('/orders/{order}', [SellerController::class, 'showOrder'])->name('orders.show');
-    Route::put('/orders/{order}/status', [SellerController::class, 'updateOrderStatus'])->name('orders.update-status');
-    Route::post('/orders/{order}/complete', [SellerController::class, 'completeOrder'])->name('orders.complete');
-
-    // Categories
-    Route::get('/categories', [SellerController::class, 'categories'])->name('categories');
 });
 
 Route::middleware('guest')->group(function () {

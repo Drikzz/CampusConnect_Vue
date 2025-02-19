@@ -16,12 +16,14 @@
                 <div>
                     <label for="search" class="block text-sm font-medium text-gray-700">Search</label>
                     <input type="text" id="search" name="search"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-color focus:ring-primary-color">
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-color focus:ring-primary-color"
+                        onkeyup="filterProducts()">
                 </div>
                 <div>
                     <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
                     <select id="category" name="category"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-color focus:ring-primary-color">
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-color focus:ring-primary-color"
+                        onchange="filterProducts()">
                         <option value="">All Categories</option>
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -31,10 +33,11 @@
                 <div>
                     <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
                     <select id="status" name="status"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-color focus:ring-primary-color">
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-color focus:ring-primary-color"
+                        onchange="filterProducts()">
                         <option value="">All Status</option>
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
                     </select>
                 </div>
             </div>
@@ -61,7 +64,8 @@
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200" id="products-table-body">
                     @foreach ($products as $product)
-                        <tr data-product-id="{{ $product->id }}">
+                        <tr data-product-id="{{ $product->id }}" data-name="{{ $product->name }}"
+                            data-category="{{ $product->category_id }}" data-status="{{ $product->status }}">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <div class="h-10 w-10 flex-shrink-0">
@@ -91,10 +95,17 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <button onclick="editProduct({{ $product->id }})"
-                                    class="text-primary-color hover:text-primary-color/80">Edit</button>
-                                <button onclick="deleteProduct({{ $product->id }})"
-                                    class="ml-3 text-red-600 hover:text-red-900">Delete</button>
+                                @if ($product->trashed())
+                                    <button onclick="restoreProduct({{ $product->id }})"
+                                        class="text-green-600 hover:text-green-900 mr-3">Restore</button>
+                                    <button onclick="permanentlyDeleteProduct({{ $product->id }})"
+                                        class="text-red-600 hover:text-red-900">Delete Permanently</button>
+                                @else
+                                    <button onclick="editProduct({{ $product->id }})"
+                                        class="text-primary-color hover:text-primary-color/80">Edit</button>
+                                    <button onclick="deleteProduct({{ $product->id }})"
+                                        class="ml-3 text-red-600 hover:text-red-900">Delete</button>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -262,9 +273,7 @@
                 </div>
 
                 {{-- Update form action in edit product modal --}}
-                <form id="edit-product-modal-form" method="POST"
-                    action="{{ route('dashboard.seller.products.update', ['product' => ':productId']) }}"
-                    enctype="multipart/form-data">
+                <form id="edit-product-modal-form" method="POST" action="" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
@@ -437,80 +446,305 @@
             }
         }
 
-        // Update delete fetch URL
-        function deleteProduct(productId) {
-            if (!confirm('Are you sure you want to delete this product?')) return;
+        // Add CSRF token to all fetch requests
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
-            fetch(`/dashboard/seller/manage-products/${productId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json'
-                    }
-                })
-                .then(response => {
-                    if (!response.ok) throw new Error('Network response was not ok');
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.success) {
-                        document.querySelector(`tr[data-product-id="${productId}"]`).remove();
-                    } else {
-                        alert(data.message || 'Failed to delete product');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error deleting product');
-                });
+        // Helper function for fetch requests
+        async function fetchWithCsrf(url, options = {}) {
+            const defaultOptions = {
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'same-origin'
+            };
+
+            const response = await fetch(url, {
+                ...defaultOptions,
+                ...options
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
         }
 
-        // Update edit fetch URL
-        function editProduct(productId) {
-            fetch(`/dashboard/seller/manage-products/${productId}/edit`, {
-                    headers: {
-                        'Accept': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                })
-                .then(response => {
-                    if (!response.ok) throw new Error('Network response was not ok');
-                    return response.json();
-                })
-                .then(product => {
-                    const form = document.getElementById('edit-product-modal-form');
-                    form.action = form.action.replace(':productId', product.id);
+        // Delete (soft delete)
+        async function deleteProduct(productId) {
+            if (!confirm('Are you sure you want to delete this product?')) return;
 
-                    // Set form values
-                    form.querySelector('[name="name"]').value = product.name;
-                    form.querySelector('[name="description"]').value = product.description;
-                    form.querySelector('[name="category"]').value = product.category_id;
-                    form.querySelector('[name="price"]').value = product.price;
-                    form.querySelector('[name="discount"]').value = product.discount *
-                        100; // Convert back to percentage
-                    form.querySelector('[name="stock"]').value = product.stock;
-
-                    // Set trade options
-                    const tradeValue = product.is_buyable && product.is_tradable ? 'both' :
-                        product.is_buyable ? 'buy' : 'trade';
-                    form.querySelector(`[name="trade_availability"][value="${tradeValue}"]`).checked = true;
-
-                    // Set status
-                    form.querySelector(`[name="status"][value="${product.status}"]`).checked = true;
-
-                    openModal('edit-product-modal');
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error loading product details: ' + error.message);
+            try {
+                const data = await fetchWithCsrf(`/dashboard/seller/products/${productId}`, {
+                    method: 'DELETE'
                 });
+
+                if (data.success) {
+                    const row = document.querySelector(`tr[data-product-id="${productId}"]`);
+                    if (row) {
+                        row.querySelector('td:last-child').innerHTML = `
+                            <button onclick="restoreProduct(${productId})" 
+                                class="text-green-600 hover:text-green-900 mr-3">Restore</button>
+                            <button onclick="permanentlyDeleteProduct(${productId})" 
+                                class="text-red-600 hover:text-red-900">Delete Permanently</button>
+                        `;
+
+                        const statusBadge = row.querySelector('td:nth-last-child(2) span');
+                        statusBadge.textContent = 'Inactive';
+                        statusBadge.classList.remove('bg-green-100', 'text-green-800');
+                        statusBadge.classList.add('bg-red-100', 'text-red-800');
+
+                        showNotification('Product deleted successfully', 'success');
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Error deleting product', 'error');
+            }
+        }
+
+        // Restore
+        async function restoreProduct(productId) {
+            if (!confirm('Are you sure you want to restore this product?')) return;
+
+            try {
+                const data = await fetchWithCsrf(`/dashboard/seller/products/${productId}/restore`, {
+                    method: 'POST'
+                });
+
+                if (data.success) {
+                    const row = document.querySelector(`tr[data-product-id="${productId}"]`);
+                    if (row) {
+                        row.querySelector('td:last-child').innerHTML = `
+                            <button onclick="editProduct(${productId})" 
+                                class="text-primary-color hover:text-primary-color/80 mr-3">Edit</button>
+                            <button onclick="deleteProduct(${productId})" 
+                                class="text-red-600 hover:text-red-900">Delete</button>
+                        `;
+
+                        const statusBadge = row.querySelector('td:nth-last-child(2) span');
+                        statusBadge.textContent = 'Active';
+                        statusBadge.classList.remove('bg-red-100', 'text-red-800');
+                        statusBadge.classList.add('bg-green-100', 'text-green-800');
+
+                        showNotification('Product restored successfully', 'success');
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Error restoring product', 'error');
+            }
+        }
+
+        // Permanent Delete
+        async function permanentlyDeleteProduct(productId) {
+            if (!confirm(
+                    'WARNING: This action cannot be undone! Are you sure you want to permanently delete this product?'
+                )) {
+                return;
+            }
+
+            try {
+                const data = await fetchWithCsrf(`/dashboard/seller/products/${productId}/force-delete`, {
+                    method: 'DELETE'
+                });
+
+                if (data.success) {
+                    const row = document.querySelector(`tr[data-product-id="${productId}"]`);
+                    if (row) {
+                        row.style.transition = 'opacity 0.3s ease-out';
+                        row.style.opacity = '0';
+                        setTimeout(() => row.remove(), 300);
+
+                        // Check if table is empty
+                        const tbody = document.getElementById('products-table-body');
+                        if (!tbody.hasChildNodes()) {
+                            tbody.innerHTML = `
+                                <tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">No products found</td></tr>
+                            `;
+                        }
+                        showNotification('Product permanently deleted', 'success');
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Error permanently deleting product', 'error');
+            }
+        }
+
+        // Edit Product
+        async function editProduct(productId) {
+            try {
+                const product = await fetchWithCsrf(`/dashboard/seller/products/${productId}/edit`);
+                const form = document.getElementById('edit-product-modal-form');
+                form.action = `/dashboard/seller/products/${product.id}`;
+
+                // Fill form fields
+                form.querySelector('[name="name"]').value = product.name;
+                form.querySelector('[name="description"]').value = product.description;
+                form.querySelector('[name="category"]').value = product.category_id;
+                form.querySelector('[name="price"]').value = product.price;
+                form.querySelector('[name="discount"]').value = product.discount * 100;
+                form.querySelector('[name="stock"]').value = product.stock;
+
+                // Set trade options
+                const tradeValue = product.is_buyable && product.is_tradable ? 'both' :
+                    product.is_buyable ? 'buy' : 'trade';
+                form.querySelector(`[name="trade_availability"][value="${tradeValue}"]`).checked = true;
+
+                // Set status
+                form.querySelector(`[name="status"][value="${product.status}"]`).checked = true;
+
+                // Show existing images
+                if (product.images?.length > 0) {
+                    const mainPreview = document.getElementById('edit-product-modal-main-preview');
+                    mainPreview.src = `/storage/${product.images[0]}`;
+                    mainPreview.classList.remove('hidden');
+
+                    product.images.slice(1).forEach((image, index) => {
+                        const preview = document.getElementById(`edit-product-modal-preview-${index + 1}`);
+                        if (preview) {
+                            preview.src = `/storage/${image}`;
+                            preview.classList.remove('hidden');
+                        }
+                    });
+                }
+
+                openModal('edit-product-modal');
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Error loading product details', 'error');
+            }
+        }
+
+        // Initialize form submissions
+        document.addEventListener('DOMContentLoaded', function() {
+            ['add-product-modal-form', 'edit-product-modal-form'].forEach(formId => {
+                const form = document.getElementById(formId);
+                if (form) {
+                    form.addEventListener('submit', async function(e) {
+                        e.preventDefault();
+                        const formData = new FormData(this);
+
+                        try {
+                            const response = await fetch(this.action, {
+                                method: this.method,
+                                body: formData,
+                                headers: {
+                                    'X-CSRF-TOKEN': csrfToken,
+                                    'Accept': 'application/json'
+                                }
+                            });
+
+                            const data = await response.json();
+                            if (data.success) {
+                                window.location.reload();
+                            } else {
+                                showNotification(data.message || 'Error processing request',
+                                    'error');
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                            showNotification('An error occurred', 'error');
+                        }
+                    });
+                }
+            });
+        });
+
+        function filterProducts() {
+            const searchTerm = document.getElementById('search').value.toLowerCase();
+            const categoryFilter = document.getElementById('category').value;
+            const statusFilter = document.getElementById('status').value;
+            const rows = document.querySelectorAll('#products-table-body tr');
+
+            rows.forEach(row => {
+                const name = row.getAttribute('data-name').toLowerCase();
+                const category = row.getAttribute('data-category');
+                const status = row.getAttribute('data-status');
+
+                const matchesSearch = name.includes(searchTerm);
+                const matchesCategory = !categoryFilter || category === categoryFilter;
+                const matchesStatus = !statusFilter || status === statusFilter;
+
+                if (matchesSearch && matchesCategory && matchesStatus) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // Add notification helper function if not already present
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 ${
+                type === 'success' ? 'bg-green-500' : 'bg-red-500'
+            } text-white transform transition-transform duration-300 ease-in-out`;
+            notification.style.transform = 'translateY(-100%)';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateY(0)';
+            }, 10);
+
+            // Animate out and remove
+            setTimeout(() => {
+                notification.style.transform = 'translateY(-100%)';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
         }
 
         // Initialize event listeners
         document.addEventListener('DOMContentLoaded', function() {
-            // Close modal when clicking outside
-            const modals = document.querySelectorAll('[id$="-modal"]');
-            modals.forEach(modal => {
+            // Remove any existing event listeners first
+            const forms = ['add-product-modal-form', 'edit-product-modal-form'];
+            forms.forEach(formId => {
+                const form = document.getElementById(formId);
+                if (form) {
+                    // Clone the form to remove all event listeners
+                    const newForm = form.cloneNode(true);
+                    form.parentNode.replaceChild(newForm, form);
+
+                    // Add the single event listener
+                    newForm.addEventListener('submit', async function(e) {
+                        e.preventDefault();
+                        const formData = new FormData(this);
+
+                        try {
+                            const response = await fetch(this.action, {
+                                method: this.method,
+                                body: formData,
+                                headers: {
+                                    'X-CSRF-TOKEN': csrfToken,
+                                    'Accept': 'application/json'
+                                },
+                                credentials: 'same-origin'
+                            });
+
+                            const data = await response.json();
+                            if (data.success) {
+                                closeModal(this.closest('[id$="-modal"]').id);
+                                showNotification(data.message || 'Product saved successfully',
+                                    'success');
+                                setTimeout(() => window.location.reload(), 500);
+                            } else {
+                                showNotification(data.message || 'Error processing request',
+                                    'error');
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                            showNotification('An error occurred', 'error');
+                        }
+                    });
+                }
+            });
+
+            // Modal close handlers
+            document.querySelectorAll('[id$="-modal"]').forEach(modal => {
+                // Close when clicking outside
                 modal.addEventListener('click', function(e) {
                     if (e.target === this || e.target.classList.contains('bg-gray-600')) {
                         closeModal(this.id);
@@ -518,7 +752,7 @@
                 });
             });
 
-            // Close modal when clicking the close button
+            // Close button handlers
             document.querySelectorAll('.modal-close').forEach(button => {
                 button.addEventListener('click', function() {
                     const modal = this.closest('[id$="-modal"]');
@@ -528,45 +762,13 @@
                 });
             });
 
-            // Close on ESC key
+            // ESC key handler
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     const openModal = document.querySelector('[id$="-modal"]:not(.hidden)');
                     if (openModal) {
                         closeModal(openModal.id);
                     }
-                }
-            });
-
-            // Initialize forms
-            ['add-product-modal-form', 'edit-product-modal-form'].forEach(formId => {
-                const form = document.getElementById(formId);
-                if (form) {
-                    form.addEventListener('submit', function(e) {
-                        e.preventDefault();
-                        const formData = new FormData(this);
-
-                        fetch(this.action, {
-                                method: this.method,
-                                body: formData,
-                                headers: {
-                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                    'Accept': 'application/json'
-                                }
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
-                                    window.location.reload();
-                                } else {
-                                    alert(data.message || 'Error processing request');
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Error:', error);
-                                alert('An error occurred');
-                            });
-                    });
                 }
             });
         });
