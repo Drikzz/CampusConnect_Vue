@@ -10,11 +10,19 @@
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div class="bg-white p-4 rounded-lg shadow">
                 <h3 class="text-gray-500 text-sm">Pending Orders</h3>
-                <p class="text-2xl font-bold">{{ $orderCounts->pendingCount }}</p>
+                <p class="text-2xl font-bold">{{ $pendingOrders }}</p>
             </div>
             <div class="bg-white p-4 rounded-lg shadow">
-                <h3 class="text-gray-500 text-sm">Completed</h3>
-                <p class="text-2xl font-bold">{{ $orderCounts->completedCount }}</p>
+                <h3 class="text-gray-500 text-sm">Active Orders</h3>
+                <p class="text-2xl font-bold">{{ $activeOrders }}</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h3 class="text-gray-500 text-sm">Total Orders</h3>
+                <p class="text-2xl font-bold">{{ $totalOrders }}</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h3 class="text-gray-500 text-sm">Total Sales</h3>
+                <p class="text-2xl font-bold">₱{{ number_format($totalSales, 2) }}</p>
             </div>
         </div>
 
