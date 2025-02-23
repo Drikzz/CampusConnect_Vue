@@ -29,13 +29,14 @@ class Product extends Model
         'is_buyable',
         'is_tradable',
         'status',
+        'old_attributes'
     ];
 
     protected $casts = [
         'images' => 'array',
         'is_buyable' => 'boolean',
         'is_tradable' => 'boolean',
-        'trade_preferences' => 'array',
+        'old_attributes' => 'json',
     ];
 
     public function seller(): BelongsTo
@@ -73,6 +74,16 @@ class Product extends Model
     public function images(): HasMany
     {
         return $this->hasMany(Product::class, 'images');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function getImageAttribute($value)
+    {
+        return asset('storage/' . $value);
     }
 
     // public function variants(): HasMany
