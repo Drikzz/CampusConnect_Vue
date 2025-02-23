@@ -9,16 +9,31 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SellerController;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 // Public routes should be at the top, before any middleware groups
 Route::get('/', [ProductController::class, 'welcome'])->name('index');
-Route::get('/products', [ProductController::class, 'index'])->name('products');
-Route::get('/products/{id}', [ProductController::class, 'product_details'])->name('prod.details');
-Route::get('/trade', [ProductController::class, 'trade'])->name('trade');
 
-// Authentication routes
-Route::view('/login', 'auth.login')->name('login');
-Route::post('/login', [AuthController::class, 'login']);
+// Route::inertia('/about', 'About', ['user' => 'About Us']);
+
+// Update the products routes
+Route::get('/products', [ProductController::class, 'index'])->name('products');
+Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+
+Route::middleware('guest')->group(function () {
+    // This is the correct route we want to use
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+
+    Route::middleware(['web'])->group(function () {
+        Route::get('/register', [AuthController::class, 'showPersonalInfoForm'])->name('register.personal-info');
+        Route::post('/register/step1', [AuthController::class, 'processPersonalInfo'])->name('register.step1');
+        Route::get('/register/details', [AuthController::class, 'showDetailsForm'])->name('register.details');
+        Route::post('/register/complete', [AuthController::class, 'completeRegistration'])->name('register.complete');
+    });
+});
+
 
 Route::middleware('auth')->group(function () {
 
@@ -30,7 +45,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/profile', [DashboardController::class, 'profile'])->name('dashboard.profile');
         Route::get('/orders', [DashboardController::class, 'orders'])->name('dashboard.orders');
         Route::get('/wishlist', [DashboardController::class, 'wishlist'])->name('dashboard.wishlist');
-        Route::get('/address', [DashboardController::class, 'address'])->name('dashboard.address');
+        Route::get('/meetup-locations', [DashboardController::class, 'address'])->name('dashboard.address');
         Route::get('/reviews', [DashboardController::class, 'reviews'])->name('dashboard.reviews');
 
         // Profile update route
@@ -38,10 +53,21 @@ Route::middleware('auth')->group(function () {
         Route::patch('/orders/{order}/cancel', [OrderController::class, 'cancelOrder'])->name('orders.cancel');
         Route::delete('/wishlist/{wishlist}', [DashboardController::class, 'removeFromWishlist'])->name('wishlist.remove');
 
+        // Meetup locations CRUD
+        Route::post('/meetup-locations', [DashboardController::class, 'storeMeetupLocation'])->name('meetup-locations.store');
+        Route::put('/meetup-locations/{id}', [DashboardController::class, 'updateMeetupLocation'])->name('meetup-locations.update');
+        Route::delete('/meetup-locations/{id}', [DashboardController::class, 'deleteMeetupLocation'])->name('meetup-locations.destroy');
+
         // Add new seller registration routes
-        Route::get('/become-seller', [DashboardController::class, 'showSellerRegistration'])->name('dashboard.become-seller');
-        Route::get('/seller/terms', [DashboardController::class, 'showSellerTerms'])->name('dashboard.seller.terms');
+        Route::get('/become-seller', [UserController::class, 'showBecomeSeller'])
+            ->name('dashboard.become-seller');
+        Route::post('/become-seller', [UserController::class, 'becomeSeller'])
+            ->name('dashboard.seller.become');
+
         Route::post('/seller/terms', [DashboardController::class, 'acceptSellerTerms'])->name('dashboard.seller.terms.accept');
+
+        // Remove or comment out these old routes
+        // Route::get('/seller/terms', [DashboardController::class, 'showSellerTerms'])->name('dashboard.seller.terms');
 
         Route::post('/meetup-locations', [DashboardController::class, 'storeMeetupLocation'])->name('meetup-locations.store');
         Route::put('/meetup-locations/{id}', [DashboardController::class, 'updateMeetupLocation'])->name('meetup-locations.update');
@@ -79,13 +105,9 @@ Route::middleware('auth')->group(function () {
     //checkout routes
     Route::get('/products/prod/{id}/summary', [CheckoutController::class, 'summary'])->name('summary');
     Route::post('/checkout/process', [CheckoutController::class, 'checkout'])->name('checkout.process');
-});
 
-Route::middleware('guest')->group(function () {
-    Route::get('/register', [AuthController::class, 'showPersonalInfoForm'])->name('register.personal-info');
-    Route::post('/register/step1', [AuthController::class, 'processPersonalInfo'])->name('register.step1');
-    Route::get('/register/details', [AuthController::class, 'showDetailsForm'])->name('register.details');
-    Route::post('/register/complete', [AuthController::class, 'completeRegistration'])->name('register.complete');
+    Route::post('/profile/revert', [DashboardController::class, 'revertProfileUpdate'])
+        ->name('profile.revert');
 });
 
 // Admin Authentication Routes
@@ -116,11 +138,11 @@ Route::middleware('guest')->group(function () {
 //     return view('admin.admin-transactions');
 // })->name('admin.transactions');
 
-Route::get('/admin/transactions', [AdminController::class, 'transactions'])->name('admin.transactions');
+// Route::get('/admin/transactions', [AdminController::class, 'transactions'])->name('admin.transactions');
 
-Route::get('/admin/users', function () {
-    return view('admin.admin-userManagement');
-})->name('admin.users');
+// Route::get('/admin/users', function () {
+//     return view('admin.admin-userManagement');
+// })->name('admin.users');
 
 // Route::get('/admin/reports', function () {
 //     return view('admin.admin-reportManagement');
@@ -131,7 +153,7 @@ Route::get('/admin/users', function () {
 //     return view('admin.admin-fundManagement');
 // })->name('admin.funds');
 
-Route::get('/admin/product-management', [AdminController::class, 'productManagement'])->name('admin-productManagement');
+// Route::get('/admin/product-management', [AdminController::class, 'productManagement'])->name('admin-productManagement');
 
 // PLS DON'T DELETE THIS CODE FOR A WHILE
 // Protected Admin Routes
@@ -155,3 +177,32 @@ Route::get('/admin/product-management', [AdminController::class, 'productManagem
 // Route::view('/Admin-transactions', 'admin.admin-transactions')->name('admin-transactions');
 
 // Route::view('/Admin-user-approve', 'admin.admin-user-approved')->name('admin-user-approved');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard/Profile', [
+            'user' => Auth::user(),
+            'stats' => [
+                'totalOrders' => 0, // Add your stats logic here
+                'wishlistCount' => 0,
+                'activeOrders' => 0,
+            ]
+        ]);
+    })->name('dashboard');
+
+    Route::get('/dashboard/meetup-locations', function () {
+        return Inertia::render('Dashboard/MeetupLocations', [
+            'user' => Auth::user(),
+            'stats' => [
+                'totalOrders' => 0, // Add your stats logic here
+                'wishlistCount' => 0,
+                'activeOrders' => 0,
+            ],
+            'locations' => [] // Add your locations data here
+        ]);
+    })->name('dashboard.address');
+});
+
+Route::fallback(function () {
+    return Inertia::render('404');
+});

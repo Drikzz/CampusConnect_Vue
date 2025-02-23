@@ -4,15 +4,14 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use Filament\Models\Contracts\FilamentUser;
-use Filament\Models\Contracts\HasName;
-use Filament\Panel;
+// use Filament\Models\Contracts\HasName;
+// use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements HasName
+class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -76,18 +75,18 @@ class User extends Authenticatable implements HasName
     //     return $this->first_name ?? 'Admin'; // Use `first_name` as the display name
     // }
 
-    public function getFilamentName(): string
-    {
-        return $this->getAttributeValue('first_name');
-    }
+    // public function getFilamentName(): string
+    // {
+    //     return $this->getAttributeValue('first_name');
+    // }
 
-    /**
-     * Check if the user can access Filament.
-     */
-    public function canAccessPanel(Panel $panel): bool
-    {
-        return $this->is_admin; // Only allow admin users to access Filament
-    }
+    // /**
+    //  * Check if the user can access Filament.
+    //  */
+    // public function canAccessPanel(Panel $panel): bool
+    // {
+    //     return $this->is_admin; // Only allow admin users to access Filament
+    // }
 
     public function products(): HasMany
     {
@@ -124,7 +123,6 @@ class User extends Authenticatable implements HasName
     {
         return $this->hasMany(Order::class, 'seller_code', 'seller_code'); // as seller
     }
-
 
     public function verification()
     {
